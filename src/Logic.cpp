@@ -6,6 +6,9 @@
  */
 
 #include "Logic.h"
+#include <vector>
+
+using namespace std;
 
 Logic::Logic(int width, int height, int players) {
 	// TODO Auto-generated constructor stub
@@ -16,9 +19,10 @@ Logic::Logic(int width, int height, int players) {
 	this->aktPlayer = 1;
 	//Felder mit inhalt 0 sollen nicht belegt sein
 	//this->fields[5][5] = {0};
+	this->fields(height,vector<int>(width,0));
 }
 //Array als rueckgabewert einer Methode ist in c schwierig->nachsehen wie das geht
-???? Logic::getFields(){
+vector<vector<int> > Logic::getFields(){
 	return this->fields;
 }
 void Logic::setInitStones(int players){

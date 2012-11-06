@@ -6,19 +6,20 @@
  */
 
 #include <iostream>
-#include "Logic.h"
+//#include "Logic.h"
 
-
+using namespace std;
 
 
 int main(){
-
-	Logic dieLogik(5,5,2);
-
-	dieLogik.setField(3,3);
-
-	std::cout << dieLogik.getFields();// << std::endl;
-
+	Logic var = Logic(7,9,3);
+	for(int i = 0; i < var.getFields().size();i++){
+		cout << endl;
+		for(int j = 0; j < var.getFields()[i].size();j++){
+			cout << var.getFields()[i][j] << " ";
+		}
+	}
+	cout << "tets";
 	return 0;
 }
 
