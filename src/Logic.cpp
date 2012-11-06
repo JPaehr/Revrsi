@@ -19,7 +19,7 @@ Logic::Logic(int width, int height, int players) {
 	this->aktPlayer = 1;
 	//Felder mit inhalt 0 sollen nicht belegt sein
 	//this->fields[5][5] = {0};
-	this->fields(height,vector<int>(width,0));
+	this->fields.assign(height,vector<int>(width,0));
 }
 //Array als rueckgabewert einer Methode ist in c schwierig->nachsehen wie das geht
 vector<vector<int> > Logic::getFields(){
@@ -99,6 +99,9 @@ bool Logic::validation(int x, int y){
 }
 void Logic::setField(int x, int y){
 	this->fields[x][y] = this->aktPlayer;
+}
+void Logic::setAktPlayer(int player){
+	this->aktPlayer = player;
 }
 
 Logic::~Logic() {

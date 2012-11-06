@@ -26,6 +26,7 @@ public:
 	vector<vector<int> > getFields();
 	bool validation(int x, int y);
 	void setField(int x, int y);
+	void setAktPlayer(int player);
 
 	virtual ~Logic();
 };
