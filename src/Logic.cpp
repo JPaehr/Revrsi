@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 
 using namespace std;
 
@@ -111,13 +112,17 @@ void Logic::setInitStones(){
 }
 bool Logic::validation(int x, int y){
 	//ist ander Position schon ein stein
-	if(this->fields[x][y] == 0){
+	if(this->fields[y][x] == 0){
 
 		//umliegende steine kontrollieren
 		for(int i = -1; i <= 1; i++){
 			for(int j = -1; j <= 1; j++){
 				//wenn i und j beide null muss ausgelassen werden
-				if((i != 0 && j != 0) && (x+i >= 0 && x+i <= this->width-1) && (y+j <= this->height-1 && y+j >= 0)){
+				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 ){
+					std::cout << "Breite " << x+j << " Hoehe "<< y+i << " Feld " << this->fields[y+i][x+j] <<  std::endl;
+				}
+
+				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 && this->fields[y+i][x+j] != 0){
 					return true;
 				}
 			}
