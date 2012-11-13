@@ -12,10 +12,11 @@ using namespace std;
 
 
 int main(){
-	Logic var = Logic(7,9,3);
-	var.setField(1,1);
-	var.setAktPlayer(2);
-	var.setField(2,2);
+	Logic var = Logic(8, 8, 4);
+	//var.setField(1,1);
+	//var.setAktPlayer(2);
+	//var.setField(2,2);
+	var.setInitStones();
 	for(int i = 0; i < var.getFields().size();i++){
 		cout << endl;
 		for(int j = 0; j < var.getFields()[i].size();j++){
