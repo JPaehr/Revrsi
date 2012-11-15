@@ -8,6 +8,7 @@ class TokenItem : public QGraphicsPixmapItem
 {
 public:
     TokenItem();
+    ~TokenItem();
 };
 
 #endif // TOKENITEM_H

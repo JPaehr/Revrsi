@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>808</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSpiel">
@@ -110,10 +110,10 @@
  <resources/>
  <connections>
   <connection>
-   <sender>actionBeenden</sender>
+   <sender>actionOptionen</sender>
    <signal>triggered()</signal>
    <receiver>Revrsi</receiver>
-   <slot>close()</slot>
+   <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -121,7 +121,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>403</x>
-     <y>284</y>
+     <y>327</y>
     </hint>
    </hints>
   </connection>

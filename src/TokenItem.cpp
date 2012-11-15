@@ -3,3 +3,7 @@
 TokenItem::TokenItem()
 {
 }
+
+TokenItem::~TokenItem()
+{
+}
