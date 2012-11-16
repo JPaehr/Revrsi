@@ -7,6 +7,9 @@
 
 #include "Logic.h"
 #include <vector>
+#include <algorithm>
+#include <functional>
+#include <iostream>
 
 using namespace std;
 
@@ -25,70 +28,101 @@ Logic::Logic(int width, int height, int players) {
 vector<vector<int> > Logic::getFields(){
 	return this->fields;
 }
-void Logic::setInitStones(int players){
+void Logic::setInitStones(){
+	int x;
+	int y;
+	vector<int> Steine;
 	//Fuer 2 Spieler
-	if(players == 2){
+	if(this->players == 2){
 		//ungerades Spielfeld in der Breite abfragen
 		if(this->width % 2 == 0){
-			int x = this->width / 2;
+			x = (this->width / 2) - 1;
 		}
 		else{
-			int x = (this->width / 2) - (1/2);
+			x = (this->width / 2) - (3/2);
 		}
 
 		//ungerades Spielfeld in der Hoehe
 		if(this->height % 2 == 0){
-			int y = this->height / 2;
+			y = this->height / 2 - 1;
 		}
 		else{
-			int y = (this->height / 2) - (1/2);
+			y = (this->height / 2) - (3/2);
 		}
+		for(int j = 1; j <= 2;j++){
+			Steine.push_back(1);
+			Steine.push_back(2);
+		}
+
 	}
 
 	//Fuer 3 Spieler
 	if(this->players == 3){
 		if(this->width % 2 == 0){
-			int x = (this->width / 2) -1;
+			x = (this->width / 2) -2;
 		}
 		else{
-			int x = (this->width / 2) - (3/2);
+			x = (this->width / 2) - (3/2);
 		}
 		if(this->height % 2 == 0){
-			int y = (this->height / 2) -1;
+			y = (this->height / 2) - 2;
 		}
 		else{
-			int y = (this->height / 2) - (3/2);
+			y = (this->height / 2) - (3/2);
+		}
+		for(int j = 1; j <= 3;j++){
+			Steine.push_back(1);
+			Steine.push_back(2);
+			Steine.push_back(3);
 		}
 	}
 
 	//Fuer 4 Spieler
 	if(this->players == 4){
 		if(this->width % 2 == 0){
-			int x = (this->width / 2) -2;
+			x = (this->width / 2) -2;
 		}
 		else{
-			int x = (this->width / 2) - (3/2);
+			x = (this->width / 2) - (5/2);
 		}
 		if(this->height % 2 == 0){
-			int y = (this->height / 2) -2;
+			y = (this->height / 2) -2;
 		}
 		else{
-			int y = (this->height / 2) -(3/2);
+			y = (this->height / 2) -(5/2);
+		}
+		for(int j = 1; j <= 4; j++){
+			Steine.push_back(1);
+			Steine.push_back(2);
+			Steine.push_back(3);
+			Steine.push_back(4);
 		}
 	}
 
 	//Hier muessen die steine jetzt noch gesetzt werden
+	random_shuffle(Steine.begin(), Steine.end());
+	int counter = 0;
+	for(int breite = 1; breite <= players; breite++){
+		for(int hoehe = 1; hoehe <= players; hoehe++){
+			this->fields[y+hoehe-1][x+breite-1] = Steine[counter];
+			counter++;
+		}
+	}
 
 }
 bool Logic::validation(int x, int y){
 	//ist ander Position schon ein stein
-	if(this->fields[x][y] == 0){
+	if(this->fields[y][x] == 0){
 
 		//umliegende steine kontrollieren
 		for(int i = -1; i <= 1; i++){
 			for(int j = -1; j <= 1; j++){
 				//wenn i und j beide null muss ausgelassen werden
-				if((i != 0 && j != 0) && (x+i >= 0 && x+i <= this->width-1) && (y+j <= this->height-1 && y+j >= 0)){
+				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 ){
+					std::cout << "Breite " << x+j << " Hoehe "<< y+i << " Feld " << this->fields[y+i][x+j] <<  std::endl;
+				}
+
+				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 && this->fields[y+i][x+j] != 0){
 					return true;
 				}
 			}
