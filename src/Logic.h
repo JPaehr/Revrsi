@@ -22,7 +22,7 @@ private:
 
 public:
 	Logic(int width, int height, int players);
-	void setInitStones(int players);
+	void setInitStones();
 	vector<vector<int> > getFields();
 	bool validation(int x, int y);
 	void setField(int x, int y);

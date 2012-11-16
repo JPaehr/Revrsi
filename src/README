@@ -1,0 +1,9 @@
+Logic Funktion in gui implementiert. Funktioniert
+
+
+Probleme/Bugs/Fehler:
+
+-Die Position der ausgangs Steine stimmt nicht.
+-Bei  >2 Spielern (int spieler_number) kommt es zu Fehlen bei der Init Stein Positionierung
+
+Behebung dringend notwendig!

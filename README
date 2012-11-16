@@ -1,8 +1,15 @@
-Main.cpp zur verwendung der Logic Klasse umbenannt
-
-Vorläufig am weitest entwickelte Version der GUI hochgeladen.
-
-qmake
-make
+Logic Funktion in gui implementiert. Funktioniert
 
 
+History:
+-15.11.12
+	Settings Fenster hinzugefügt
+		-Höhe und Breite einstellbar. Werden allerdings noch nicht umgesetzt
+	New Game Fkt. hinzugefügt
+		-Kann bisher das alte Spielfeld und die alte Logicfunktion löschen.
+
+
+Probleme/Bugs/Fehler:
+
+-Die Position der ausgangs Steine stimmt nicht für verschiedene höhe und breite.
+-Bei  >2 Spielern (int spieler_number) kommt es zu Fehlen bei der Init Stein Positionierung
