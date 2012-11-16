@@ -36,18 +36,18 @@ void Logic::setInitStones(){
 	if(this->players == 2){
 		//ungerades Spielfeld in der Breite abfragen
 		if(this->width % 2 == 0){
-			x = this->width / 2;
+			x = (this->width / 2) - 1;
 		}
 		else{
-			x = (this->width / 2) - (1/2);
+			x = (this->width / 2) - (3/2);
 		}
 
 		//ungerades Spielfeld in der Hoehe
 		if(this->height % 2 == 0){
-			y = this->height / 2;
+			y = this->height / 2 - 1;
 		}
 		else{
-			y = (this->height / 2) - (1/2);
+			y = (this->height / 2) - (3/2);
 		}
 		for(int j = 1; j <= 2;j++){
 			Steine.push_back(1);
@@ -59,13 +59,13 @@ void Logic::setInitStones(){
 	//Fuer 3 Spieler
 	if(this->players == 3){
 		if(this->width % 2 == 0){
-			x = (this->width / 2) -1;
+			x = (this->width / 2) -2;
 		}
 		else{
 			x = (this->width / 2) - (3/2);
 		}
 		if(this->height % 2 == 0){
-			y = (this->height / 2) -1;
+			y = (this->height / 2) - 2;
 		}
 		else{
 			y = (this->height / 2) - (3/2);
@@ -83,13 +83,13 @@ void Logic::setInitStones(){
 			x = (this->width / 2) -2;
 		}
 		else{
-			x = (this->width / 2) - (3/2);
+			x = (this->width / 2) - (5/2);
 		}
 		if(this->height % 2 == 0){
 			y = (this->height / 2) -2;
 		}
 		else{
-			y = (this->height / 2) -(3/2);
+			y = (this->height / 2) -(5/2);
 		}
 		for(int j = 1; j <= 4; j++){
 			Steine.push_back(1);
