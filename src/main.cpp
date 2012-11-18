@@ -12,19 +12,25 @@ using namespace std;
 
 
 int main(){
-	Logic var = Logic(8, 8, 4);
-	//var.setField(1,1);
-	//var.setAktPlayer(2);
-	//var.setField(2,2);
+	int x, y;
+
+	Logic var = Logic(8, 8, 3);
 	var.setInitStones();
-
 	cout << "Stein laesst sich " << var.validation(3,3) << " setzten (0/nein 1/ja)";
+	while(true){
 
-	for(int i = 0; i < var.getFields().size();i++){
-		cout << endl;
-		for(int j = 0; j < var.getFields()[i].size();j++){
-			cout << var.getFields()[i][j] << " ";
+		for(int i = 0; i < var.getFields().size();i++){
+			cout << endl;
+			for(int j = 0; j < var.getFields()[i].size();j++){
+				cout << var.getFields()[i][j] << " ";
+			}
 		}
+
+		cout << endl << "gib die x Koordinate fuer den neuen Stein ein" << endl;
+		cin >> x;
+		cout << "gib die y Koordinate fuer den neuen Stein ein" << endl;
+		cin >> y;
+		var.setField(x, y);
 	}
 	return 0;
 }

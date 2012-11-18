@@ -110,6 +110,50 @@ void Logic::setInitStones(){
 	}
 
 }
+void Logic::turnStones(int x, int y, int richtung, int anzahl){
+	switch (richtung){
+	case 0:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y-i][x+i] = this->aktPlayer;
+		}
+		break;
+	case 1:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y-i][x] = this->aktPlayer;
+		}
+		break;
+	case 2:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y-i][x-i] = this->aktPlayer;
+		}
+		break;
+	case 3:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y][x+i] = this->aktPlayer;
+		}
+		break;
+	case 4:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y+i][x-i] = this->aktPlayer;
+		}
+		break;
+	case 5:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y+i][x] = this->aktPlayer;
+		}
+		break;
+	case 6:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y+i][x+i] = this->aktPlayer;
+		}
+		break;
+	case 7:
+		for(int i = 1; i <= anzahl; i++){
+			this->fields[y][x+i] = this->aktPlayer;
+		}
+		break;
+	}
+}
 bool Logic::validation(int x, int y){
 	//ist ander Position schon ein stein
 	if(this->fields[y][x] == 0){
@@ -132,7 +176,74 @@ bool Logic::validation(int x, int y){
 	return false;
 }
 void Logic::setField(int x, int y){
-	this->fields[x][y] = this->aktPlayer;
+	if(this->validation(x, y)){
+		//y und x verdreht, weil y fuer zeilen steht und x fuer breite
+		this->fields[y][x] = this->aktPlayer;
+
+		//richtungen legt fest ob in der linie ein gleicher stein gefunden wurde
+		// begin oben rechts, also auf eine geraden der steigung 1
+		int richtungen[8] = {0};
+
+		for(int i = 1; i <= this->height; i++){
+			for(int j = 1; j <= this->width; j++){
+				//nach obenrechts
+				if(y-i >= 0 && x+j <= this->width-1 && j == i && richtungen[0] == 0){
+					if(this->fields[y-i][x+j] == this->aktPlayer){
+						richtungen[0] = j;
+					}
+				}
+				//nach oben
+				if(y-i >= 0 && richtungen[1] == 0){
+					if(this->fields[y-i][x] == this->aktPlayer){
+						richtungen[1] = i;
+					}
+				}
+				//nach obenlink
+				if(y-i >= 0 && x-j >= 0 && j == i && richtungen[2] == 0){
+					if(this->fields[y-i][x-j] == this->aktPlayer){
+						richtungen[2] = j;
+					}
+				}
+				//nach links
+				if(x-j >= 0 && richtungen[3] == 0){
+					if(this->fields[y][x-j] == this->aktPlayer){
+						richtungen[3] = j;
+					}
+				}
+
+				//nach untenlinks
+				if(y+i <= this->height-1 && x-j >= 0 && j == i && richtungen[4] == 0){
+					if(this->fields[y+i][x-j] == this->aktPlayer){
+						richtungen[4] = j;
+					}
+				}
+				//nach unten
+				if(y+i <= this->height-1 && richtungen[5] == 0){
+					if(this->fields[y+i][x] == this->aktPlayer){
+						richtungen[5] = i;
+					}
+				}
+				//nach untenrechts
+				if(y+i <= this->height-1 && x+j <= this->width-1 && j == i && richtungen[6] == 0){
+					if(this->fields[y+i][x+j] == this->aktPlayer){
+						richtungen[6] = j;
+					}
+				}
+				//nach rechts
+				if(x+j <= this->width-1 && richtungen[7] == 0){
+					if(this->fields[y][x+j] == this->aktPlayer){
+						richtungen[7] = j;
+					}
+				}
+			}
+		}
+		for(int k = 1; k <= 8; k++){
+			turnStones(x, y, k-1, richtungen[k-1]);
+		}
+
+		//neuer Spieler wird gesetzt
+		this->aktPlayer = (this->aktPlayer % this->players) + 1;
+	}
 }
 void Logic::setAktPlayer(int player){
 	this->aktPlayer = player;
