@@ -11,7 +11,7 @@
 using namespace std;
 
 
-int main(){
+int main2(){
 	Logic var = Logic(7,9,3);
 	var.setField(1,1);
 	var.setAktPlayer(2);
