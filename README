@@ -2,6 +2,17 @@ Logic Funktion in gui implementiert. Funktioniert
 
 
 History:
+-18.11.12
+	New Game Funktion funktioniert vollständig.  "Spiel -> Neu"
+
+	Logik "vollständig" eingebaut. Funktioniert allerdings nicht.
+		-Theoretisch ist alles richtig jedoch werden die Stein nicht/falsch platziert.
+		-Betreffende Funktion ist "field_clicked_slot" in der Revrsi.cpp
+		-x und y coordinate des geklickten feldes werden an Logic.setField(x,y) übergeben. aber falsch verarbeitet.
+
+
+	BITTE SCHAUT DA MAL MIT DRÜBER
+
 -15.11.12
 	Settings Fenster hinzugefügt
 		-Höhe und Breite einstellbar. Werden allerdings noch nicht umgesetzt

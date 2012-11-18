@@ -10,65 +10,59 @@ Revrsi::Revrsi(QWidget *parent) :
 {
     // Initialisierungsvorgänge
     ui->setupUi(this);
-    settings *s = new settings;
-    this->height = s->get_x();
-    this->width = s->get_y();
+    game_settings = new settings;
+    ngs = new new_game_settings;
+    this->height = game_settings->get_x();
+    this->width = game_settings->get_y();
     this->player_num = 2;
     this->player_act = 1;
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,700,500);
     ui->graphicsView->setScene(scene);
 
+    this->logic = new Logic(this->width,this->width,this->player_num);
+    logic->setInitStones();
+    this->new_array = logic->getFields();
+    this->setupBackground(this->width,this->height);
+    this->init_placeTokens(logic);
+
     // Zentriere Fenster
     QRect frect = frameGeometry();
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
-    out << "\n\n\nOutput:\n---------------";
-    out << this->height;
-    out << this->width;
-
     // Connections
-    connect(ui->actionOptionen, SIGNAL(triggered()),s,SLOT(show()));
+    connect(ui->actionOptionen, SIGNAL(triggered()),game_settings,SLOT(show()));
+    connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
 
-    //Setup Logic
-    Logic *logic = new Logic(this->width-1,this->height-1,this->player_num);
-    logic->setInitStones();
-    this->new_array = logic->getFields();
-
-    // Setup Spielfeld
-    this->setupBackground(this->width,this->height);
-    this->init_placeTokens(logic);
-
-    /*QPen mypen = QPen(Qt::red);
-
-    QPoint point1;
-    point1 = QPoint(10,10);
-    QLineF TopLine(scene->sceneRect().topLeft(), scene->sceneRect().topRight());
-    //QLineF TopLine(QPoint(00,600), scene->sceneRect().topRight());
-    QLineF LeftLine(scene->sceneRect().topLeft(), scene->sceneRect().bottomLeft());
-    QLineF RightLine(scene->sceneRect().topRight(), scene->sceneRect().bottomRight());
-    QLineF BottomLine(scene->sceneRect().bottomLeft(), scene->sceneRect().bottomRight());
-
-    out << "TopLeft:\t\t" << scene->sceneRect().topLeft();
-    out << "TopRight:\t\t"<< scene->sceneRect().topRight();
-    out << "BottomLeft:\t\t"<<scene->sceneRect().bottomLeft();
-    out << "BottomRight:\t"<<scene->sceneRect().bottomRight();
-
-    scene->addLine(TopLine,mypen);
-    scene->addLine(LeftLine,mypen);
-    scene->addLine(RightLine,mypen);
-    scene->addLine(BottomLine,mypen);
-    */
-
-    //ui->graphicsView->update();
-    //this->new_game(logic);
 }
 
-Revrsi::~Revrsi()
-{
+Revrsi::~Revrsi(){
     delete ui;
 }
+
+void Revrsi::test_slot(){
+    this->ngs->exec();
+    this->player_num = ngs->get_choosen_number();
+    this->new_game();
+}
+
+void Revrsi::field_clicked_slot(int x, int y){
+    out << "Field clicked slot. x=" << x << "y="<< y;
+    this->logic->setField(x,y);
+
+    this->old_array = this->new_array;
+    this->new_array = this->logic->getFields();
+    for(int i = 0 ; i<this->new_array.size() ; i++){
+        for(int ii = 0 ; ii<this->new_array[i].size() ; ii++){
+            //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
+            if(this->new_array[i][ii]){
+                this->setupToken(i,ii,this->new_array[i][ii]);
+            }
+        }
+    }
+}
+
 
 void Revrsi::init_placeTokens(Logic *logic){
     this->new_array = logic->getFields();
@@ -79,23 +73,40 @@ void Revrsi::init_placeTokens(Logic *logic){
                 this->setupToken(i,ii,this->new_array[i][ii]);
             }
         }
-
     }
-    //out << this->new_array[2].size();
 }
 
-void Revrsi::new_game(Logic *logic){
-    logic->~Logic();
+void Revrsi::new_game(){
+    //connect(new_window->)
+
+    //Zerstöre logic Funktion mit alter initialisierung
+    this->logic->~Logic();
+
+    // Leere das HintergrundFeldArray ohne den Vector zu löschen
     for(int i = 0; i<this->fields.size(); i++){
         this->fields[i]->~FieldItem();
     }
     this->fields.clear();
+
+    // Leere das TokenArray ohne den Vector zu löschen
     for(int i = 0; i<this->tokens.size(); i++){
         this->tokens[i]->~TokenItem();
     }
     this->tokens.clear();
 
+    // Lese neue Spieldaten
+    this->player_num = ngs->get_choosen_number();
+    this->width = game_settings->get_x();
+    this->height = game_settings->get_y();
 
+    // Erstelle neue Logicklasse
+    this->logic = new Logic(this->width,this->width,this->player_num);
+    logic->setInitStones();
+    this->new_array = logic->getFields();
+
+    // Setup Background und InitStones
+    this->setupBackground(this->width,this->height);
+    this->init_placeTokens(logic);
 }
 
 void Revrsi::placeTokens(Logic *logic){
@@ -104,8 +115,7 @@ void Revrsi::placeTokens(Logic *logic){
 
 }
 
-void Revrsi::setupBackground(int x, int y)
-{
+void Revrsi::setupBackground(int x, int y){
     //out << scene->sceneRect();
 
     QPixmap back_pic1;
@@ -162,6 +172,8 @@ void Revrsi::setupBackground(int x, int y)
                 item->set_scale(smaller_value/x);
                 this->set_scale(smaller_value/x);
 
+                connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
+
                 this->fields.push_back(item);
                 this->scene->addItem(item);
 
@@ -169,8 +181,7 @@ void Revrsi::setupBackground(int x, int y)
         }
 }
 
-void Revrsi::setupToken(int x, int y, int player)
-{
+void Revrsi::setupToken(int x, int y, int player){
     int i = 0;
     QPixmap token_pic;
 
@@ -208,11 +219,9 @@ void Revrsi::setupToken(int x, int y, int player)
     token_item->setOffset(this->fields[i]->x_real()+10/2,this->fields[i]->y_real()+10/2);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
-
 }
 
-void Revrsi::set_scale(double scale)
-{
+void Revrsi::set_scale(double scale){
     this->scale = scale;
 }
 

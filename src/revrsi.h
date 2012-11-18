@@ -8,6 +8,7 @@
 #include "TokenItem.h"
 #include "Logic.h"
 #include "settings.h"
+#include "new_game_settings.h"
 
 namespace Ui {
 class Revrsi;
@@ -15,11 +16,15 @@ class Revrsi;
 
 class Revrsi : public QMainWindow
 {
-
     Q_OBJECT
 public:
     explicit Revrsi(QWidget *parent = 0);
     ~Revrsi();
+public slots:
+    void test_slot();
+    void field_clicked_slot(int, int);
+signals:
+    void ts();
 private:
     int width;
     int height;
@@ -29,6 +34,9 @@ private:
     Ui::Revrsi *ui;
     QGraphicsScene *scene;
     QTimer *timer;
+    new_game_settings *ngs;
+    settings *game_settings;
+    Logic *logic;
     QVector<FieldItem *> fields;
     QVector<TokenItem *> tokens;
     vector<vector<int> > old_array;
@@ -40,7 +48,7 @@ private:
     void placeTokens(Logic *logic);
     void init_placeTokens(Logic *logic);
 
-    void new_game(Logic *logic);
+    void new_game();
 };
 
 #endif // REVRSI_H

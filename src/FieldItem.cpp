@@ -54,5 +54,6 @@ FieldItem::~FieldItem(){
 }
 
 void FieldItem::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    out << "Field Item nr.: " << nr << "\tCoords = " << Coords[0] << "," << Coords[1] << "\tReal Coords = " << RealCoords.x() << "," << RealCoords.y();
+    //out << "Field Item nr.: " << nr << "\tCoords = " << Coords[0] << "," << Coords[1] << "\tReal Coords = " << RealCoords.x() << "," << RealCoords.y();
+    emit FieldClicked(this->x(),this->y());
 }

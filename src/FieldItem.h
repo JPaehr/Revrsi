@@ -3,11 +3,12 @@
 #include <QtGui>
 #include <vector>
 #include <string>
+#include <QObject>
 #define out qDebug()
 
-class FieldItem : public QGraphicsPixmapItem
+class FieldItem : public QObject, public QGraphicsPixmapItem
 {
-
+    Q_OBJECT
 public:
     FieldItem();
     void set_nr(int val);
@@ -22,6 +23,8 @@ public:
     void print_coords();
     void print_scale();
     ~FieldItem();
+signals:
+    void FieldClicked(int,int);
 private:
     int nr;
     double scale;
