@@ -13,8 +13,18 @@ using namespace std;
 
 int main(){
 	int x, y;
+	int breite;
+	int hoehe;
+	int Spieleranzahl;
+	cout << "Spieleranzahl";
+	cin >> Spieleranzahl;
+	cout << endl << "Breite";
+	cin >> breite;
+	cout << endl << "Hoehe";
+	cin >> hoehe;
+	cout << endl;
 
-	Logic var = Logic(8, 8, 3);
+	Logic var = Logic(breite, hoehe, Spieleranzahl);
 	var.setInitStones();
 	cout << "Stein laesst sich " << var.validation(3,3) << " setzten (0/nein 1/ja)";
 	while(true){
