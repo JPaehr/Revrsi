@@ -19,6 +19,7 @@ private:
 	//gibt auch einen Error beim kompilieren
 	vector<vector<int> > fields;//(4,vector<int>(4,0));
 	int aktPlayer;
+	void turnStones(int x, int y, int richtung, int anzahl);
 
 public:
 	Logic(int width, int height, int players);
