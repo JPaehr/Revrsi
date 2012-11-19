@@ -57,7 +57,7 @@ void Revrsi::field_clicked_slot(int x, int y){
         for(int ii = 0 ; ii<this->new_array[i].size() ; ii++){
             //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
             if(this->new_array[i][ii]){
-                this->setupToken(i,ii,this->new_array[i][ii]);
+                this->setupToken(ii,i,this->new_array[i][ii]);
             }
         }
     }
@@ -186,7 +186,7 @@ void Revrsi::setupToken(int x, int y, int player){
     QPixmap token_pic;
 
     if(player == 1){
-        if(!token_pic.load("logo.png")){
+        if(!token_pic.load("token4.png")){
             qWarning("Failed to load image");
         }
     }
