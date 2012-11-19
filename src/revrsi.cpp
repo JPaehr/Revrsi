@@ -70,7 +70,7 @@ void Revrsi::init_placeTokens(Logic *logic){
         for(int ii = 0 ; ii<this->new_array[i].size() ; ii++){
             //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
             if(this->new_array[i][ii]){
-                this->setupToken(i,ii,this->new_array[i][ii]);
+                this->setupToken(ii,i,this->new_array[i][ii]);
             }
         }
     }
