@@ -152,6 +152,8 @@ void Logic::turnStones(int x, int y, int richtung, int anzahl){
 			this->fields[y][x+i] = this->aktPlayer;
 		}
 		break;
+	default:;
+	break;
 	}
 }
 bool Logic::validation(int x, int y){
@@ -188,51 +190,103 @@ void Logic::setField(int x, int y){
 			for(int j = 1; j <= this->width; j++){
 				//nach obenrechts
 				if(y-i >= 0 && x+j <= this->width-1 && j == i && richtungen[0] == 0){
-					if(this->fields[y-i][x+j] == this->aktPlayer){
-						richtungen[0] = j;
+					if(this->fields[y-i][x+j] == 0){
+						richtungen[0] = -1;
+					}
+					else{
+						if(this->fields[y-i][x+j] == this->aktPlayer){
+							richtungen[0] = j;
+							cout << "nach oben rechts " << j << endl;
+						}
 					}
 				}
 				//nach oben
 				if(y-i >= 0 && richtungen[1] == 0){
-					if(this->fields[y-i][x] == this->aktPlayer){
-						richtungen[1] = i;
+					if(this->fields[y-i][x] == 0){
+						richtungen[1] = -1;
+					}
+					else{
+						if(this->fields[y-i][x] == this->aktPlayer){
+							richtungen[1] = i;
+							cout << "nach oben " << i << endl;
+						}
 					}
 				}
 				//nach obenlink
 				if(y-i >= 0 && x-j >= 0 && j == i && richtungen[2] == 0){
-					if(this->fields[y-i][x-j] == this->aktPlayer){
-						richtungen[2] = j;
+					if(this->fields[y-i][x-j] == 0){
+						richtungen[2] = -1;
+					}
+					else{
+						if(this->fields[y-i][x-j] == this->aktPlayer && this->fields[y-i][x-j] != 0){
+							richtungen[2] = j;
+							cout << "nach oben links " << j << endl;
+						}
 					}
 				}
 				//nach links
 				if(x-j >= 0 && richtungen[3] == 0){
-					if(this->fields[y][x-j] == this->aktPlayer){
-						richtungen[3] = j;
+					if(this->fields[y][x-j] == 0){
+						richtungen[3] = -1;
+					}
+					else{
+						if(this->fields[y][x-j] == this->aktPlayer && this->fields[y][x-j] != 0){
+							richtungen[3] = j;
+							cout << "nach links " << j << endl;
+						}
 					}
 				}
 
 				//nach untenlinks
 				if(y+i <= this->height-1 && x-j >= 0 && j == i && richtungen[4] == 0){
-					if(this->fields[y+i][x-j] == this->aktPlayer){
-						richtungen[4] = j;
+					if(this->fields[y+i][x-j] == 0){
+						richtungen[4] = -1;
+					}
+					else{
+						if(this->fields[y+i][x-j] == this->aktPlayer && this->fields[y+i][x-j] != 0){
+							richtungen[4] = j;
+							cout << "nach unten links " << j << endl;
+						}
+						//richtungen[4] = j;
 					}
 				}
 				//nach unten
 				if(y+i <= this->height-1 && richtungen[5] == 0){
-					if(this->fields[y+i][x] == this->aktPlayer){
-						richtungen[5] = i;
+					if(this->fields[y+i][x] == 0){
+						richtungen[5] = -1;
+					}
+					else{
+						if(this->fields[y+i][x] == this->aktPlayer && this->fields[y+i][x] != 0){
+							richtungen[5] = i;
+							cout << "nach unten " << i << endl;
+						}
+						//richtungen[5] = i;
 					}
 				}
 				//nach untenrechts
 				if(y+i <= this->height-1 && x+j <= this->width-1 && j == i && richtungen[6] == 0){
-					if(this->fields[y+i][x+j] == this->aktPlayer){
-						richtungen[6] = j;
+					if(this->fields[y+i][x+j] == 0){
+						richtungen[6] = -1;
+					}
+					else{
+						if(this->fields[y+i][x+j] == this->aktPlayer && this->fields[y+i][x+j] != 0){
+							richtungen[6] = j;
+							cout << "nach unten rechts " << j << endl;
+						}
+						//richtungen[6] = j;
 					}
 				}
 				//nach rechts
 				if(x+j <= this->width-1 && richtungen[7] == 0){
-					if(this->fields[y][x+j] == this->aktPlayer){
-						richtungen[7] = j;
+					if(this->fields[y][x+j] == 0){
+						richtungen[7] = -1;
+					}
+					else{
+						if(this->fields[y][x+j] == this->aktPlayer && this->fields[y][x+j] != 0){
+							richtungen[7] = j;
+							cout << "nach rechts " << j << endl;
+						}
+						//richtungen[7] = j;
 					}
 				}
 			}
