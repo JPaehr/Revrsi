@@ -1,7 +1,16 @@
-Logic Funktion in gui implementiert. Funktioniert
-
-
 History:
+-20.11.12
+	"Neues Spiel"-Menü überarbeitet
+		-Feldgröße einstellbar
+		-Standart Feldgrößen für Spieleranzahlen
+	TokenItem besitzt seie eigene FeldPosition
+
+	Einstellungen Reiter entfernt, da überflüssig.
+
+	Tokens wurden bei Spielzügen immer von neuen überdeckt.
+		-Tokens werden nicht mehr überdeckt
+		-Auf leeren Feldern werden neue Tokens erstellt.
+		-Wenn Tokens den Spieler wechseln, werden die alten gelöscht und die dann leeren Felder durch neue Tokens des Spielers gefüllt.
 -18.11.12
 	New Game Funktion funktioniert vollständig.  "Spiel -> Neu"
 
