@@ -294,6 +294,9 @@ void Logic::setField(int x, int y){
 void Logic::setAktPlayer(int player){
 	this->aktPlayer = player;
 }
+int Logic::getAktPlayer(){
+	return this->aktPlayer;
+}
 
 Logic::~Logic() {
 	// TODO Auto-generated destructor stub

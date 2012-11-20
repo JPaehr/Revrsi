@@ -20,14 +20,16 @@ private:
 	vector<vector<int> > fields;//(4,vector<int>(4,0));
 	int aktPlayer;
 	void turnStones(int x, int y, int richtung, int anzahl);
+	bool validation(int x, int y);
+	void setAktPlayer(int player);
 
 public:
 	Logic(int width, int height, int players);
 	void setInitStones();
 	vector<vector<int> > getFields();
-	bool validation(int x, int y);
 	void setField(int x, int y);
-	void setAktPlayer(int player);
+	int getAktPlayer();
+
 
 	virtual ~Logic();
 };
