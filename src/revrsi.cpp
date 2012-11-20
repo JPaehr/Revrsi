@@ -6,14 +6,13 @@ using namespace std;
 
 Revrsi::Revrsi(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Revrsi)
-{
+    ui(new Ui::Revrsi){
+
     // Initialisierungsvorgänge
     ui->setupUi(this);
-    game_settings = new settings;
     ngs = new new_game_settings;
-    this->height = game_settings->get_x();
-    this->width = game_settings->get_y();
+    this->height = 8;
+    this->width = 8;
     this->player_num = 2;
     this->player_act = 1;
     scene = new QGraphicsScene(this);
@@ -32,7 +31,6 @@ Revrsi::Revrsi(QWidget *parent) :
     move(frect.topLeft());
 
     // Connections
-    connect(ui->actionOptionen, SIGNAL(triggered()),game_settings,SLOT(show()));
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
 
 }
@@ -46,28 +44,36 @@ void Revrsi::test_slot(){
     this->player_num = ngs->get_choosen_number();
     this->new_game();
 }
-
+/**************************************************/
 void Revrsi::field_clicked_slot(int x, int y){
     out << "Field clicked slot. x=" << x << "y="<< y;
     this->logic->setField(x,y);
 
     this->old_array = this->new_array;
     this->new_array = this->logic->getFields();
-    for(int i = 0 ; i<this->new_array.size() ; i++){
-        for(int ii = 0 ; ii<this->new_array[i].size() ; ii++){
+    for(uint i = 0 ; i<this->new_array.size() ; i++){
+        for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
             //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
-            if(this->new_array[i][ii]){
+            out << "New Array" << i << ii << this->new_array[i][ii];
+            out << "Old Array" << i << ii << this->old_array[i][ii];
+            if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
                 this->setupToken(ii,i,this->new_array[i][ii]);
+            }
+            else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
+                this->change_token(ii,i,this->new_array[i][ii]);
             }
         }
     }
+    /*if(this->player_act == 1){
+        ui->spieler_farbe->setText("");
+    }*/
 }
-
+/**************************************************/
 
 void Revrsi::init_placeTokens(Logic *logic){
     this->new_array = logic->getFields();
-    for(int i = 0 ; i<this->new_array.size() ; i++){
-        for(int ii = 0 ; ii<this->new_array[i].size() ; ii++){
+    for(uint i = 0 ; i<this->new_array.size() ; i++){
+        for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
             //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
             if(this->new_array[i][ii]){
                 this->setupToken(ii,i,this->new_array[i][ii]);
@@ -76,9 +82,61 @@ void Revrsi::init_placeTokens(Logic *logic){
     }
 }
 
-void Revrsi::new_game(){
-    //connect(new_window->)
+void Revrsi::change_token(int x, int y, int player){
+    int i = 0;
+    QPixmap token_pic;
 
+    if(player == 1){
+        if(!token_pic.load("token4.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    if(player == 2){
+        if(!token_pic.load("token1.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    if(player == 3){
+        if(!token_pic.load("token2.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    if(player == 4){
+        if(!token_pic.load("token3.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    token_pic = token_pic.scaled(this->scale-10,this->scale-10);
+
+    TokenItem *token_item = new TokenItem;
+
+    for(i = 0;i<this->fields.size();i++){
+        if(this->fields[i]->x() == x && this->fields[i]->y() == y){
+            break;
+        }
+    }
+
+    token_item->setPixmap(token_pic);
+    token_item->setOffset(this->fields[i]->x_real()+10/2,this->fields[i]->y_real()+10/2);
+    token_item->set_coords(x,y);
+
+    //Suche passenden Token aus Tokenliste
+    int j;
+    for(j = 0; j < this->tokens.size(); j++){
+        if(this->tokens[j]->get_coords() == QPoint(x, y)){
+            break;
+        }
+    }
+
+    //Remove Old Token (muss in fkt ausgelagert werden)
+    this->tokens[j]->~TokenItem();
+    this->tokens.remove(j);
+
+    this->tokens.push_back(token_item);
+    this->scene->addItem(token_item);
+}
+
+void Revrsi::new_game(){
     //Zerstöre logic Funktion mit alter initialisierung
     this->logic->~Logic();
 
@@ -96,8 +154,8 @@ void Revrsi::new_game(){
 
     // Lese neue Spieldaten
     this->player_num = ngs->get_choosen_number();
-    this->width = game_settings->get_x();
-    this->height = game_settings->get_y();
+    this->width = ngs->get_field_size().x();
+    this->height = ngs->get_field_size().y();
 
     // Erstelle neue Logicklasse
     this->logic = new Logic(this->width,this->width,this->player_num);
@@ -217,6 +275,7 @@ void Revrsi::setupToken(int x, int y, int player){
 
     token_item->setPixmap(token_pic);
     token_item->setOffset(this->fields[i]->x_real()+10/2,this->fields[i]->y_real()+10/2);
+    token_item->set_coords(x,y);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
 }
