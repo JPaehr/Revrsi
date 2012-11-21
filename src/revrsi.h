@@ -37,6 +37,7 @@ private:
     new_game_settings       *ngs;
     Logic                   *logic;
     Ui::Revrsi              *ui;
+    //QAnimationGroup         Anim;
     QGraphicsScene          *scene;
     QTimer                  *timer;
     QVector<FieldItem *>    fields;
@@ -51,6 +52,8 @@ private:
     void set_scale(double scale = 50);
     void setupBackground(int x, int y);
     void setupToken(int x, int y,  int player);
+
+    void animtest(FieldItem *item);
 };
 
 #endif // REVRSI_H

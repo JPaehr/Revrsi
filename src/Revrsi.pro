@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     FieldItem.cpp \
     TokenItem.cpp \
     Logic.cpp \
-    new_game_settings.cpp
+    new_game_settings.cpp \
+    Animation_Test.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
     TokenItem.h \
     Logic.h \
-    new_game_settings.h
+    new_game_settings.h \
+    Animation_Test.h
 
 FORMS    += revrsi.ui \
     new_game_settings.ui

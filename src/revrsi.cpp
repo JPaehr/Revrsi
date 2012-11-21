@@ -64,9 +64,23 @@ void Revrsi::field_clicked_slot(int x, int y){
             }
         }
     }
-    /*if(this->player_act == 1){
-        ui->spieler_farbe->setText("");
-    }*/
+    if(this->logic->getAktPlayer() == 1){
+        ui->Akt_Spieler_Label->setText("Schwarz");
+    }
+    else if(this->logic->getAktPlayer() == 2){
+        ui->Akt_Spieler_Label->setText("Orange");
+    }
+    else if(this->logic->getAktPlayer() == 3){
+        ui->Akt_Spieler_Label->setText("Rot");
+    }
+    else if(this->logic->getAktPlayer() == 4){
+        ui->Akt_Spieler_Label->setText("Blau");
+    }
+    //this->scene->addText("Test")->setPos(100,100);
+    //QLabel *t = new QLabel("\t\t\t\t\t\t\n\n\n\n\n");
+    //this->scene->addWidget(t);
+    //this->fields[10]->setOpacity(0.5);
+
 }
 /**************************************************/
 
@@ -278,6 +292,11 @@ void Revrsi::setupToken(int x, int y, int player){
     token_item->set_coords(x,y);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
+}
+
+void Revrsi::animtest(FieldItem *item)
+{
+
 }
 
 void Revrsi::set_scale(double scale){
