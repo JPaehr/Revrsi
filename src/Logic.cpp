@@ -318,6 +318,46 @@ void Logic::setField(int x, int y){
 		this->aktPlayer = (this->aktPlayer % this->players) + 1;
 	}
 }
+vector<int> Logic::win(){
+	vector<int> sieg;
+	sieg.push_back(-1);
+
+	int felder = (this->height*this->width) -1;
+	int besetzt = 0;
+	for(int i = 0; i <= this->height; i++){
+		for(int j = 0; j <= this->width; j++){
+			if(this->fields[i][j] != 0){
+				besetzt++;
+			}
+		}
+	}
+
+	if(felder > besetzt){
+		return sieg;
+	}
+	else{
+		sieg[0] = 1;
+	}
+
+	if(felder == besetzt){
+		vector<int> sieger;
+		for(int anz = 0; anz < this->players; anz++){
+			sieger.push_back(0);
+		}
+		for(int i = 0; i < this->height; i++){
+			for(int j = 0; j < this->width; j++){
+				for(int k = 0; k < this->players; k++){
+					if(this->fields[i][j] == k+1){
+						sieger[k]++;
+					}
+				}
+			}
+		}
+		//Hier muss noch Return hin
+		//return vector<int>;
+	}
+	return sieg;
+}
 void Logic::setAktPlayer(int player){
 	this->aktPlayer = player;
 }

@@ -24,6 +24,7 @@ private:
 	vector<int> sternSteine(int x, int y);
 
 public:
+	vector<int> win();
 	void setAktPlayer(int player);
 	Logic(int width, int height, int players);
 	void setInitStones();
