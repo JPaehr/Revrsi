@@ -21,9 +21,10 @@ private:
 	int aktPlayer;
 	void turnStones(int x, int y, int richtung, int anzahl);
 	bool validation(int x, int y);
-	void setAktPlayer(int player);
+	vector<int> sternSteine(int x, int y);
 
 public:
+	void setAktPlayer(int player);
 	Logic(int width, int height, int players);
 	void setInitStones();
 	vector<vector<int> > getFields();

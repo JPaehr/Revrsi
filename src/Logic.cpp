@@ -156,6 +156,112 @@ void Logic::turnStones(int x, int y, int richtung, int anzahl){
 	break;
 	}
 }
+vector<int> Logic::sternSteine(int x, int y){
+	int richtungen[8] = {0};
+
+	for(int i = 1; i <= this->height; i++){
+		for(int j = 1; j <= this->width; j++){
+			//nach obenrechts
+			if(y-i >= 0 && x+j <= this->width-1 && j == i && richtungen[0] == 0){
+				if(this->fields[y-i][x+j] == 0){
+					richtungen[0] = -1;
+				}
+				else{
+					if(this->fields[y-i][x+j] == this->aktPlayer){
+						richtungen[0] = j;
+					}
+				}
+			}
+			//nach oben
+			if(y-i >= 0 && richtungen[1] == 0){
+				if(this->fields[y-i][x] == 0){
+					richtungen[1] = -1;
+				}
+				else{
+					if(this->fields[y-i][x] == this->aktPlayer){
+						richtungen[1] = i;
+					}
+				}
+			}
+			//nach obenlink
+			if(y-i >= 0 && x-j >= 0 && j == i && richtungen[2] == 0){
+				if(this->fields[y-i][x-j] == 0){
+					richtungen[2] = -1;
+				}
+				else{
+					if(this->fields[y-i][x-j] == this->aktPlayer && this->fields[y-i][x-j] != 0){
+						richtungen[2] = j;
+					}
+				}
+			}
+			//nach links
+			if(x-j >= 0 && richtungen[3] == 0){
+				if(this->fields[y][x-j] == 0){
+					richtungen[3] = -1;
+				}
+				else{
+					if(this->fields[y][x-j] == this->aktPlayer && this->fields[y][x-j] != 0){
+						richtungen[3] = j;
+					}
+				}
+			}
+
+			//nach untenlinks
+			if(y+i <= this->height-1 && x-j >= 0 && j == i && richtungen[4] == 0){
+				if(this->fields[y+i][x-j] == 0){
+					richtungen[4] = -1;
+				}
+				else{
+					if(this->fields[y+i][x-j] == this->aktPlayer && this->fields[y+i][x-j] != 0){
+						richtungen[4] = j;
+					}
+					//richtungen[4] = j;
+				}
+			}
+			//nach unten
+			if(y+i <= this->height-1 && richtungen[5] == 0){
+				if(this->fields[y+i][x] == 0){
+					richtungen[5] = -1;
+				}
+				else{
+					if(this->fields[y+i][x] == this->aktPlayer && this->fields[y+i][x] != 0){
+						richtungen[5] = i;
+					}
+					//richtungen[5] = i;
+				}
+			}
+			//nach untenrechts
+			if(y+i <= this->height-1 && x+j <= this->width-1 && j == i && richtungen[6] == 0){
+				if(this->fields[y+i][x+j] == 0){
+					richtungen[6] = -1;
+				}
+				else{
+					if(this->fields[y+i][x+j] == this->aktPlayer && this->fields[y+i][x+j] != 0){
+						richtungen[6] = j;
+					}
+					//richtungen[6] = j;
+				}
+			}
+			//nach rechts
+			if(x+j <= this->width-1 && richtungen[7] == 0){
+				if(this->fields[y][x+j] == 0){
+					richtungen[7] = -1;
+				}
+				else{
+					if(this->fields[y][x+j] == this->aktPlayer && this->fields[y][x+j] != 0){
+						richtungen[7] = j;
+					}
+					//richtungen[7] = j;
+				}
+			}
+		}
+	}
+	vector<int> richtungenVec;
+	for(int z = 0; z <= 7; z++){
+		richtungenVec.push_back(richtungen[z]);
+	}
+	return richtungenVec;
+}
 bool Logic::validation(int x, int y){
 	//ist ander Position schon ein stein
 	if(this->fields[y][x] == 0){
@@ -164,12 +270,31 @@ bool Logic::validation(int x, int y){
 		for(int i = -1; i <= 1; i++){
 			for(int j = -1; j <= 1; j++){
 				//wenn i und j beide null muss ausgelassen werden
-				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 ){
+				/*
+				 	if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 ){
 					std::cout << "Breite " << x+j << " Hoehe "<< y+i << " Feld " << this->fields[y+i][x+j] <<  std::endl;
-				}
+				}*/
 
 				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 && this->fields[y+i][x+j] != 0){
-					return true;
+					//zusatzregel -> drehen kontollieren
+
+					int punkte = 0;
+					for(int zeilen = 0; zeilen < this->height; zeilen++){
+						for(int spalten = 0; spalten < this->width; spalten++){
+							if(this->fields[zeilen][spalten] == this->aktPlayer){
+								punkte++;
+							}
+						}
+					}
+					this->fields[y][x] = this->aktPlayer;
+					vector<int> gedrehte = sternSteine(x, y);
+					for(int v = 0; v < 8; v++){
+						if(gedrehte[v] > 1){
+							return true;
+						}
+					}
+					this->fields[y][x] = 0;
+
 				}
 			}
 		}
@@ -184,107 +309,9 @@ void Logic::setField(int x, int y){
 
 		//richtungen legt fest ob in der linie ein gleicher stein gefunden wurde
 		// begin oben rechts, also auf eine geraden der steigung 1
-		int richtungen[8] = {0};
 
-		for(int i = 1; i <= this->height; i++){
-			for(int j = 1; j <= this->width; j++){
-				//nach obenrechts
-				if(y-i >= 0 && x+j <= this->width-1 && j == i && richtungen[0] == 0){
-					if(this->fields[y-i][x+j] == 0){
-						richtungen[0] = -1;
-					}
-					else{
-						if(this->fields[y-i][x+j] == this->aktPlayer){
-							richtungen[0] = j;
-						}
-					}
-				}
-				//nach oben
-				if(y-i >= 0 && richtungen[1] == 0){
-					if(this->fields[y-i][x] == 0){
-						richtungen[1] = -1;
-					}
-					else{
-						if(this->fields[y-i][x] == this->aktPlayer){
-							richtungen[1] = i;
-						}
-					}
-				}
-				//nach obenlink
-				if(y-i >= 0 && x-j >= 0 && j == i && richtungen[2] == 0){
-					if(this->fields[y-i][x-j] == 0){
-						richtungen[2] = -1;
-					}
-					else{
-						if(this->fields[y-i][x-j] == this->aktPlayer && this->fields[y-i][x-j] != 0){
-							richtungen[2] = j;
-						}
-					}
-				}
-				//nach links
-				if(x-j >= 0 && richtungen[3] == 0){
-					if(this->fields[y][x-j] == 0){
-						richtungen[3] = -1;
-					}
-					else{
-						if(this->fields[y][x-j] == this->aktPlayer && this->fields[y][x-j] != 0){
-							richtungen[3] = j;
-						}
-					}
-				}
-
-				//nach untenlinks
-				if(y+i <= this->height-1 && x-j >= 0 && j == i && richtungen[4] == 0){
-					if(this->fields[y+i][x-j] == 0){
-						richtungen[4] = -1;
-					}
-					else{
-						if(this->fields[y+i][x-j] == this->aktPlayer && this->fields[y+i][x-j] != 0){
-							richtungen[4] = j;
-						}
-						//richtungen[4] = j;
-					}
-				}
-				//nach unten
-				if(y+i <= this->height-1 && richtungen[5] == 0){
-					if(this->fields[y+i][x] == 0){
-						richtungen[5] = -1;
-					}
-					else{
-						if(this->fields[y+i][x] == this->aktPlayer && this->fields[y+i][x] != 0){
-							richtungen[5] = i;
-						}
-						//richtungen[5] = i;
-					}
-				}
-				//nach untenrechts
-				if(y+i <= this->height-1 && x+j <= this->width-1 && j == i && richtungen[6] == 0){
-					if(this->fields[y+i][x+j] == 0){
-						richtungen[6] = -1;
-					}
-					else{
-						if(this->fields[y+i][x+j] == this->aktPlayer && this->fields[y+i][x+j] != 0){
-							richtungen[6] = j;
-						}
-						//richtungen[6] = j;
-					}
-				}
-				//nach rechts
-				if(x+j <= this->width-1 && richtungen[7] == 0){
-					if(this->fields[y][x+j] == 0){
-						richtungen[7] = -1;
-					}
-					else{
-						if(this->fields[y][x+j] == this->aktPlayer && this->fields[y][x+j] != 0){
-							richtungen[7] = j;
-						}
-						//richtungen[7] = j;
-					}
-				}
-			}
-		}
 		for(int k = 1; k <= 8; k++){
-			turnStones(x, y, k-1, richtungen[k-1]);
+			turnStones(x, y, k-1, sternSteine(x,y)[k-1]);
 		}
 
 		//neuer Spieler wird gesetzt
