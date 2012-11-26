@@ -102,6 +102,7 @@ void Logic::setInitStones(){
 	//Hier muessen die steine jetzt noch gesetzt werden
 	random_shuffle(Steine.begin(), Steine.end());
 	int counter = 0;
+
 	for(int breite = 1; breite <= players; breite++){
 		for(int hoehe = 1; hoehe <= players; hoehe++){
 			this->fields[y+hoehe-1][x+breite-1] = Steine[counter];
@@ -109,6 +110,12 @@ void Logic::setInitStones(){
 		}
 	}
 
+	/* testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
+	this->fields[0][0] = 1;
+	this->fields[1][0] = 2;
+	this->fields[1][1] = 2;
+	this->fields[0][1] = 2;
+	*/
 }
 void Logic::turnStones(int x, int y, int richtung, int anzahl){
 	switch (richtung){
@@ -270,14 +277,11 @@ bool Logic::validation(int x, int y){
 		for(int i = -1; i <= 1; i++){
 			for(int j = -1; j <= 1; j++){
 				//wenn i und j beide null muss ausgelassen werden
-				/*
-				 	if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 ){
-					std::cout << "Breite " << x+j << " Hoehe "<< y+i << " Feld " << this->fields[y+i][x+j] <<  std::endl;
-				}*/
 
 				if(y+i >= 0 && y+i <= this->height-1 && x+j >= 0 && x+j <= this->width-1 && this->fields[y+i][x+j] != 0){
 					//zusatzregel -> drehen kontollieren
 
+					/*
 					int punkte = 0;
 					for(int zeilen = 0; zeilen < this->height; zeilen++){
 						for(int spalten = 0; spalten < this->width; spalten++){
@@ -286,15 +290,17 @@ bool Logic::validation(int x, int y){
 							}
 						}
 					}
+					*/
 					this->fields[y][x] = this->aktPlayer;
 					vector<int> gedrehte = sternSteine(x, y);
 					for(int v = 0; v < 8; v++){
 						if(gedrehte[v] > 1){
+							this->fields[y][x] = 0;
+							cout << "Das feld sollte gehen " << x << " " << y << endl;
 							return true;
 						}
 					}
 					this->fields[y][x] = 0;
-
 				}
 			}
 		}
@@ -315,7 +321,27 @@ void Logic::setField(int x, int y){
 		}
 
 		//neuer Spieler wird gesetzt
-		this->aktPlayer = (this->aktPlayer % this->players) + 1;
+		this->aktPlayer = (this->aktPlayer % this->players) +1;
+
+		int put = 0;
+		int durchlauf = 0;
+
+		while(put == 0 && durchlauf < 5){
+			cout << "duchlauf 1";
+			put = 0;
+			for(int h = 0; h < this->height; h++){
+				for(int b = 0; b < this->width; b++){
+					if(validation(b,h)){
+						put++;
+					}
+				}
+			}
+			if(put < 1){
+				cout << "War im put";
+				this->aktPlayer = (this->aktPlayer % this->players) + 1;
+			}
+			durchlauf++;
+		}
 	}
 }
 vector<int> Logic::win(){
@@ -341,20 +367,24 @@ vector<int> Logic::win(){
 
 	if(felder == besetzt){
 		vector<int> sieger;
-		for(int anz = 0; anz < this->players; anz++){
+		for(int anz = 0; anz <= this->players; anz++){
 			sieger.push_back(0);
 		}
 		for(int i = 0; i < this->height; i++){
 			for(int j = 0; j < this->width; j++){
 				for(int k = 0; k < this->players; k++){
 					if(this->fields[i][j] == k+1){
-						sieger[k]++;
+						sieger[k+1]++;
 					}
 				}
 			}
 		}
-		//Hier muss noch Return hin
-		//return vector<int>;
+		for(int s = 1; s <= this->players; s++){
+			if(sieger[s] > sieger[0]){
+				sieger[0] = sieger[s];
+			}
+		}
+		return sieger;
 	}
 	return sieg;
 }
