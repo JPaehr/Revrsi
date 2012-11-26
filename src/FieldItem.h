@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include <QObject>
-#define out qDebug()
 
 class FieldItem : public QObject, public QGraphicsPixmapItem
 {
@@ -19,9 +18,7 @@ public:
     int y();
     int x_real();
     int y_real();
-    void ger_realcoords();
-    void print_coords();
-    void print_scale();
+
     ~FieldItem();
 signals:
     void FieldClicked(int,int);

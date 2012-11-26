@@ -4,7 +4,6 @@
 #include <QDialog>
 
 #include <QtGui>
-#define out qDebug()
 
 namespace Ui {
 class new_game_settings;
