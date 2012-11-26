@@ -12,6 +12,7 @@ Revrsi::Revrsi(QWidget *parent) :
     ui->setupUi(this);
     ngs = new new_game_settings;
     serverInterface = new server_gui;
+    clientInterface = new client_gui;
     this->height = 8;
     this->width = 8;
     this->player_num = 2;
@@ -34,6 +35,7 @@ Revrsi::Revrsi(QWidget *parent) :
     // Connections
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
+    connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
 
 }
 
@@ -83,6 +85,10 @@ void Revrsi::field_clicked_slot(int x, int y){
     //this->scene->addWidget(t);
     //this->fields[10]->setOpacity(0.5);
 
+}
+
+void Revrsi::client_gui_slot(){
+    this->clientInterface->show();
 }
 /**************************************************/
 
