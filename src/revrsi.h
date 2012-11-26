@@ -8,6 +8,8 @@
 #include "TokenItem.h"
 #include "Logic.h"
 #include "new_game_settings.h"
+#include "server_gui.h"
+#include "client_gui.h"
 
 namespace Ui {
 class Revrsi;
@@ -23,10 +25,9 @@ public:
 
 public slots:
     void test_slot();
+    void server_gui_slot();
     void field_clicked_slot(int, int);
-
-signals:
-    void ts();
+    void client_gui_slot();
 
 private:
     double                  scale;
@@ -42,6 +43,8 @@ private:
     QTimer                  *timer;
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
+    client_gui              *clientInterface;
+    server_gui              *serverInterface;
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
 

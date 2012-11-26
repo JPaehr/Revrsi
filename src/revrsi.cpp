@@ -11,6 +11,8 @@ Revrsi::Revrsi(QWidget *parent) :
     // Initialisierungsvorgänge
     ui->setupUi(this);
     ngs = new new_game_settings;
+    serverInterface = new server_gui;
+    clientInterface = new client_gui;
     this->height = 8;
     this->width = 8;
     this->player_num = 2;
@@ -32,6 +34,8 @@ Revrsi::Revrsi(QWidget *parent) :
 
     // Connections
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
+    connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
+    connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
 
 }
 
@@ -44,18 +48,18 @@ void Revrsi::test_slot(){
     this->player_num = ngs->get_choosen_number();
     this->new_game();
 }
+
+void Revrsi::server_gui_slot(){
+    this->serverInterface->show();
+}
 /**************************************************/
 void Revrsi::field_clicked_slot(int x, int y){
-    out << "Field clicked slot. x=" << x << "y="<< y;
     this->logic->setField(x,y);
 
     this->old_array = this->new_array;
     this->new_array = this->logic->getFields();
     for(uint i = 0 ; i<this->new_array.size() ; i++){
         for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
-            //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
-            out << "New Array" << i << ii << this->new_array[i][ii];
-            out << "Old Array" << i << ii << this->old_array[i][ii];
             if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
                 this->setupToken(ii,i,this->new_array[i][ii]);
             }
@@ -82,13 +86,16 @@ void Revrsi::field_clicked_slot(int x, int y){
     //this->fields[10]->setOpacity(0.5);
 
 }
+
+void Revrsi::client_gui_slot(){
+    this->clientInterface->show();
+}
 /**************************************************/
 
 void Revrsi::init_placeTokens(Logic *logic){
     this->new_array = logic->getFields();
     for(uint i = 0 ; i<this->new_array.size() ; i++){
         for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
-            //out << "(" << i << "," <<  this->new_array[i][ii] << ")";
             if(this->new_array[i][ii]){
                 this->setupToken(ii,i,this->new_array[i][ii]);
             }
@@ -188,8 +195,6 @@ void Revrsi::placeTokens(Logic *logic){
 }
 
 void Revrsi::setupBackground(int x, int y){
-    //out << scene->sceneRect();
-
     QPixmap back_pic1;
     QPixmap back_pic2;
     if(!back_pic1.load("feld.png")){
@@ -294,10 +299,10 @@ void Revrsi::setupToken(int x, int y, int player){
     this->scene->addItem(token_item);
 }
 
-void Revrsi::animtest(FieldItem *item)
+/*void Revrsi::animtest(FieldItem *item)
 {
 
-}
+}*/
 
 void Revrsi::set_scale(double scale){
     this->scale = scale;

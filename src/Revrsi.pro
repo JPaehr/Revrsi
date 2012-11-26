@@ -18,17 +18,21 @@ SOURCES += main.cpp\
     TokenItem.cpp \
     Logic.cpp \
     new_game_settings.cpp \
-    Animation_Test.cpp
+    server_gui.cpp \
+    client_gui.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
     TokenItem.h \
     Logic.h \
     new_game_settings.h \
-    Animation_Test.h
+    server_gui.h \
+    client_gui.h
 
 FORMS    += revrsi.ui \
-    new_game_settings.ui
+    new_game_settings.ui \
+    server_gui.ui \
+    client_gui.ui
 
 OTHER_FILES += \
     feld.png \

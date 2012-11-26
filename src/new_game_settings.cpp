@@ -48,7 +48,6 @@ void new_game_settings::set_settings(){
         this->x_size = ui->breite_spinbox->value();
         this->y_size = ui->hoehe_spinbox->value();
     }
-    out << "New Game:  Players =" << this->player_number;
 }
 
 void new_game_settings::change_field_size(){
