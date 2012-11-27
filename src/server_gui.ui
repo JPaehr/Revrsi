@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>300</height>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -224,8 +224,8 @@
   <widget class="QPushButton" name="startServer_button">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>260</y>
+     <x>30</x>
+     <y>290</y>
      <width>91</width>
      <height>24</height>
     </rect>
@@ -240,8 +240,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>260</y>
+     <x>130</x>
+     <y>290</y>
      <width>91</width>
      <height>24</height>
     </rect>
@@ -253,8 +253,8 @@
   <widget class="QPushButton" name="abbrechen">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>260</y>
+     <x>440</x>
+     <y>290</y>
      <width>91</width>
      <height>24</height>
     </rect>
@@ -269,8 +269,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>260</y>
+     <x>340</x>
+     <y>290</y>
      <width>91</width>
      <height>24</height>
     </rect>
@@ -278,6 +278,93 @@
    <property name="text">
     <string>Stop Server</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>180</y>
+     <width>251</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="new_game_settings_layout">
+    <item>
+     <layout class="QVBoxLayout" name="spieler_layout">
+      <item>
+       <widget class="QRadioButton" name="two_player_btn">
+        <property name="text">
+         <string>2 Spieler</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="three_player_btn">
+        <property name="text">
+         <string>3 Spieler</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="four_player_btn">
+        <property name="text">
+         <string>4 Spieler</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="spielfeld_layout">
+      <item>
+       <widget class="QLabel" name="spielfeld_label">
+        <property name="text">
+         <string>Spielfeld</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hoehe_layout">
+        <item>
+         <widget class="QLabel" name="hoehe_label">
+          <property name="text">
+           <string>Höhe</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="hoehe_spinbox">
+          <property name="value">
+           <number>8</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="breite_layout">
+        <item>
+         <widget class="QLabel" name="breite_label">
+          <property name="text">
+           <string>Breite</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="breite_spinbox">
+          <property name="value">
+           <number>8</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
