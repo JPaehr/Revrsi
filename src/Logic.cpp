@@ -11,7 +11,6 @@
 #include <functional>
 #include <iostream>
 #include <QDebug>
-#define out qDebug()
 
 using namespace std;
 
@@ -31,8 +30,8 @@ vector<vector<int> > Logic::getFields(){
 	return this->fields;
 }
 void Logic::setInitStones(){
-	int x;
-	int y;
+    int x = 0;
+    int y = 0;
 	vector<int> Steine;
 	//Fuer 2 Spieler
 	if(this->players == 2){
@@ -359,14 +358,11 @@ vector<int> Logic::win(){
 			}
 		}
 	}
-    out << "\nFelder:" << felder << "\tBesetzt:" << besetzt;
 	if(felder > besetzt){
-        out << sieg[0];
         return sieg;
 	}
 	else{
 		sieg[0] = 1;
-        out << sieg[0];
     }
 
     if(felder == besetzt){
