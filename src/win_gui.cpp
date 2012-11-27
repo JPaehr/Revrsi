@@ -13,6 +13,6 @@ win_gui::~win_gui(){
 }
 
 
-void win_gui::win_slot(std::vector<int> in_vector){
+void win_gui::win_slot(QVector<int> in_vector){
     win_vector = in_vector;
 }

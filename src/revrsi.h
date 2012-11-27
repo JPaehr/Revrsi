@@ -25,7 +25,7 @@ public:
     ~Revrsi();
 
 signals:
-    void win(vector<int>);
+    void win(QVector<int>);
 
 public slots:
     void test_slot();

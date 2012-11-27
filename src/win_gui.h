@@ -12,7 +12,7 @@ class win_gui : public QDialog
 {
     Q_OBJECT
 public slots:
-    void win_slot(std::vector<int>);
+    void win_slot(QVector<int>);
 public:
     explicit win_gui(QWidget *parent = 0);
     ~win_gui();
@@ -20,7 +20,7 @@ public:
 private:
     Ui::win_gui *ui;
 
-    std::vector<int> win_vector;
+    QVector<int> win_vector;
 };
 
 #endif // WIN_GUI_H

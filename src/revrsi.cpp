@@ -37,7 +37,8 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
-    connect(this, SIGNAL(win(vector<int>)), this->winInterface, SLOT(win_slot(vector<int>)));
+//    connect(this, SIGNAL(win(vector<int>)), this->winInterface, SLOT(win_slot(vector<int>)));
+    connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
 }
 
@@ -89,10 +90,13 @@ void Revrsi::field_clicked_slot(int x, int y){
     this->win_vector = logic->win();
 
     if(this->win_vector[0] != -1){
+        QVector<int> vector_to_convert;
+        for(int i = 0; i < this->win_vector.size();i++){
+            vector_to_convert.push_back(this->win_vector[i]);
+        }
         out << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        for(int i = 0; i < this->win_vector.size();i++){out << this->win_vector[i];}
         this->winInterface->show();
-        emit this->win(this->win_vector);
+        emit this->win(vector_to_convert);
 }
 
 }
