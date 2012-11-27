@@ -10,6 +10,7 @@
 #include "new_game_settings.h"
 #include "server_gui.h"
 #include "client_gui.h"
+#include "win_gui.h"
 
 namespace Ui {
 class Revrsi;
@@ -22,6 +23,9 @@ class Revrsi : public QMainWindow
 public:
     explicit Revrsi(QWidget *parent = 0);
     ~Revrsi();
+
+signals:
+    void win(vector<int>);
 
 public slots:
     void test_slot();
@@ -45,8 +49,10 @@ private:
     QVector<TokenItem *>    tokens;
     client_gui              *clientInterface;
     server_gui              *serverInterface;
+    win_gui                 *winInterface;
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
+    vector<int>             win_vector;
 
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);

@@ -13,8 +13,9 @@ Revrsi::Revrsi(QWidget *parent) :
     ngs = new new_game_settings;
     serverInterface = new server_gui;
     clientInterface = new client_gui;
-    this->height = 8;
-    this->width = 8;
+    winInterface = new win_gui;
+    this->height = 4;
+    this->width = 4;
     this->player_num = 2;
     this->player_act = 1;
     scene = new QGraphicsScene(this);
@@ -36,6 +37,7 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
+    connect(this, SIGNAL(win(vector<int>)), this->winInterface, SLOT(win_slot(vector<int>)));
 
 }
 
@@ -84,6 +86,14 @@ void Revrsi::field_clicked_slot(int x, int y){
     //QLabel *t = new QLabel("\t\t\t\t\t\t\n\n\n\n\n");
     //this->scene->addWidget(t);
     //this->fields[10]->setOpacity(0.5);
+    this->win_vector = logic->win();
+
+    if(this->win_vector[0] != -1){
+        out << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        for(int i = 0; i < this->win_vector.size();i++){out << this->win_vector[i];}
+        this->winInterface->show();
+        emit this->win(this->win_vector);
+}
 
 }
 
