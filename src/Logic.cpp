@@ -103,20 +103,20 @@ void Logic::setInitStones(){
 	//Hier muessen die steine jetzt noch gesetzt werden
 	random_shuffle(Steine.begin(), Steine.end());
 	int counter = 0;
-
+/*
 	for(int breite = 1; breite <= players; breite++){
 		for(int hoehe = 1; hoehe <= players; hoehe++){
 			this->fields[y+hoehe-1][x+breite-1] = Steine[counter];
 			counter++;
 		}
-	}
+	}*/
 
-	/* testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
-	this->fields[0][0] = 1;
-	this->fields[1][0] = 2;
-	this->fields[1][1] = 2;
-	this->fields[0][1] = 2;
-	*/
+	// testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
+	this->fields[1][2] = 1;
+	this->fields[2][2] = 2;
+	this->fields[1][1] = 1;
+	this->fields[2][1] = 2;
+
 }
 void Logic::turnStones(int x, int y, int richtung, int anzahl){
 	switch (richtung){
@@ -344,8 +344,10 @@ void Logic::setField(int x, int y){
 			durchlauf++;
 		}
 	}
+	//vector<int> win();
 }
 vector<int> Logic::win(){
+	//cout << "win ausgefuehrt";
 	vector<int> sieg;
 	sieg.push_back(-1);
 
@@ -358,15 +360,31 @@ vector<int> Logic::win(){
 			}
 		}
 	}
+<<<<<<< HEAD
 	if(felder > besetzt){
+=======
+    //out << "\nFelder:" << felder << "\tBesetzt:" << besetzt;
+
+    /*if(felder > besetzt){
+        out << sieg[0];
+>>>>>>> 6c12238c727ff2f61af78633594b3158c63ee302
         return sieg;
 	}
 	else{
 		sieg[0] = 1;
+<<<<<<< HEAD
     }
+=======
+        out << sieg[0];
+    }*/
+
+>>>>>>> 6c12238c727ff2f61af78633594b3158c63ee302
 	//vorzeitiges Ende
 	int spieler = this->aktPlayer;
 	int moeglicheZuege[this->players];
+	for(int i = 0; i < this->players; i++){
+		moeglicheZuege[i] = 0;
+	}
 	for(int player = 0; player < this->players; player++){
 		for(int i = 0; i < this->height; i++){
 			for(int j = 0; j < this->width; j++){
@@ -379,11 +397,18 @@ vector<int> Logic::win(){
 	int ende = 0;
 	int zuege = 0;
 	for(int i = 0; i < this->players; i++){
-		zuege += moeglicheZuege[i];
+		zuege = zuege + moeglicheZuege[i];
+		cout << moeglicheZuege[i] << " ";
 	}
+
 	if(zuege == 0){
 		ende = 1;
+		cout << "Winende " << ende;
 	}
+	else{
+		cout << "anzMoeglicher Zuege: " << zuege << endl;
+	}
+
 
     if(felder == besetzt || ende == 1){
 		vector<int> sieger;
