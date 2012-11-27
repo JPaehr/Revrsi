@@ -360,26 +360,7 @@ vector<int> Logic::win(){
 			}
 		}
 	}
-<<<<<<< HEAD
-	if(felder > besetzt){
-=======
-    //out << "\nFelder:" << felder << "\tBesetzt:" << besetzt;
 
-    /*if(felder > besetzt){
-        out << sieg[0];
->>>>>>> 6c12238c727ff2f61af78633594b3158c63ee302
-        return sieg;
-	}
-	else{
-		sieg[0] = 1;
-<<<<<<< HEAD
-    }
-=======
-        out << sieg[0];
-    }*/
-
->>>>>>> 6c12238c727ff2f61af78633594b3158c63ee302
-	//vorzeitiges Ende
 	int spieler = this->aktPlayer;
 	int moeglicheZuege[this->players];
 	for(int i = 0; i < this->players; i++){
