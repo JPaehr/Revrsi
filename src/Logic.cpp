@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <QDebug>
+#define out qDebug()
 
 using namespace std;
 
@@ -296,7 +298,7 @@ bool Logic::validation(int x, int y){
 					for(int v = 0; v < 8; v++){
 						if(gedrehte[v] > 1){
 							this->fields[y][x] = 0;
-							cout << "Das feld sollte gehen " << x << " " << y << endl;
+                            //cout << "Das feld sollte gehen " << x << " " << y << endl;
 							return true;
 						}
 					}
@@ -327,7 +329,7 @@ void Logic::setField(int x, int y){
 		int durchlauf = 0;
 
 		while(put == 0 && durchlauf < 5){
-			cout << "duchlauf 1";
+            //cout << "duchlauf 1";
 			put = 0;
 			for(int h = 0; h < this->height; h++){
 				for(int b = 0; b < this->width; b++){
@@ -337,7 +339,7 @@ void Logic::setField(int x, int y){
 				}
 			}
 			if(put < 1){
-				cout << "War im put";
+                //cout << "War im put";
 				this->aktPlayer = (this->aktPlayer % this->players) + 1;
 			}
 			durchlauf++;
@@ -348,42 +350,110 @@ vector<int> Logic::win(){
 	vector<int> sieg;
 	sieg.push_back(-1);
 
-	int felder = (this->height*this->width) -1;
+    int felder = (this->height*this->width) ;
 	int besetzt = 0;
-	for(int i = 0; i <= this->height; i++){
-		for(int j = 0; j <= this->width; j++){
+    for(int i = 0; i <= this->height-1; i++){
+        for(int j = 0; j <= this->width-1; j++){
 			if(this->fields[i][j] != 0){
 				besetzt++;
 			}
 		}
 	}
-
+    out << "\nFelder:" << felder << "\tBesetzt:" << besetzt;
 	if(felder > besetzt){
-		return sieg;
+        out << sieg[0];
+        return sieg;
 	}
 	else{
 		sieg[0] = 1;
-	}
+        out << sieg[0];
+    }
 
-	if(felder == besetzt){
+    if(felder == besetzt){
 		vector<int> sieger;
 		for(int anz = 0; anz <= this->players; anz++){
 			sieger.push_back(0);
 		}
-		for(int i = 0; i < this->height; i++){
-			for(int j = 0; j < this->width; j++){
-				for(int k = 0; k < this->players; k++){
-					if(this->fields[i][j] == k+1){
-						sieger[k+1]++;
+        for(int k = 1; k <= this->players; k++){
+        for(int i = 0; i <= this->height-1; i++){
+            for(int j = 0; j <= this->width-1; j++){
+                    if(this->fields[i][j] == k){
+                        sieger[k]++;
 					}
 				}
 			}
 		}
+        vector<int> equal_players;
+        //for(int i = 1;i<=sieger.size();i++){verivector.push_back(sieger[i]);}
+        int winner = 0;
 		for(int s = 1; s <= this->players; s++){
 			if(sieger[s] > sieger[0]){
-				sieger[0] = sieger[s];
+                sieger[0] = sieger[s];
+                winner = s;
 			}
 		}
+        sieger[0] = winner;
+        for(int i = 1; i < sieger.size();i++){
+            if(sieger[sieger[0]] == sieger[i] && sieger[0] != i){
+                equal_players.push_back(i);
+            }
+            else if(sieger[0] == i){
+                equal_players.push_back(i);
+            }
+        }
+
+        /*RückgabeCodes für gleiche Punkzahlen zwischen Spielern:
+         *1u2 = -2
+         *1u3 = -3
+         *1u4 = -4
+         *2u3 = -5
+         *2u4 = -6
+         *3u4 = -7
+         *1u2u3 = -8
+         *1u2u4 = -9
+         *1u3u4 = -10
+         *2u3u4 = -11
+         *1u2u3u4 = -12
+        */
+        if(equal_players.size() == 2){
+            if(equal_players[0] == 1 && equal_players[1] == 2){
+                sieger[0] = -2;
+            }
+            else if(equal_players[0] == 1 && equal_players[1] == 3){
+                sieger[0] = -3;
+            }
+            else if(equal_players[0] == 1 && equal_players[1] == 4){
+                sieger[0] = -4;
+            }
+            else if(equal_players[0] == 2 && equal_players[1] == 3){
+                sieger[0] = -5;
+            }
+            else if(equal_players[0] == 2 && equal_players[1] == 4){
+                sieger[0] = -6;
+            }
+            else if(equal_players[0] == 3 && equal_players[1] == 4){
+                sieger[0] = -7;
+            }
+        }
+        else if(equal_players.size() == 3){
+            if(equal_players[0] == 1 && equal_players[1] == 2 && equal_players[2] == 3){
+                sieger[0] = -8;
+            }
+            else if(equal_players[0] == 1 && equal_players[1] == 2 && equal_players[2] == 4){
+                sieger[0] = -9;
+            }
+            else if(equal_players[0] == 1 && equal_players[1] == 3 && equal_players[2] == 4){
+                sieger[0] = -10;
+            }
+            else if(equal_players[0] == 2 && equal_players[1] == 3 && equal_players[2] == 4){
+                sieger[0] = -11;
+            }
+        }
+        else if(equal_players.size() == 4){
+            if(equal_players[0] == 1 && equal_players[1] == 2 && equal_players[2] == 3 && equal_players[3] == 4){
+                sieger[0] = -12;
+            }
+        }
 		return sieger;
 	}
 	return sieg;
