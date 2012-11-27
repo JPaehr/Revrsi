@@ -364,8 +364,28 @@ vector<int> Logic::win(){
 	else{
 		sieg[0] = 1;
     }
+	//vorzeitiges Ende
+	int spieler = this->aktPlayer;
+	int moeglicheZuege[this->players];
+	for(int player = 0; player < this->players; player++){
+		for(int i = 0; i < this->height; i++){
+			for(int j = 0; j < this->width; j++){
+				if(validation(j, i)){
+					moeglicheZuege[player]++;
+				}
+			}
+		}
+	}
+	int ende = 0;
+	int zuege = 0;
+	for(int i = 0; i < this->players; i++){
+		zuege += moeglicheZuege[i];
+	}
+	if(zuege == 0){
+		ende = 1;
+	}
 
-    if(felder == besetzt){
+    if(felder == besetzt || ende == 1){
 		vector<int> sieger;
 		for(int anz = 0; anz <= this->players; anz++){
 			sieger.push_back(0);
