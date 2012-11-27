@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     Logic.cpp \
     new_game_settings.cpp \
     server_gui.cpp \
-    client_gui.cpp
+    client_gui.cpp \
+    win_gui.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -27,12 +28,14 @@ HEADERS  += revrsi.h \
     Logic.h \
     new_game_settings.h \
     server_gui.h \
-    client_gui.h
+    client_gui.h \
+    win_gui.h
 
 FORMS    += revrsi.ui \
     new_game_settings.ui \
     server_gui.ui \
-    client_gui.ui
+    client_gui.ui \
+    win_gui.ui
 
 OTHER_FILES += \
     feld.png \
