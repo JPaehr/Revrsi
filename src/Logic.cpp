@@ -103,20 +103,20 @@ void Logic::setInitStones(){
 	//Hier muessen die steine jetzt noch gesetzt werden
 	random_shuffle(Steine.begin(), Steine.end());
 	int counter = 0;
-/*
+
 	for(int breite = 1; breite <= players; breite++){
 		for(int hoehe = 1; hoehe <= players; hoehe++){
 			this->fields[y+hoehe-1][x+breite-1] = Steine[counter];
 			counter++;
 		}
-	}*/
-
+	}
+	/*
 	// testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
 	this->fields[1][2] = 1;
 	this->fields[2][2] = 2;
 	this->fields[1][1] = 1;
 	this->fields[2][1] = 2;
-
+	 */
 }
 void Logic::turnStones(int x, int y, int richtung, int anzahl){
 	switch (richtung){
