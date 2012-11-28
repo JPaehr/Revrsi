@@ -347,9 +347,21 @@ void Logic::setField(int x, int y){
 	//vector<int> win();
 }
 vector<int> Logic::win(){
+	vector<int> sieger;
+	for(int anz = 0; anz <= this->players; anz++){
+		sieger.push_back(0);
+	}
+	for(int k = 1; k <= this->players; k++){
+		for(int i = 0; i <= this->height-1; i++){
+			for(int j = 0; j <= this->width-1; j++){
+				if(this->fields[i][j] == k){
+					sieger[k]++;
+				}
+			}
+		}
+	}
 	//cout << "win ausgefuehrt";
-	vector<int> sieg;
-	sieg.push_back(-1);
+	sieger[0] = -1;
 
     int felder = (this->height*this->width) ;
 	int besetzt = 0;
@@ -392,19 +404,7 @@ vector<int> Logic::win(){
 
 
     if(felder == besetzt || ende == 1){
-		vector<int> sieger;
-		for(int anz = 0; anz <= this->players; anz++){
-			sieger.push_back(0);
-		}
-        for(int k = 1; k <= this->players; k++){
-        for(int i = 0; i <= this->height-1; i++){
-            for(int j = 0; j <= this->width-1; j++){
-                    if(this->fields[i][j] == k){
-                        sieger[k]++;
-					}
-				}
-			}
-		}
+
         vector<int> equal_players;
         //for(int i = 1;i<=sieger.size();i++){verivector.push_back(sieger[i]);}
         int winner = 0;
@@ -479,7 +479,7 @@ vector<int> Logic::win(){
         }
 		return sieger;
 	}
-	return sieg;
+	return sieger;
 }
 void Logic::setAktPlayer(int player){
 	this->aktPlayer = player;
