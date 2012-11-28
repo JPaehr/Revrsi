@@ -43,4 +43,5 @@ OTHER_FILES += \
     token3.png \
     token2.png \
     token1.png \
-    feld2.png
+    feld2.png \
+    crown.png

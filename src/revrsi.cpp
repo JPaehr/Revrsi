@@ -91,10 +91,9 @@ void Revrsi::field_clicked_slot(int x, int y){
 
     if(this->win_vector[0] != -1){
         QVector<int> vector_to_convert;
-        for(int i = 0; i < this->win_vector.size();i++){
+        for(int i = 0, size = this->win_vector.size(); i < size;i++){
             vector_to_convert.push_back(this->win_vector[i]);
         }
-        out << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         this->winInterface->show();
         emit this->win(vector_to_convert);
 }
