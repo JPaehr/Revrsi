@@ -361,7 +361,7 @@ vector<int> Logic::win(){
 		}
 	}
 
-	int spieler = this->aktPlayer;
+//	int spieler = this->aktPlayer;
 	int moeglicheZuege[this->players];
 	for(int i = 0; i < this->players; i++){
 		moeglicheZuege[i] = 0;
@@ -415,7 +415,8 @@ vector<int> Logic::win(){
 			}
 		}
         sieger[0] = winner;
-        for(int i = 1; i < sieger.size();i++){
+        //erster ausdruck der For schleife "int i = 1, size = sieger.size()" aus dem grund, da sonst ständig eine int uint comparison warnung vom compiler kommt. ist außerdem weniger rechenintensiv
+        for(int i = 1, size = sieger.size(); i < size;i++){
             if(sieger[sieger[0]] == sieger[i] && sieger[0] != i){
                 equal_players.push_back(i);
             }
