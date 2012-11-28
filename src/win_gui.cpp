@@ -1,5 +1,7 @@
 #include "win_gui.h"
 #include "ui_win_gui.h"
+#include <QDebug>
+#define out qDebug()
 
 win_gui::win_gui(QWidget *parent) :
     QDialog(parent),
@@ -15,4 +17,6 @@ win_gui::~win_gui(){
 
 void win_gui::win_slot(QVector<int> in_vector){
     win_vector = in_vector;
+    out << "ssssssssssssssssssssssssssssssssssssssssssssss";
+
 }
