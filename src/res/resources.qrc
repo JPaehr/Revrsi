@@ -12,4 +12,12 @@
     <qresource prefix="/Win">
         <file>crown.png</file>
     </qresource>
+    <qresource prefix="/Positioning">
+        <file>arrow_down.png</file>
+        <file>arrow_left.png</file>
+        <file>arrow_right.png</file>
+        <file>arrow_top.png</file>
+        <file>minus.png</file>
+        <file>plus.png</file>
+    </qresource>
 </RCC>
