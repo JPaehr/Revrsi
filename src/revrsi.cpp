@@ -18,6 +18,9 @@ Revrsi::Revrsi(QWidget *parent) :
     this->width = 4;
     this->player_num = 2;
     this->player_act = 1;
+    sceneOffset_scale = 1;
+    sceneOffset_x = 0;
+    sceneOffset_y = 0;
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,700,500);
     ui->graphicsView->setScene(scene);
@@ -41,22 +44,47 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
     connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
-    hd = new hilfsding;
+    connect(ui->actionLinks,SIGNAL(triggered()),this,SLOT(step_left()));
+    connect(ui->actionRechts,SIGNAL(triggered()),this,SLOT(step_right()));
+    connect(ui->actionOben,SIGNAL(triggered()),this,SLOT(step_top()));
+    connect(ui->actionUnten,SIGNAL(triggered()),this,SLOT(step_down()));
 
-    connect(hd,SIGNAL(pb1s(int)),this,SLOT(hslot1(int)));
-    connect(hd,SIGNAL(pb2s(int)),this,SLOT(hslot2(int)));
-    hd->show();
-    //scene->setSceneRect(-100,-100,700,500);
+    connect(ui->actionVergr_erns,SIGNAL(triggered()),this,SLOT(zoom_in()));
+    connect(ui->actionVerkleinern,SIGNAL(triggered()),this,SLOT(zoom_out()));
+
+    //scene->setSceneRect(-100,-100,);
 }
 
 
-void Revrsi::hslot1(int h1)
-{scene->setSceneRect(h1,0,700,500);
-}
-void Revrsi::hslot2(int h2)
-{scene->setSceneRect(0,h2,700,500);
+void Revrsi::step_left(){
+    sceneOffset_x = sceneOffset_x + 10;
+    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
 }
 
+void Revrsi::step_right(){
+    sceneOffset_x = sceneOffset_x - 10;
+    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
+}
+
+void Revrsi::step_top(){
+    sceneOffset_y = sceneOffset_y + 10;
+    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
+}
+
+void Revrsi::step_down(){
+    sceneOffset_y = sceneOffset_y - 10;
+    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
+}
+
+void Revrsi::zoom_in(){
+    //sceneOffset_scale = sceneOffset_scale + 0.1;
+    ui->graphicsView->scale(sceneOffset_scale+0.1,sceneOffset_scale + 0.1);
+}
+
+void Revrsi::zoom_out(){
+    //sceneOffset_scale = sceneOffset_scale - 0.1;
+    ui->graphicsView->scale(sceneOffset_scale - 0.1,sceneOffset_scale - 0.1);
+}
 
 Revrsi::~Revrsi(){
     delete ui;

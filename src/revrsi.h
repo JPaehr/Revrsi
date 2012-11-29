@@ -12,8 +12,6 @@
 #include "interfaces/client_gui.h"
 #include "interfaces/win_gui.h"
 
-#include "interfaces/hilfsding.h"
-
 namespace Ui {
 class Revrsi;
 }
@@ -35,9 +33,12 @@ public slots:
     void field_clicked_slot(int, int);
     void client_gui_slot();
 
-
-    void hslot1(int);
-    void hslot2(int);
+    void step_left();
+    void step_right();
+    void step_top();
+    void step_down();
+    void zoom_in();
+    void zoom_out();
 
 private:
     double                  scale;
@@ -60,8 +61,9 @@ private:
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
 
-
-    hilfsding   *hd;
+    int                     sceneOffset_x;
+    int                     sceneOffset_y;
+    double                  sceneOffset_scale;
 
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);
