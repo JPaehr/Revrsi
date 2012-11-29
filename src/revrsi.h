@@ -12,6 +12,8 @@
 #include "client_gui.h"
 #include "win_gui.h"
 
+#include "hilfsding.h"
+
 namespace Ui {
 class Revrsi;
 }
@@ -32,6 +34,10 @@ public slots:
     void server_gui_slot();
     void field_clicked_slot(int, int);
     void client_gui_slot();
+
+
+    void hslot1(int);
+    void hslot2(int);
 
 private:
     double                  scale;
@@ -54,6 +60,9 @@ private:
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
 
+
+    hilfsding   *hd;
+
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);
     void new_game();
@@ -63,6 +72,7 @@ private:
     void setupToken(int x, int y,  int player);
 
     void animtest(FieldItem *item);
+//    void resizeEvent(QResizeEvent *);
 };
 
 #endif // REVRSI_H

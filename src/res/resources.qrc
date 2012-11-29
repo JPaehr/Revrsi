@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/Field">
+        <file>feld.png</file>
+        <file>feld2.png</file>
+    </qresource>
+    <qresource prefix="/Tokens">
+        <file>token1.png</file>
+        <file>token3.png</file>
+        <file>token4.png</file>
+        <file>token2.png</file>
+    </qresource>
+    <qresource prefix="/Win">
+        <file>crown.png</file>
+    </qresource>
+</RCC>

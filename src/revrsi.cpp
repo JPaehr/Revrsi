@@ -28,6 +28,8 @@ Revrsi::Revrsi(QWidget *parent) :
     this->setupBackground(this->width,this->height);
     this->init_placeTokens(logic);
 
+    //ui->graphicsView->scale(0.5,0.5);
+
     // Zentriere Fenster
     QRect frect = frameGeometry();
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
@@ -37,14 +39,32 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
-//    connect(this, SIGNAL(win(vector<int>)), this->winInterface, SLOT(win_slot(vector<int>)));
     connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
+    hd = new hilfsding;
+
+    connect(hd,SIGNAL(pb1s(int)),this,SLOT(hslot1(int)));
+    connect(hd,SIGNAL(pb2s(int)),this,SLOT(hslot2(int)));
+    hd->show();
+    //scene->setSceneRect(-100,-100,700,500);
 }
+
+
+void Revrsi::hslot1(int h1)
+{scene->setSceneRect(h1,0,700,500);
+}
+void Revrsi::hslot2(int h2)
+{scene->setSceneRect(0,h2,700,500);
+}
+
 
 Revrsi::~Revrsi(){
     delete ui;
 }
+
+/*void Revrsi::resizeEvent(QResizeEvent *){
+    out << this->window()->size();
+}*/
 
 void Revrsi::test_slot(){
     this->ngs->exec();
@@ -103,6 +123,8 @@ void Revrsi::field_clicked_slot(int x, int y){
 void Revrsi::client_gui_slot(){
     this->clientInterface->show();
 }
+
+
 /**************************************************/
 
 void Revrsi::init_placeTokens(Logic *logic){
@@ -121,22 +143,22 @@ void Revrsi::change_token(int x, int y, int player){
     QPixmap token_pic;
 
     if(player == 1){
-        if(!token_pic.load("token4.png")){
+        if(!token_pic.load(":/Tokens/token4.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 2){
-        if(!token_pic.load("token1.png")){
+        if(!token_pic.load(":/Tokens/token1.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 3){
-        if(!token_pic.load("token2.png")){
+        if(!token_pic.load(":/Tokens/token2.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 4){
-        if(!token_pic.load("token3.png")){
+        if(!token_pic.load(":/Tokens/token3.png")){
             qWarning("Failed to load image");
         }
     }
@@ -204,21 +226,19 @@ void Revrsi::new_game(){
 void Revrsi::placeTokens(Logic *logic){
     this->old_array = this->new_array;
     this->new_array = logic->getFields();
-
 }
 
 void Revrsi::setupBackground(int x, int y){
     QPixmap back_pic1;
     QPixmap back_pic2;
-    if(!back_pic1.load("feld.png")){
+    if(!back_pic1.load(":/Field/feld.png")){
         qWarning("Failed to load image");
     }
-    if(!back_pic2.load("feld2.png")){
+    if(!back_pic2.load(":/Field/feld2.png")){
         qWarning("Failed to load image");
     }
 
     int field_counter = 0;
-
     for(int i_y=0;i_y<=y-1;i_y++){
 
 
@@ -276,22 +296,22 @@ void Revrsi::setupToken(int x, int y, int player){
     QPixmap token_pic;
 
     if(player == 1){
-        if(!token_pic.load("token4.png")){
+        if(!token_pic.load(":/Tokens/token4.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 2){
-        if(!token_pic.load("token1.png")){
+        if(!token_pic.load(":/Tokens/token1.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 3){
-        if(!token_pic.load("token2.png")){
+        if(!token_pic.load(":/Tokens/token2.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 4){
-        if(!token_pic.load("token3.png")){
+        if(!token_pic.load(":/Tokens/token3.png")){
             qWarning("Failed to load image");
         }
     }
@@ -320,5 +340,4 @@ void Revrsi::setupToken(int x, int y, int player){
 void Revrsi::set_scale(double scale){
     this->scale = scale;
 }
-
 
