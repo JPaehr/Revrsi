@@ -17,28 +17,31 @@ SOURCES += main.cpp\
     FieldItem.cpp \
     TokenItem.cpp \
     Logic.cpp \
-    new_game_settings.cpp \
-    server_gui.cpp \
-    client_gui.cpp \
-    win_gui.cpp \
-    hilfsding.cpp
+    interfaces/win_gui.cpp \
+    interfaces/server_gui.cpp \
+    interfaces/new_game_settings.cpp \
+    interfaces/hilfsding.cpp \
+    interfaces/client_gui.cpp \
+    interfaces/dialog.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
     TokenItem.h \
     Logic.h \
-    new_game_settings.h \
-    server_gui.h \
-    client_gui.h \
-    win_gui.h \
-    hilfsding.h
+    interfaces/win_gui.h \
+    interfaces/server_gui.h \
+    interfaces/new_game_settings.h \
+    interfaces/hilfsding.h \
+    interfaces/client_gui.h \
+    interfaces/dialog.h
 
 FORMS    += revrsi.ui \
-    new_game_settings.ui \
-    server_gui.ui \
-    client_gui.ui \
-    win_gui.ui \
-    hilfsding.ui
+    interfaces/win_gui.ui \
+    interfaces/server_gui.ui \
+    interfaces/new_game_settings.ui \
+    interfaces/hilfsding.ui \
+    interfaces/client_gui.ui \
+    interfaces/dialog.ui
 
 OTHER_FILES += \
     feld.png \
@@ -50,4 +53,4 @@ OTHER_FILES += \
     crown.png
 
 RESOURCES += \
-    res/resources.qrc
+    res/resources.qrc \

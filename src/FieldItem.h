@@ -14,7 +14,6 @@ public:
     void set_coords(int x, int y);
     void set_realcoords(int x, int y, int w, int h);
     void set_scale(double scale);
-    void set_hb(int hb);
     int x();
     int y();
     int x_real();
@@ -24,7 +23,6 @@ public:
 signals:
     void FieldClicked(int,int);
 private:
-    int hb;
     int nr;
     double scale;
     std::string msg;

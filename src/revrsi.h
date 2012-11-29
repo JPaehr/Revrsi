@@ -7,12 +7,12 @@
 #include "FieldItem.h"
 #include "TokenItem.h"
 #include "Logic.h"
-#include "new_game_settings.h"
-#include "server_gui.h"
-#include "client_gui.h"
-#include "win_gui.h"
+#include "interfaces/new_game_settings.h"
+#include "interfaces/server_gui.h"
+#include "interfaces/client_gui.h"
+#include "interfaces/win_gui.h"
 
-#include "hilfsding.h"
+#include "interfaces/hilfsding.h"
 
 namespace Ui {
 class Revrsi;

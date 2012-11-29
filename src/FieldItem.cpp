@@ -21,10 +21,6 @@ void FieldItem::set_scale(double scale){
     this->scale = scale;
 }
 
-void FieldItem::set_hb(int hb){
-    this->hb = hb;
-}
-
 int FieldItem::x(){
     return this->Coords[0];
 }
