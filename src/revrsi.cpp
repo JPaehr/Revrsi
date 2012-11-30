@@ -44,13 +44,13 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
     connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
-    connect(ui->actionLinks,SIGNAL(triggered()),this,SLOT(step_left()));
-    connect(ui->actionRechts,SIGNAL(triggered()),this,SLOT(step_right()));
-    connect(ui->actionOben,SIGNAL(triggered()),this,SLOT(step_top()));
-    connect(ui->actionUnten,SIGNAL(triggered()),this,SLOT(step_down()));
+    connect(ui->actionLeft,SIGNAL(triggered()),this,SLOT(step_left()));
+    connect(ui->actionRight,SIGNAL(triggered()),this,SLOT(step_right()));
+    connect(ui->actionTop,SIGNAL(triggered()),this,SLOT(step_top()));
+    connect(ui->actionDown,SIGNAL(triggered()),this,SLOT(step_down()));
 
-    connect(ui->actionVergr_erns,SIGNAL(triggered()),this,SLOT(zoom_in()));
-    connect(ui->actionVerkleinern,SIGNAL(triggered()),this,SLOT(zoom_out()));
+    connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
+    connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
 
     //scene->setSceneRect(-100,-100,);
 }
