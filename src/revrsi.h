@@ -11,6 +11,7 @@
 #include "interfaces/server_gui.h"
 #include "interfaces/client_gui.h"
 #include "interfaces/win_gui.h"
+#include "player.h"
 
 namespace Ui {
 class Revrsi;
@@ -51,6 +52,7 @@ private:
     Ui::Revrsi              *ui;
     //QAnimationGroup         Anim;
     QGraphicsScene          *scene;
+    QVector<QString>        playerNames;
     QTimer                  *timer;
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
@@ -60,6 +62,11 @@ private:
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
+
+    player                  player1;
+    player                  player2;
+    player                  player3;
+    player                  player4;
 
     int                     sceneOffset_x;
     int                     sceneOffset_y;
@@ -72,6 +79,7 @@ private:
     void set_scale(double scale = 50);
     void setupBackground(int x, int y);
     void setupToken(int x, int y,  int player);
+    void addPlayerNames();
 
     void animtest(FieldItem *item);
 //    void resizeEvent(QResizeEvent *);

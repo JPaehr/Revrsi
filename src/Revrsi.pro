@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     interfaces/win_gui.cpp \
     interfaces/server_gui.cpp \
     interfaces/new_game_settings.cpp \
-    interfaces/client_gui.cpp
+    interfaces/client_gui.cpp \
+    player.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -29,7 +30,8 @@ HEADERS  += revrsi.h \
     interfaces/win_gui.h \
     interfaces/server_gui.h \
     interfaces/new_game_settings.h \
-    interfaces/client_gui.h
+    interfaces/client_gui.h \
+    player.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \

@@ -14,8 +14,8 @@ Revrsi::Revrsi(QWidget *parent) :
     serverInterface = new server_gui;
     clientInterface = new client_gui;
     winInterface = new win_gui;
-    this->height = 4;
-    this->width = 4;
+    this->height = 8;
+    this->width = 8;
     this->player_num = 2;
     this->player_act = 1;
     sceneOffset_scale = 1;
@@ -31,7 +31,8 @@ Revrsi::Revrsi(QWidget *parent) :
     this->setupBackground(this->width,this->height);
     this->init_placeTokens(logic);
 
-    //ui->graphicsView->scale(0.5,0.5);
+    this->playerNames = ngs->get_player_names();
+    this->addPlayerNames();
 
     // Zentriere Fenster
     QRect frect = frameGeometry();
@@ -51,8 +52,6 @@ Revrsi::Revrsi(QWidget *parent) :
 
     connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
-
-    //scene->setSceneRect(-100,-100,);
 }
 
 
@@ -103,7 +102,7 @@ void Revrsi::test_slot(){
 void Revrsi::server_gui_slot(){
     this->serverInterface->show();
 }
-/**************************************************/
+
 void Revrsi::field_clicked_slot(int x, int y){
     this->logic->setField(x,y);
 
@@ -151,9 +150,6 @@ void Revrsi::field_clicked_slot(int x, int y){
 void Revrsi::client_gui_slot(){
     this->clientInterface->show();
 }
-
-
-/**************************************************/
 
 void Revrsi::init_placeTokens(Logic *logic){
     this->new_array = logic->getFields();
@@ -358,6 +354,25 @@ void Revrsi::setupToken(int x, int y, int player){
     token_item->set_coords(x,y);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
+}
+
+void Revrsi::addPlayerNames(){
+    /*QGraphicsItem *xt = new QGraphicsItem;
+    xt->setT
+    player1.setPlainText(this->playerNames[0]);
+    this->scene->(this->player1);*/
+    player1.setPlainText(this->playerNames[0]);
+    player2.setPlainText(this->playerNames[1]);
+    player3.setPlainText(this->playerNames[2]);
+    player4.setPlainText(this->playerNames[3]);
+    player1.setPos(0,0);
+    player2.setPos(0,20);
+    player3.setPos(0,40);
+    player4.setPos(0,60);
+    this->scene->addItem(&this->player1);
+    this->scene->addItem(&this->player2);
+    this->scene->addItem(&this->player3);
+    this->scene->addItem(&this->player4);
 }
 
 /*void Revrsi::animtest(FieldItem *item)

@@ -23,6 +23,15 @@ QPoint new_game_settings::get_field_size(){
     return QPoint(this->x_size, this->y_size);
 }
 
+QVector<QString> new_game_settings::get_player_names(){
+    QVector<QString> names;
+    names.push_back(ui->player1Name_lineEdit->text());
+    names.push_back(ui->player2Name_lineEdit->text());
+    names.push_back(ui->player3Name_lineEdit->text());
+    names.push_back(ui->player4Name_lineEdit->text());
+    return names;
+}
+
 new_game_settings::~new_game_settings(){
     delete ui;
 }

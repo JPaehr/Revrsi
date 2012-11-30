@@ -122,37 +122,37 @@
      <height>131</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="Spieler_verticalLayout">
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="Spielername_label">
       <property name="text">
        <string>Spielernamen</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="player1Name_lineEdit">
       <property name="text">
        <string>Guybrush</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="player2Name_lineEdit">
       <property name="text">
        <string>Dr. Fred</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="player3Name_lineEdit">
       <property name="text">
        <string>Purpur</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="player4Name_lineEdit">
       <property name="text">
        <string>LeChuck</string>
       </property>

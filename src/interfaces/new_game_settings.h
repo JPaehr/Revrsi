@@ -22,6 +22,7 @@ public:
 
     int get_choosen_number();
     QPoint get_field_size();
+    QVector<QString> get_player_names();
 
     ~new_game_settings();
     
