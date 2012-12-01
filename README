@@ -2,7 +2,7 @@ History:
 -01.12.12 
 	Erster Server- und Clientcode hochgeladen
 		-weder Client noch Server blockiert
-		-"zu schnelles" reagieren auf den Server wird abgefangen
+		-"sehr schnelle" statusupdates des Servers werden vom Client nun auch erkannt 
 		
 	TODO
 		-Protokoll vollständig (Teile sind schon drin) in Client und Server implementieren
