@@ -1,4 +1,12 @@
 History:
+-01.12.12 
+	Erster Server- und Clientcode hochgeladen
+		-weder Client noch Server blockiert
+		-"zu schnelles" reagieren auf den Server wird abgefangen
+		
+	TODO
+		-Protokoll vollständig (Teile sind schon drin) in Client und Server implementieren
+		-Logic in Server integrieren 
 -20.11.12
 	"Neues Spiel"-Menü überarbeitet
 		-Feldgröße einstellbar
