@@ -52,10 +52,12 @@ private:
     Ui::Revrsi              *ui;
     //QAnimationGroup         Anim;
     QGraphicsScene          *scene;
+    QGraphicsScene          *frame_scene;
     QVector<QString>        playerNames;
     QTimer                  *timer;
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
+    QVector<TokenItem *>    p_fields;
     client_gui              *clientInterface;
     server_gui              *serverInterface;
     win_gui                 *winInterface;
@@ -72,6 +74,8 @@ private:
     int                     sceneOffset_y;
     double                  sceneOffset_scale;
 
+    bool                    FieldBackSet;
+
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);
     void new_game();
@@ -80,6 +84,9 @@ private:
     void setupBackground(int x, int y);
     void setupToken(int x, int y,  int player);
     void addPlayerNames();
+    void addPlayersToList();
+    void setupBackgroundTheme();
+    void setupFieldBack();
 
     void animtest(FieldItem *item);
 //    void resizeEvent(QResizeEvent *);

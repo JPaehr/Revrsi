@@ -14,6 +14,7 @@ Revrsi::Revrsi(QWidget *parent) :
     serverInterface = new server_gui;
     clientInterface = new client_gui;
     winInterface = new win_gui;
+    this->FieldBackSet = false;
     this->height = 8;
     this->width = 8;
     this->player_num = 2;
@@ -21,9 +22,14 @@ Revrsi::Revrsi(QWidget *parent) :
     sceneOffset_scale = 1;
     sceneOffset_x = 0;
     sceneOffset_y = 0;
+    frame_scene = new QGraphicsScene(this);
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(0,0,700,500);
+    frame_scene->setSceneRect(0,0,1000,1000);
+    scene->setSceneRect(00,000,700,500);
     ui->graphicsView->setScene(scene);
+
+    this->setupBackgroundTheme();
+
 
     this->logic = new Logic(this->width,this->width,this->player_num);
     logic->setInitStones();
@@ -33,6 +39,7 @@ Revrsi::Revrsi(QWidget *parent) :
 
     this->playerNames = ngs->get_player_names();
     this->addPlayerNames();
+    this->addPlayersToList();
 
     // Zentriere Fenster
     QRect frect = frameGeometry();
@@ -43,13 +50,13 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
+
     connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
     connect(ui->actionLeft,SIGNAL(triggered()),this,SLOT(step_left()));
     connect(ui->actionRight,SIGNAL(triggered()),this,SLOT(step_right()));
     connect(ui->actionTop,SIGNAL(triggered()),this,SLOT(step_top()));
     connect(ui->actionDown,SIGNAL(triggered()),this,SLOT(step_down()));
-
     connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
 }
@@ -167,26 +174,26 @@ void Revrsi::change_token(int x, int y, int player){
     QPixmap token_pic;
 
     if(player == 1){
-        if(!token_pic.load(":/Tokens/token4.png")){
+        if(!token_pic.load(":/Tokens/Token4.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 2){
-        if(!token_pic.load(":/Tokens/token1.png")){
+        if(!token_pic.load(":/Tokens/Token1.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 3){
-        if(!token_pic.load(":/Tokens/token2.png")){
+        if(!token_pic.load(":/Tokens/Token2.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 4){
-        if(!token_pic.load(":/Tokens/token3.png")){
+        if(!token_pic.load(":/Tokens/Token3.png")){
             qWarning("Failed to load image");
         }
     }
-    token_pic = token_pic.scaled(this->scale-10,this->scale-10);
+    token_pic = token_pic.scaled(this->scale-10,this->scale-10,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
 
     TokenItem *token_item = new TokenItem;
 
@@ -309,6 +316,7 @@ void Revrsi::setupBackground(int x, int y){
                 connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
 
                 this->fields.push_back(item);
+                if(this->FieldBackSet == false){this->setupFieldBack();this->FieldBackSet = true;}
                 this->scene->addItem(item);
 
             }
@@ -320,26 +328,27 @@ void Revrsi::setupToken(int x, int y, int player){
     QPixmap token_pic;
 
     if(player == 1){
-        if(!token_pic.load(":/Tokens/token4.png")){
+        if(!token_pic.load(":/Tokens/Token4.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 2){
-        if(!token_pic.load(":/Tokens/token1.png")){
+        if(!token_pic.load(":/Tokens/Token1.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 3){
-        if(!token_pic.load(":/Tokens/token2.png")){
+        if(!token_pic.load(":/Tokens/Token2.png")){
             qWarning("Failed to load image");
         }
     }
     if(player == 4){
-        if(!token_pic.load(":/Tokens/token3.png")){
+        if(!token_pic.load(":/Tokens/Token3.png")){
             qWarning("Failed to load image");
         }
     }
-    token_pic = token_pic.scaled(this->scale-10,this->scale-10);
+
+    token_pic = token_pic.scaled(this->scale-10,this->scale-10,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
 
     TokenItem *token_item = new TokenItem;
 
@@ -349,6 +358,8 @@ void Revrsi::setupToken(int x, int y, int player){
         }
     }
 
+
+
     token_item->setPixmap(token_pic);
     token_item->setOffset(this->fields[i]->x_real()+10/2,this->fields[i]->y_real()+10/2);
     token_item->set_coords(x,y);
@@ -357,22 +368,79 @@ void Revrsi::setupToken(int x, int y, int player){
 }
 
 void Revrsi::addPlayerNames(){
-    /*QGraphicsItem *xt = new QGraphicsItem;
-    xt->setT
-    player1.setPlainText(this->playerNames[0]);
-    this->scene->(this->player1);*/
+
+}
+
+void Revrsi::addPlayersToList(){
     player1.setPlainText(this->playerNames[0]);
     player2.setPlainText(this->playerNames[1]);
     player3.setPlainText(this->playerNames[2]);
     player4.setPlainText(this->playerNames[3]);
-    player1.setPos(0,0);
-    player2.setPos(0,20);
-    player3.setPos(0,40);
-    player4.setPos(0,60);
-    this->scene->addItem(&this->player1);
-    this->scene->addItem(&this->player2);
-    this->scene->addItem(&this->player3);
-    this->scene->addItem(&this->player4);
+
+    QPixmap hintergrund;
+    if(!hintergrund.load(":/Player/PlayerFieldBackground.png")){
+        qWarning("Failed to load image");
+    }
+    TokenItem *player_hintergrund = new TokenItem;
+    player_hintergrund->setPos(-25,0);
+    player_hintergrund->setPixmap(hintergrund);
+
+    for(int i = 1; i<= this->player_num; i++){
+        QPixmap PlayerField;
+        if(!PlayerField.load(":/Player/PlayerField.png")){
+            qWarning("Failed to load image");
+        }
+        TokenItem *player_field = new TokenItem;
+        player_field->setParentItem(player_hintergrund);
+        player_field->setPixmap(PlayerField);
+        player_field->setPos(12,i*6+(i-1)*PlayerField.height());
+
+        if(i==1){
+            player1.setParentItem(player_field);
+            player1.setPos(0,-2);
+        }
+        else if(i==2){
+            player2.setParentItem(player_field);
+            player2.setPos(0,-2);
+        }
+        else if(i==3){
+            player3.setParentItem(player_field);
+            player3.setPos(0,-2);
+        }
+        else if(i==4){
+            player4.setParentItem(player_field);
+            player4.setPos(0,-2);
+        }
+        this->p_fields.push_back(player_field);
+    }
+    player_hintergrund->setPos(-25,+100);
+
+    this->scene->addItem(player_hintergrund);
+}
+
+void Revrsi::setupBackgroundTheme(){
+
+    QPixmap back_pic_theme;
+    if(!back_pic_theme.load(":/Field/WoodenBackground.png")){
+        qWarning("Failed to load image");
+    }
+    TokenItem *back = new TokenItem;
+    back_pic_theme = back_pic_theme.scaled(1000,800, Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    back->setPos(-100,-26);
+    back->setPixmap(back_pic_theme);
+    this->scene->addItem(back);
+}
+
+void Revrsi::setupFieldBack(){
+    QPixmap field_back;
+    if(!field_back.load(":/Field/FieldBackgroundShadow.png")){
+        qWarning("Failed to load image");
+    }
+    TokenItem *fback = new TokenItem;
+    field_back = field_back.scaled(this->scale*this->width+10,this->scale*this->height+10);
+    fback->setPos(this->fields[0]->x_real(),this->fields[0]->y_real());
+    fback->setPixmap(field_back);
+    this->scene->addItem(fback);
 }
 
 /*void Revrsi::animtest(FieldItem *item)

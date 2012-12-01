@@ -2,12 +2,14 @@
     <qresource prefix="/Field">
         <file>feld.png</file>
         <file>feld2.png</file>
+        <file>WoodenBackground.png</file>
+        <file>FieldBackgroundShadow.png</file>
     </qresource>
     <qresource prefix="/Tokens">
-        <file>token1.png</file>
-        <file>token3.png</file>
-        <file>token4.png</file>
-        <file>token2.png</file>
+        <file>Token4.png</file>
+        <file>Token3.png</file>
+        <file>Token2.png</file>
+        <file>Token1.png</file>
     </qresource>
     <qresource prefix="/Win">
         <file>crown.png</file>
@@ -19,5 +21,9 @@
         <file>arrow_top.png</file>
         <file>minus.png</file>
         <file>plus.png</file>
+    </qresource>
+    <qresource prefix="/Player">
+        <file>PlayerField.png</file>
+        <file>PlayerFieldBackground.png</file>
     </qresource>
 </RCC>

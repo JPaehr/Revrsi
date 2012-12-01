@@ -39,14 +39,5 @@ FORMS    += revrsi.ui \
     interfaces/new_game_settings.ui \
     interfaces/client_gui.ui
 
-OTHER_FILES += \
-    feld.png \
-    token4.png \
-    token3.png \
-    token2.png \
-    token1.png \
-    feld2.png \
-    crown.png
-
 RESOURCES += \
     res/resources.qrc \
