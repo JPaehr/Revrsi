@@ -19,6 +19,7 @@ Revrsi::Revrsi(QWidget *parent) :
     this->width = 8;
     this->player_num = 2;
     this->player_act = 1;
+    this->direction = 1;
     sceneOffset_scale = 1;
     sceneOffset_x = 0;
     sceneOffset_y = 0;
@@ -30,6 +31,7 @@ Revrsi::Revrsi(QWidget *parent) :
 
     this->setupBackgroundTheme();
 
+    this->animatedPlayer = 0;
 
     this->logic = new Logic(this->width,this->width,this->player_num);
     logic->setInitStones();
@@ -39,6 +41,10 @@ Revrsi::Revrsi(QWidget *parent) :
 
     this->playerNames = ngs->get_player_names();
     this->addPlayersToList();
+
+    this->runPlayerFieldAnimation();
+
+    this->startThread();
 
     // Zentriere Fenster
     QRect frect = frameGeometry();
@@ -58,6 +64,8 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionDown,SIGNAL(triggered()),this,SLOT(step_down()));
     connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
+
+    connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
 }
 
 
@@ -89,6 +97,12 @@ void Revrsi::zoom_in(){
 void Revrsi::zoom_out(){
     //sceneOffset_scale = sceneOffset_scale - 0.1;
     ui->graphicsView->scale(sceneOffset_scale - 0.1,sceneOffset_scale - 0.1);
+}
+
+void Revrsi::switchOpacityWay(){
+    if(this->direction){this->anim->setDirection(QAbstractAnimation::Backward);this->direction = 0;}
+    else{this->anim->setDirection(QAbstractAnimation::Forward);this->direction=1;}
+    this->anim->start();
 }
 
 Revrsi::~Revrsi(){
@@ -140,16 +154,14 @@ void Revrsi::field_clicked_slot(int x, int y){
     for(int i = 1; i<=this->player_num; i++){
         if(i == logic->getAktPlayer()){
             this->p_fields[i-1]->setActive(true);
+            this->p_fields[i-1]->setTokensVisible(false);
         }
         else{
             this->p_fields[i-1]->setActive(false);
-
+            this->p_fields[i-1]->setTokensVisible(true);
         }
     }
-    //this->scene->addText("Test")->setPos(100,100);
-    //QLabel *t = new QLabel("\t\t\t\t\t\t\n\n\n\n\n");
-    //this->scene->addWidget(t);
-    //this->fields[10]->setOpacity(0.5);
+
     this->win_vector = logic->win();
 
     if(this->win_vector[0] != -1){
@@ -159,7 +171,25 @@ void Revrsi::field_clicked_slot(int x, int y){
         }
         this->winInterface->show();
         emit this->win(vector_to_convert);
-}
+    }
+    else{
+        p_fields[0]->setTokens(this->win_vector[1]);
+        p_fields[1]->setTokens(this->win_vector[2]);
+        if(this->player_num == 3){
+            p_fields[2]->setTokens(this->win_vector[3]);
+        }
+        if(this->player_num == 4){
+            p_fields[3]->setTokens(this->win_vector[4]);
+        }
+    }
+
+    if(logic->getAktPlayer()-1!=this->animatedPlayer){
+        this->anim->setLoopCount(0);
+        //this->anim->stop();
+        this->animatedPlayer=logic->getAktPlayer()-1;
+        this->runPlayerFieldAnimation();
+        connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
+    }
 
 }
 
@@ -224,7 +254,7 @@ void Revrsi::change_token(int x, int y, int player){
         }
     }
 
-    //Remove Old Token (muss in fkt ausgelagert werden)
+    //Remove Old Token
     this->tokens[j]->~TokenItem();
     this->tokens.remove(j);
 
@@ -233,6 +263,9 @@ void Revrsi::change_token(int x, int y, int player){
 }
 
 void Revrsi::new_game(){
+    //Beende Animation
+    this->anim->setLoopCount(0);
+
     //Zerstöre logic Funktion mit alter initialisierung
     this->logic->~Logic();
 
@@ -271,6 +304,10 @@ void Revrsi::new_game(){
     //Setup Players
     this->playerNames = ngs->get_player_names();
     this->addPlayersToList();
+
+    //Run Animation
+    this->runPlayerFieldAnimation();
+
 }
 
 void Revrsi::placeTokens(Logic *logic){
@@ -446,6 +483,12 @@ void Revrsi::addPlayersToList(){
         spieler->setActiveText("<<Aktiv>>");
         spieler->activ_text.setPos(11,23);
         spieler->activ_text.setVisible(false);
+        spieler->tokens.setPos(16,23);
+        if(this->player_num == 2){spieler->setTokens(2);}
+        else if(this->player_num == 3){spieler->setTokens(3);}
+        else if(this->player_num == 4){spieler->setTokens(4);}
+        if(i == 1){spieler->setTokensVisible(false);}
+        else{spieler->setTokensVisible(true);}
 
         this->p_fields.push_back(spieler);
     }
@@ -475,13 +518,29 @@ void Revrsi::setupFieldBack(){
     field_back = field_back.scaled(this->scale*this->width+10,this->scale*this->height+10);
     fback->setPos(this->fields[0]->x_real(),this->fields[0]->y_real());
     fback->setPixmap(field_back);
+    fback->setOpacity(0.75);
     this->scene->addItem(fback);
 }
 
-/*void Revrsi::animtest(FieldItem *item)
-{
+void Revrsi::runPlayerFieldAnimation(){
+    QGraphicsOpacityEffect *effect= new QGraphicsOpacityEffect;
+    this->p_fields[this->animatedPlayer]->player_field.setGraphicsEffect(effect);
+    this->anim = new QPropertyAnimation(effect, "opacity");
+    anim->setDirection(QAbstractAnimation::Forward);
+    this->direction = 1;
+    anim->setStartValue(0.5);
+    anim->setEndValue(1);
+    anim->setDuration(1200);
+    anim->setEasingCurve(QEasingCurve::InOutQuad);
+    //anim->setLoopCount(-1);
+    //anim
+    anim->start(QAbstractAnimation::KeepWhenStopped);
+}
 
-}*/
+void Revrsi::startThread(){
+    this->atest = new anim_test(this,this->p_fields);
+    atest->start();
+}
 
 void Revrsi::set_scale(double scale){
     this->scale = scale;

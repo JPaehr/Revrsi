@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     interfaces/server_gui.cpp \
     interfaces/new_game_settings.cpp \
     interfaces/client_gui.cpp \
-    player.cpp
+    player.cpp \
+    animation/anim_test.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -31,7 +32,8 @@ HEADERS  += revrsi.h \
     interfaces/server_gui.h \
     interfaces/new_game_settings.h \
     interfaces/client_gui.h \
-    player.h
+    player.h \
+    animation/anim_test.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \

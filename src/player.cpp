@@ -14,6 +14,7 @@ void player::set_parents(QGraphicsItem *item){
     this->color.setParentItem(&this->player_field);
     this->activ_text.setParentItem(&this->player_field);
     this->name.setParentItem(&this->player_field);
+    this->tokens.setParentItem(&this->player_field);
 }
 
 void player::setPlayerField(QPixmap pixmap){
@@ -34,4 +35,15 @@ void player::setName(QString name){
 
 void player::setActive(bool act){
     this->activ_text.setVisible(act);
+}
+
+void player::setTokens(int tokens){
+    this->tokensnumber = tokens;
+    QString tt;
+    tt.setNum(this->tokensnumber);
+    this->tokens.setPlainText(tt + " Steine");
+}
+
+void player::setTokensVisible(bool vis){
+    this->tokens.setVisible(vis);
 }

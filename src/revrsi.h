@@ -12,6 +12,7 @@
 #include "interfaces/client_gui.h"
 #include "interfaces/win_gui.h"
 #include "player.h"
+#include "animation/anim_test.h"
 
 namespace Ui {
 class Revrsi;
@@ -40,6 +41,7 @@ public slots:
     void step_down();
     void zoom_in();
     void zoom_out();
+    void switchOpacityWay();
 
 private:
     double                  scale;
@@ -65,11 +67,16 @@ private:
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
 
+    QPropertyAnimation *anim;
+
     int                     sceneOffset_x;
     int                     sceneOffset_y;
     double                  sceneOffset_scale;
 
     bool                    FieldBackSet;
+
+    bool    direction;
+    int animatedPlayer;
 
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);
@@ -82,7 +89,10 @@ private:
     void setupBackgroundTheme();
     void setupFieldBack();
 
-    void animtest(FieldItem *item);
+    void runPlayerFieldAnimation();
+
+    anim_test *atest;
+    void startThread();
 //    void resizeEvent(QResizeEvent *);
 };
 
