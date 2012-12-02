@@ -57,18 +57,13 @@ private:
     QTimer                  *timer;
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
-    QVector<TokenItem *>    p_fields;
+    QVector<player *>       p_fields;
     client_gui              *clientInterface;
     server_gui              *serverInterface;
     win_gui                 *winInterface;
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
-
-    player                  player1;
-    player                  player2;
-    player                  player3;
-    player                  player4;
 
     int                     sceneOffset_x;
     int                     sceneOffset_y;
@@ -83,7 +78,6 @@ private:
     void set_scale(double scale = 50);
     void setupBackground(int x, int y);
     void setupToken(int x, int y,  int player);
-    void addPlayerNames();
     void addPlayersToList();
     void setupBackgroundTheme();
     void setupFieldBack();

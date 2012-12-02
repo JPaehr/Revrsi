@@ -38,7 +38,6 @@ Revrsi::Revrsi(QWidget *parent) :
     this->init_placeTokens(logic);
 
     this->playerNames = ngs->get_player_names();
-    this->addPlayerNames();
     this->addPlayersToList();
 
     // Zentriere Fenster
@@ -132,10 +131,20 @@ void Revrsi::field_clicked_slot(int x, int y){
         ui->Akt_Spieler_Label->setText("Orange");
     }
     else if(this->logic->getAktPlayer() == 3){
-        ui->Akt_Spieler_Label->setText("Rot");
+        ui->Akt_Spieler_Label->setText("Grün");
     }
     else if(this->logic->getAktPlayer() == 4){
         ui->Akt_Spieler_Label->setText("Blau");
+    }
+
+    for(int i = 1; i<=this->player_num; i++){
+        if(i == logic->getAktPlayer()){
+            this->p_fields[i-1]->setActive(true);
+        }
+        else{
+            this->p_fields[i-1]->setActive(false);
+
+        }
     }
     //this->scene->addText("Test")->setPos(100,100);
     //QLabel *t = new QLabel("\t\t\t\t\t\t\n\n\n\n\n");
@@ -239,6 +248,12 @@ void Revrsi::new_game(){
     }
     this->tokens.clear();
 
+    //Leere das SpielerArray ohne den Vector zu löschen
+    for(int i = 0; i<this->tokens.size(); i++){
+        this->p_fields[i]->~player();
+    }
+    this->p_fields.clear();
+
     // Lese neue Spieldaten
     this->player_num = ngs->get_choosen_number();
     this->width = ngs->get_field_size().x();
@@ -252,6 +267,10 @@ void Revrsi::new_game(){
     // Setup Background und InitStones
     this->setupBackground(this->width,this->height);
     this->init_placeTokens(logic);
+
+    //Setup Players
+    this->playerNames = ngs->get_player_names();
+    this->addPlayersToList();
 }
 
 void Revrsi::placeTokens(Logic *logic){
@@ -367,55 +386,71 @@ void Revrsi::setupToken(int x, int y, int player){
     this->scene->addItem(token_item);
 }
 
-void Revrsi::addPlayerNames(){
-
-}
-
 void Revrsi::addPlayersToList(){
-    player1.setPlainText(this->playerNames[0]);
-    player2.setPlainText(this->playerNames[1]);
-    player3.setPlainText(this->playerNames[2]);
-    player4.setPlainText(this->playerNames[3]);
-
+    //Lade den dunklen Hintergrund, auf dem die playerFelder abgebildet werden
     QPixmap hintergrund;
     if(!hintergrund.load(":/Player/PlayerFieldBackground.png")){
         qWarning("Failed to load image");
     }
+
+    //Erstelle Container für hintergrund und lade ihn hinein
     TokenItem *player_hintergrund = new TokenItem;
     player_hintergrund->setPos(-25,0);
     player_hintergrund->setPixmap(hintergrund);
+    this->scene->addItem(player_hintergrund);
 
     for(int i = 1; i<= this->player_num; i++){
+        player *spieler = new player;
+
+        //Bereite Alle SpielsteinBilder vor
+        QPixmap token_pic;
+
+        if(i == 1){
+            if(!token_pic.load(":/Tokens/Token4.png")){
+                qWarning("Failed to load image");
+            }
+        }
+        if(i == 2){
+            if(!token_pic.load(":/Tokens/Token1.png")){
+                qWarning("Failed to load image");
+            }
+        }
+        if(i == 3){
+            if(!token_pic.load(":/Tokens/Token2.png")){
+                qWarning("Failed to load image");
+            }
+        }
+        if(i == 4){
+            if(!token_pic.load(":/Tokens/Token3.png")){
+                qWarning("Failed to load image");
+            }
+        }
+        token_pic = token_pic.scaled(15,15);
+
+        //Setze Parent als Referenzposition. Für jeden Spieler gleich.
+        spieler->set_parents(player_hintergrund);
+
+        //Lade und Positioniere SpielerFeld
         QPixmap PlayerField;
         if(!PlayerField.load(":/Player/PlayerField.png")){
             qWarning("Failed to load image");
         }
-        TokenItem *player_field = new TokenItem;
-        player_field->setParentItem(player_hintergrund);
-        player_field->setPixmap(PlayerField);
-        player_field->setPos(12,i*6+(i-1)*PlayerField.height());
+        spieler->player_field.setPixmap(PlayerField);
+        spieler->player_field.setPos(12,i*6+(i-1)*PlayerField.height());
 
-        if(i==1){
-            player1.setParentItem(player_field);
-            player1.setPos(0,-2);
-        }
-        else if(i==2){
-            player2.setParentItem(player_field);
-            player2.setPos(0,-2);
-        }
-        else if(i==3){
-            player3.setParentItem(player_field);
-            player3.setPos(0,-2);
-        }
-        else if(i==4){
-            player4.setParentItem(player_field);
-            player4.setPos(0,-2);
-        }
-        this->p_fields.push_back(player_field);
+        spieler->setPlayerColor(token_pic);
+        spieler->color.setPos(4,1);
+
+        spieler->setName(this->playerNames[i-1]);
+        spieler->name.setPos(18,-3);
+        spieler->setActiveText("<<Aktiv>>");
+        spieler->activ_text.setPos(11,23);
+        spieler->activ_text.setVisible(false);
+
+        this->p_fields.push_back(spieler);
     }
-    player_hintergrund->setPos(-25,+100);
+    this->p_fields[0]->setActive(true);
 
-    this->scene->addItem(player_hintergrund);
 }
 
 void Revrsi::setupBackgroundTheme(){
