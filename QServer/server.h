@@ -4,19 +4,21 @@
 #include "socket.h"
 #include <string>
 #include <vector>
+#include "Logic.h"
 
 using namespace std;
 class Server : public QThread
 {
 public:
-    Server(string port, int breite, int hoehe);
+    Server(string port, int breite, int hoehe, int anzSpieler);
     void run();
-    void ausfuehren(string nachrict);
+    void senden(string nachrict);
     vector<vector<int> > getFelder();
     string StringSpielstand();
 
     vector<vector<int> > fields;
 private:
+    Logic *ThreadLogic;
     vector<std::string> explode(const string& str, char delimiter);
     int width, height;
     int breite, hoehe;

@@ -7,7 +7,7 @@
 
 int main(){
 
-    Server meinServer("55313", 10, 10);
+    Server meinServer("55313", 10, 10, 3);
 
 
 
@@ -21,15 +21,17 @@ int main(){
     //senden
 
     //meinServer.ausfuehren(meinServer.StringSpielstand());
-    meinServer.ausfuehren("100,3,3,");
-    cout << "bis hier gehts"<< endl;
+    meinServer.senden("100,10,10,");
 
 
-    meinServer.ausfuehren("500,5,5,4,4,3,4,6,6,5,");
+
+    //meinServer.senden("500,5,5,4,4,3,4,6,6,5,");
+
+    meinServer.senden(meinServer.StringSpielstand());
     std::string s;
     while(1){
        cin >> s;
-       meinServer.ausfuehren(s);
+       meinServer.senden(s);
     }
     return 0;
 }
