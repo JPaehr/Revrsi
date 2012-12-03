@@ -13,6 +13,7 @@
 #include "interfaces/win_gui.h"
 #include "player.h"
 #include "animation/anim_test.h"
+#include "net/server/server_thread.h"
 
 namespace Ui {
 class Revrsi;
@@ -42,6 +43,9 @@ public slots:
     void zoom_in();
     void zoom_out();
     void switchOpacityWay();
+
+    //Netzwerk
+    void runServer();
 
 private:
     double                  scale;
@@ -93,7 +97,11 @@ private:
 
     anim_test *atest;
     void startThread();
+
+
+    server_thread *ServerThread;
 //    void resizeEvent(QResizeEvent *);
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // REVRSI_H

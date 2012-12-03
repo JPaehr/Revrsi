@@ -1,12 +1,15 @@
 #include "server_thread.h"
+#define out qDebug()
 
+server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QThread(parent){
+    this->serverInterface = serverInterface;
 
-server_thread::server_thread(QObject *parent) : QThread(parent){
 }
 
 void server_thread::run(){
-    Server *meinServer = new Server("55313", 10, 10, 3);
+    out << "serverthread";
 
+    Server *meinServer = new Server("55313", this->serverInterface->getGameValues()[0], this->serverInterface->getGameValues()[1], this->serverInterface->getGameValues()[2]);
     message = "none";
 
     //Server meinServer("55313");
@@ -20,7 +23,7 @@ void server_thread::run(){
 
     //meinServer.senden(meinServer.StringSpielstand());
     meinServer->senden("100,3,3,");
-    cout << "bis hier gehts"<< endl;
+    //cout << "bis hier gehts"<< endl;
 
 
     meinServer->senden("500,5,5,4,4,3,4,6,6,5,");
@@ -28,6 +31,9 @@ void server_thread::run(){
     while(1){
         while(message != QString("none")){
             meinServer->senden(message.toStdString());
+            out << "message While schleife";
         }
+        sleep(1);
+        out << "std while loop";
     }
 }

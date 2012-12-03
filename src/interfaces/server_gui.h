@@ -14,9 +14,20 @@ class server_gui : public QDialog
 public:
     explicit server_gui(QWidget *parent = 0);
     ~server_gui();
-    
+    QVector<int> getGameValues();
+signals:
+    void startServer();
+
+public slots:
+    void setupServer();
+
 private:
     Ui::server_gui *ui;
+    int player_num;
+    int width;
+    int height;
+    QVector<QString> player_names;
+    bool serverIsRunning;
 };
 
 #endif // SERVER_GUI_H

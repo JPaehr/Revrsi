@@ -55,6 +55,7 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
+    //connect(ui->actionBeenden,SIGNAL(triggered()), this, SLOT(exit()));
 
     connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
 
@@ -66,6 +67,9 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
 
     connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
+
+    connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
+
 }
 
 
@@ -105,6 +109,11 @@ void Revrsi::switchOpacityWay(){
     this->anim->start();
 }
 
+void Revrsi::runServer(){
+    this->ServerThread = new server_thread(this, this->serverInterface);
+    this->ServerThread->start();
+}
+
 Revrsi::~Revrsi(){
     delete ui;
 }
@@ -139,7 +148,7 @@ void Revrsi::field_clicked_slot(int x, int y){
         }
     }
     if(this->logic->getAktPlayer() == 1){
-        ui->Akt_Spieler_Label->setText("Schwarz");
+        ui->Akt_Spieler_Label->setText(QString("Schwarz"));
     }
     else if(this->logic->getAktPlayer() == 2){
         ui->Akt_Spieler_Label->setText("Orange");
@@ -540,6 +549,10 @@ void Revrsi::runPlayerFieldAnimation(){
 void Revrsi::startThread(){
     this->atest = new anim_test(this,this->p_fields);
     atest->start();
+}
+
+void Revrsi::closeEvent(QCloseEvent *){
+    atest->terminate();
 }
 
 void Revrsi::set_scale(double scale){

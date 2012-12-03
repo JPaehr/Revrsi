@@ -103,10 +103,16 @@
    <property name="text">
     <string>Neu</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N, F2</string>
+   </property>
   </action>
   <action name="actionBeenden">
    <property name="text">
     <string>Beenden</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X, Alt+X</string>
    </property>
   </action>
   <action name="actionOptionen">
@@ -132,6 +138,9 @@
   <action name="actionHilfe">
    <property name="text">
     <string>Hilfe</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
    </property>
   </action>
   <action name="actionLeft">
@@ -211,22 +220,5 @@
  <resources>
   <include location="res/resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionOptionen</sender>
-   <signal>triggered()</signal>
-   <receiver>Revrsi</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>403</x>
-     <y>327</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
