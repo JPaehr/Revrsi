@@ -18,7 +18,7 @@ public:
 private:
     string spielerName;
     int feldDa = 0;
-    int id;
+    int id, players;
     vector<vector<int> > fields;
     vector<string> explode(const string& str, char delimiter);
     Socket client;

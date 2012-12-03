@@ -56,9 +56,12 @@ void Client::run(){
                     switch(atoi(explode(s, ',')[abschnitt].c_str())){
                     //breite, hoehe, anzSpieler
                     case 100:
+                        cout << "Rohdaten: " << s << endl;
                         this->width = atoi(explode(s, ',')[abschnitt+1].c_str());
                         this->height =atoi(explode(s, ',')[abschnitt+2].c_str());
-                        abschnitt+=3;
+                        this->players = atoi(explode(s, ',')[abschnitt+3].c_str());
+                        abschnitt+=4;
+                        cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
                         this->fields.assign(this->height,vector<int>(this->width,0));
                         break;
                     //Spielername, id <-vom server zugewiesen
@@ -123,19 +126,22 @@ void Client::run(){
 void Client::ausfuehren(){
 
     string mes;
+    string x;
+    string y;
+    string senden;
     do {
-        if(this->werte.length() > 0){
-            cout << this->werte << endl;
-        }
-        cout << "Nachricht zum Versenden: ";
-        getline( cin, mes, '\n' );
-        this->client.send( mes );
-        cout << "Hoehe: " << this->height << endl;
-        cout << "Breite: " << this->width<< endl;
-        if(this->feldDa == 1){
-            cout << "Felder fertig" << endl;
-            cout << "Feld: " << this->fields[0][0] << endl;
-        }
+        cout << "X: ";
+        cin >> x;
+        cout << "Y: ";
+        cin >> y;
+        cout << endl;
+        senden = "600,";
+        senden += x;
+        senden += ",";
+        senden += y;
+        senden += ",2,";
+
+        this->client.send(senden);
     } while( mes != "quit" );
     this->client.close();
 }
