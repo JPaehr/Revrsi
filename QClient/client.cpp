@@ -63,9 +63,10 @@ void Client::run(){
                         break;
                     //Spielername, id <-vom server zugewiesen
                     case 200:
-                        this->spielerName = explode(s, ',')[abschnitt+1];
+                        this->spielerName = explode(s, ',')[abschnitt+1].c_str();
                         this->id = atoi(explode(s, ',')[abschnitt+2].c_str());
                         abschnitt+=3;
+                        cout << "Spielername: " << this->spielerName << endl;
                         break;
                     //Spieler weg
                     case 201:
@@ -79,7 +80,7 @@ void Client::run(){
                         break;
                     //Feldarray
                     case 500:
-                        cout << "eingestiegen" << endl;
+                        //cout << "eingestiegen" << endl;
                         for(int i = 0; i < this->height; i++){
                             for(int j = 0; j < this->width; j++){
                                 this->fields[i][j] = atoi(explode(s, ',')[abschnitt+index].c_str());
@@ -88,6 +89,12 @@ void Client::run(){
                         }
                         abschnitt+=index+1;
                         cout << "feld geschicktz" << endl;
+                        for(int i = 0; i < this->height; i++){
+                            for(int j = 0; j < this->width; j++){
+                                cout << this->fields[i][j] << " ";
+                            }
+                            cout << endl;
+                        }
                         this->feldDa = 1;
                         index = 1;
                     break;
@@ -103,6 +110,9 @@ void Client::run(){
 
                     }
                 }
+                abschnitt = 0;
+                index = 1;
+
 
             }
             s.clear();
