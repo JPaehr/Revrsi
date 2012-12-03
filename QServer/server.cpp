@@ -5,13 +5,12 @@
 
 using namespace std;
 
-Server::Server(string port, int breite, int hoehe){
-    this->fields.assign(hoehe,vector<int>(breite,0));
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            this->fields[i][j] = 0;
-        }
-    }
+Server::Server(string port, int breite, int hoehe, int anzSpieler){
+    //this->fields.assign(hoehe,vector<int>(breite,0));
+
+    this->ThreadLogic = new Logic(breite, hoehe, anzSpieler);
+    this->ThreadLogic->setInitStones();
+    this->fields = this->ThreadLogic->getFields();
 
 
     this->breite = breite;
@@ -123,7 +122,7 @@ void Server::run(){
 
     cout << this->empfang << endl;
 }
-void Server::ausfuehren(string nachricht){
+void Server::senden(string nachricht){
 
     this->sock2.send( nachricht );
 }
@@ -146,12 +145,12 @@ string implode( const string &glue, const vector<string> &pieces )
 string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;
-    spielstand = "500";
+    spielstand = "500,";
     for(int i = 0; i < this->hoehe; i++){
         for(int j = 0; j < this->breite; j++){
             anhang << this->fields[i][j];
-            spielstand += ",";
             spielstand += anhang.str();
+            spielstand += ",";
             anhang.str("");
         }
     }
