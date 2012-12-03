@@ -17,6 +17,8 @@ public:
 
     vector<vector<int> > fields;
 private:
+    vector<std::string> explode(const string& str, char delimiter);
+    int width, height;
     int breite, hoehe;
     Socket sock1, sock2;
     string empfang;

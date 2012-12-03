@@ -43,10 +43,81 @@ Server::Server(string port, int breite, int hoehe){
 
 }
 void Server::run(){
+    string s;
+
+    int abschnitt = 0;
+    int index = 1;
+    int max;
 
     while(1){
-        if(this->sock2.recv(this->empfang)){
-            cout << this->empfang << endl;
+        if(this->sock2.recv(s)){
+            cout << s << endl;
+            vector<string> empfangen;
+            if(s.length() > 0){
+                max = count(s.begin(), s.end(), ',')-1;
+
+                while(abschnitt < max){
+
+                    cout << "aktueller erster wert: " << atoi(explode(s, ',')[abschnitt].c_str()) << endl;
+                    switch(atoi(explode(s, ',')[abschnitt].c_str())){
+                    //breite, hoehe, anzSpieler
+                    case 100:
+                        this->width = atoi(explode(s, ',')[abschnitt+1].c_str());
+                        this->height =atoi(explode(s, ',')[abschnitt+2].c_str());
+                        abschnitt+=3;
+                        this->fields.assign(this->height,vector<int>(this->width,0));
+                        break;
+                    //Spielername, id <-vom server zugewiesen
+                    /*case 200:
+                        this->spielerName = explode(s, ',')[abschnitt+1].c_str();
+                        this->id = atoi(explode(s, ',')[abschnitt+2].c_str());
+                        abschnitt+=3;
+                        cout << "Spielername: " << this->spielerName << endl;
+                        break;
+                    */
+                    //Spieler weg
+                    case 201:
+                        break;
+                    //Spielstart
+                    case 400:
+
+                        break;
+                    //Status
+                    case 300:
+                        break;
+
+
+                    //id vom Server zugewiesen
+                    case 800:
+                        break;
+
+                    //winvector
+                    case 900:
+                        break;
+
+                    case 600:
+                        cout << "in600spalte" << endl;
+                        int zeile, spalte,id;
+
+                        spalte = atoi(explode(s, ',')[abschnitt+1].c_str());
+                        zeile = atoi(explode(s, ',')[abschnitt+2].c_str());
+                        id = atoi(explode(s, ',')[abschnitt+3].c_str());
+
+                        cout << "Client " << id << "will seitzen auf: x="<<spalte<<" y="<<zeile<<endl;
+                        abschnitt+=4;
+                        break;
+                    default:
+                        break;
+
+                    }
+                }
+                abschnitt = 0;
+                index = 1;
+
+
+            }
+            s.clear();
+
         }
     }
 
@@ -85,4 +156,14 @@ string Server::StringSpielstand(){
         }
     }
     return spielstand;
+}
+vector<string> Server::explode(const string& str, char delimiter){
+    vector<string> tokens;
+    stringstream tokenStream(str);
+    string tempStr;
+
+    while(getline(tokenStream, tempStr, delimiter))
+        tokens.push_back(tempStr);
+
+    return tokens;
 }

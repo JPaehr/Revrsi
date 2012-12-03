@@ -3,6 +3,7 @@
 #include <iostream>
 #include "server.h"
 #include <vector>
+#include <string>
 
 int main(){
 
@@ -20,13 +21,15 @@ int main(){
     //senden
 
     //meinServer.ausfuehren(meinServer.StringSpielstand());
-    meinServer.ausfuehren("100,2,2,");
+    meinServer.ausfuehren("100,3,3,");
     cout << "bis hier gehts"<< endl;
 
 
-    meinServer.ausfuehren("500,5,5,6,6,");
-    cout << "sdcsdcsdcsdcsdcsdcd"<< endl;
+    meinServer.ausfuehren("500,5,5,4,4,3,4,6,6,5,");
+    std::string s;
     while(1){
+       cin >> s;
+       meinServer.ausfuehren(s);
     }
     return 0;
 }
