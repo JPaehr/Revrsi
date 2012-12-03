@@ -5,7 +5,7 @@ server_thread::server_thread(QObject *parent) : QThread(parent){
 }
 
 void server_thread::run(){
-    Server *meinServer = new Server("55313", 10, 10);
+    Server *meinServer = new Server("55313", 10, 10, 3);
 
     message = "none";
 
@@ -18,16 +18,16 @@ void server_thread::run(){
 
     //senden
 
-    //meinServer.ausfuehren(meinServer.StringSpielstand());
-    meinServer->ausfuehren("100,3,3,");
+    //meinServer.senden(meinServer.StringSpielstand());
+    meinServer->senden("100,3,3,");
     cout << "bis hier gehts"<< endl;
 
 
-    meinServer->ausfuehren("500,5,5,4,4,3,4,6,6,5,");
+    meinServer->senden("500,5,5,4,4,3,4,6,6,5,");
     std::string s;
     while(1){
         while(message != QString("none")){
-            meinServer->ausfuehren(message.toStdString());
+            meinServer->senden(message.toStdString());
         }
     }
 }

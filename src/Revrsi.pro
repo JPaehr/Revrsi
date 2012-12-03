@@ -23,12 +23,9 @@ SOURCES += main.cpp\
     interfaces/client_gui.cpp \
     player.cpp \
     animation/anim_test.cpp \
-    net/client/client_thread.cpp \
     net/server/server_thread.cpp \
     net/server/socket.cpp \
     net/server/server.cpp \
-    net/client/socket.cpp \
-    net/client/client.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -40,12 +37,9 @@ HEADERS  += revrsi.h \
     interfaces/client_gui.h \
     player.h \
     animation/anim_test.h \
-    net/client/client_thread.h \
     net/server/server_thread.h \
     net/server/socket.h \
     net/server/server.h \
-    net/client/socket.h \
-    net/client/client.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \
