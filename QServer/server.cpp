@@ -7,11 +7,11 @@ using namespace std;
 
 Server::Server(string port, int breite, int hoehe, int anzSpieler){
     //this->fields.assign(hoehe,vector<int>(breite,0));
-
+    /*
     this->ThreadLogic = new Logic(breite, hoehe, anzSpieler);
     this->ThreadLogic->setInitStones();
     this->fields = this->ThreadLogic->getFields();
-
+    */
 
     this->breite = breite;
     this->hoehe = hoehe;
@@ -102,8 +102,15 @@ void Server::run(){
                         zeile = atoi(explode(s, ',')[abschnitt+2].c_str());
                         id = atoi(explode(s, ',')[abschnitt+3].c_str());
 
+
                         cout << "Client " << id << "will seitzen auf: x="<<spalte<<" y="<<zeile<<endl;
                         abschnitt+=4;
+                        if(id == this->aktPlayer){
+
+                            this->ThreadLogic->setField(spalte, zeile);
+                            this->fields = this->ThreadLogic->getFields();
+                            //senden(StringSpielstand());
+                        }
                         break;
                     default:
                         break;

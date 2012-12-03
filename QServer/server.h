@@ -5,10 +5,12 @@
 #include <string>
 #include <vector>
 #include "Logic.h"
+//#include <QObject>
 
 using namespace std;
 class Server : public QThread
 {
+
 public:
     Server(string port, int breite, int hoehe, int anzSpieler);
     void run();
@@ -20,11 +22,14 @@ public:
 private:
     Logic *ThreadLogic;
     vector<std::string> explode(const string& str, char delimiter);
-    int width, height;
+    int width, height, aktPlayer;
     int breite, hoehe;
     Socket sock1, sock2;
     string empfang;
     string implode( const string &glue, const vector<string> &pieces );
+
+signals:
+    void setStone(int value);
 
 };
 
