@@ -9,12 +9,13 @@ class anim_test: public QThread
 {    
     Q_OBJECT
 public:
-    anim_test(QObject *parent, QVector<player *> p_list);
+    anim_test(QObject *parent);
     void run();
     int akt_player;
 
 signals:
     void animChange();
+    void delayedStart();
 
 private:
     QVector<player *> pp;

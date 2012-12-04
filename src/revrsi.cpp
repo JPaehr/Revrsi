@@ -20,6 +20,7 @@ Revrsi::Revrsi(QWidget *parent) :
     this->player_num = 2;
     this->player_act = 1;
     this->direction = 1;
+    this->firstRun = true;
     sceneOffset_scale = 1;
     sceneOffset_x = 0;
     sceneOffset_y = 0;
@@ -28,6 +29,7 @@ Revrsi::Revrsi(QWidget *parent) :
     frame_scene->setSceneRect(0,0,1000,1000);
     scene->setSceneRect(00,000,700,500);
     ui->graphicsView->setScene(scene);
+    //this->atest = new anim_test;
 
     this->setupBackgroundTheme();
 
@@ -36,14 +38,14 @@ Revrsi::Revrsi(QWidget *parent) :
     this->logic = new Logic(this->width,this->width,this->player_num);
     logic->setInitStones();
     this->new_array = logic->getFields();
-    this->setupBackground(this->width,this->height);
+    /*this->setupBackground(this->width,this->height);
     this->init_placeTokens(logic);
 
     this->playerNames = ngs->get_player_names();
     this->addPlayersToList();
 
     this->runPlayerFieldAnimation();
-
+*/
     this->startThread();
 
     // Zentriere Fenster
@@ -57,7 +59,7 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
     //connect(ui->actionBeenden,SIGNAL(triggered()), this, SLOT(exit()));
 
-    connect(this, SIGNAL(win(QVector<int>)),this->winInterface, SLOT(win_slot(QVector<int>)));
+    connect(this, SIGNAL(win(QVector<int>, QVector<QString>)),this->winInterface, SLOT(win_slot(QVector<int>, QVector<QString>)));
 
     connect(ui->actionLeft,SIGNAL(triggered()),this,SLOT(step_left()));
     connect(ui->actionRight,SIGNAL(triggered()),this,SLOT(step_right()));
@@ -66,9 +68,12 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
 
-    connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
+    //connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
 
     connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
+
+    connect(this->atest,SIGNAL(delayedStart()),this,SLOT(warpStart()));
+    //emit delayedStart();
 
 }
 
@@ -107,6 +112,12 @@ void Revrsi::switchOpacityWay(){
     if(this->direction){this->anim->setDirection(QAbstractAnimation::Backward);this->direction = 0;}
     else{this->anim->setDirection(QAbstractAnimation::Forward);this->direction=1;}
     this->anim->start();
+}
+
+void Revrsi::warpStart(){
+    //sleep(5);
+    out << "in warp start";
+    this->new_game();
 }
 
 void Revrsi::runServer(){
@@ -179,7 +190,7 @@ void Revrsi::field_clicked_slot(int x, int y){
             vector_to_convert.push_back(this->win_vector[i]);
         }
         this->winInterface->show();
-        emit this->win(vector_to_convert);
+        emit this->win(vector_to_convert, this->playerNames);
     }
     else{
         p_fields[0]->setTokens(this->win_vector[1]);
@@ -273,7 +284,9 @@ void Revrsi::change_token(int x, int y, int player){
 
 void Revrsi::new_game(){
     //Beende Animation
-    this->anim->setLoopCount(0);
+    if(!this->firstRun){
+        this->anim->setLoopCount(0);
+    }
 
     //Zerstöre logic Funktion mit alter initialisierung
     this->logic->~Logic();
@@ -291,15 +304,21 @@ void Revrsi::new_game(){
     this->tokens.clear();
 
     //Leere das SpielerArray ohne den Vector zu löschen
-    for(int i = 0; i<this->tokens.size(); i++){
+    for(int i = 0; i<this->p_fields.size(); i++){
         this->p_fields[i]->~player();
     }
     this->p_fields.clear();
 
+    if(!this->firstRun){
+        this->TokenContainer->~TokenItem();
+        //this->scene->removeItem(this->TokenContainer);
+    }
     // Lese neue Spieldaten
-    this->player_num = ngs->get_choosen_number();
-    this->width = ngs->get_field_size().x();
-    this->height = ngs->get_field_size().y();
+    if(!this->firstRun){
+        this->player_num = ngs->get_choosen_number();
+        this->width = ngs->get_field_size().x();
+        this->height = ngs->get_field_size().y();
+    }
 
     // Erstelle neue Logicklasse
     this->logic = new Logic(this->width,this->width,this->player_num);
@@ -316,7 +335,10 @@ void Revrsi::new_game(){
 
     //Run Animation
     this->runPlayerFieldAnimation();
+    connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
 
+    //Set First Run
+    this->firstRun = false;
 }
 
 void Revrsi::placeTokens(Logic *logic){
@@ -335,6 +357,9 @@ void Revrsi::setupBackground(int x, int y){
     }
 
     int field_counter = 0;
+
+    QSequentialAnimationGroup *group = new QSequentialAnimationGroup;
+
     for(int i_y=0;i_y<=y-1;i_y++){
 
 
@@ -370,7 +395,7 @@ void Revrsi::setupBackground(int x, int y){
                     item->setPixmap(back_pic1);
                 }
 
-                item->setOffset(val_x,val_y);
+                //item->setOffset(val_x,val_y);
 
                 item->set_nr(field_counter++);
                 item->set_coords(i_x,i_y);
@@ -384,8 +409,15 @@ void Revrsi::setupBackground(int x, int y){
                 if(this->FieldBackSet == false){this->setupFieldBack();this->FieldBackSet = true;}
                 this->scene->addItem(item);
 
+                QPropertyAnimation *an = new QPropertyAnimation(item,"pos");
+                an->setDuration(50);
+                an->setStartValue(QPointF(0,0));
+                an->setEndValue(QPointF(val_x,val_y));
+                //an->start();
+                group->addAnimation(an);
             }
         }
+    group->start();
 }
 
 void Revrsi::setupToken(int x, int y, int player){
@@ -441,6 +473,7 @@ void Revrsi::addPlayersToList(){
 
     //Erstelle Container für hintergrund und lade ihn hinein
     TokenItem *player_hintergrund = new TokenItem;
+    this->TokenContainer = player_hintergrund;
     player_hintergrund->setPos(-25,0);
     player_hintergrund->setPixmap(hintergrund);
     this->scene->addItem(player_hintergrund);
@@ -547,7 +580,7 @@ void Revrsi::runPlayerFieldAnimation(){
 }
 
 void Revrsi::startThread(){
-    this->atest = new anim_test(this,this->p_fields);
+    this->atest = new anim_test(this);
     atest->start();
 }
 
