@@ -28,7 +28,8 @@ public:
     ~Revrsi();
 
 signals:
-    void win(QVector<int>);
+    void win(QVector<int>, QVector<QString>);
+    void delayedStart();
 
 public slots:
     void test_slot();
@@ -43,6 +44,8 @@ public slots:
     void zoom_in();
     void zoom_out();
     void switchOpacityWay();
+
+    void warpStart();
 
     //Netzwerk
     void runServer();
@@ -64,6 +67,7 @@ private:
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
     QVector<player *>       p_fields;
+    TokenItem               *TokenContainer;
     client_gui              *clientInterface;
     server_gui              *serverInterface;
     win_gui                 *winInterface;
@@ -81,6 +85,8 @@ private:
 
     bool    direction;
     int animatedPlayer;
+
+    bool firstRun;
 
     void change_token(int x, int y,  int player);
     void init_placeTokens(Logic *logic);

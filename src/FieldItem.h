@@ -8,6 +8,7 @@
 class FieldItem : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 public:
     FieldItem();
     void set_nr(int val);

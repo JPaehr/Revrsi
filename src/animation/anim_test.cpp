@@ -1,14 +1,12 @@
 #include "anim_test.h"
+#define out qDebug()
 
-anim_test::anim_test(QObject *parent, QVector<player *> p_list) : QThread(parent){
-    this->pp = p_list;
+anim_test::anim_test(QObject *parent) : QThread(parent){
+    //this->pp = p_list;
 }
 
 void anim_test::run(){
-    for(;;){
-        sleep(3);
-        //emit animChange();
-    }
-
-
+    out << "im in thread";
+        sleep(2);
+        emit delayedStart();
 }
