@@ -34,15 +34,27 @@ alternativeMAIN::alternativeMAIN()
        meinServer.senden(s);
     }
     */
+    int breite = 8, hoehe = 8, Spieler = 2;
 
-    SuperServer *meinSServer=new SuperServer(8,8,3);
+    SuperServer *meinSServer=new SuperServer(breite, hoehe, Spieler);
 
-    QObject::connect(meinSServer->uServer1,SIGNAL(setStone(int)),meinSServer,SLOT(setStoneControl(int)));
+    QObject::connect(meinSServer->uServer1,SIGNAL(setStone(int, int, int)),
+                     meinSServer,SLOT(setStoneControl(int, int, int)));
+    QObject::connect(meinSServer->uServer2,SIGNAL(setStone(int, int, int)),
+                     meinSServer,SLOT(setStoneControl(int, int, int)));
+    if(Spieler >= 3){
+        QObject::connect(meinSServer->uServer3,SIGNAL(setStone(int, int, int)),
+                     meinSServer,SLOT(setStoneControl(int, int, int)));
+    }
+    if(Spieler == 4){
+        QObject::connect(meinSServer->uServer4,SIGNAL(setStone(int, int, int)),
+                     meinSServer,SLOT(setStoneControl(int, int, int)));
+    }
 
     //    connect(meinSServer, SIGNAL(setStone(int)), meinSServer,SLOT());
 
     while(1){
-        cout << "in while";
+        //cout << "in while";
     }
 
 }

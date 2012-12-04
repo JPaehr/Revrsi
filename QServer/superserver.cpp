@@ -77,6 +77,12 @@ string SuperServer::StringSpielstand(){
     }
     return spielstand;
 }
-void SuperServer::setStoneControl(int value){
+void SuperServer::setStoneControl(int spalte, int hoehe, int id){
 
+    cout << "StoneControl ausgefuehrt" << endl;
+    cout << spalte << " " << hoehe << " " << id << endl;
+    if(this->logic->getAktPlayer() == id){
+        this->logic->setField(spalte, hoehe);
+    }
+    SpielStandaktSenden();
 }

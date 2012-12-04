@@ -19,9 +19,8 @@ public:
     Server *uServer3;
     Server *uServer4;
 public slots:
-    void setStoneControl(int);
-signals:
-    void setStone(int);
+    void setStoneControl(int, int, int);
+
 private:
     int width, heigth, players;
 

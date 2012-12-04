@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include "superserver.h"
-//#include <QObject>
+#include <QObject>
 
 class alternativeMAIN : public QObject
 {

@@ -103,14 +103,17 @@ void Server::run(){
                         id = atoi(explode(s, ',')[abschnitt+3].c_str());
 
 
-                        cout << "Client " << id << "will seitzen auf: x="<<spalte<<" y="<<zeile<<endl;
+                        cout << "Client " << id << " will seitzen auf: x="<<spalte<<" y="<<zeile<<endl;
                         abschnitt+=4;
-                        if(id == this->aktPlayer){
+                        /*if(id == this->aktPlayer){
 
                             this->ThreadLogic->setField(spalte, zeile);
                             this->fields = this->ThreadLogic->getFields();
                             //senden(StringSpielstand());
-                        }
+                        }*/
+                        cout << "emit ab hier" << endl;
+                        emit setStone(spalte, zeile, id);
+
                         break;
                     default:
                         break;
