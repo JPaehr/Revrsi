@@ -9,7 +9,7 @@ using namespace std;
 
 class SuperServer : public QObject
 {
-    //Q_OBJECT
+    Q_OBJECT
 public:
     SuperServer(int breite, int hoehe, int Spieler);
 
@@ -19,7 +19,9 @@ public:
     Server *uServer3;
     Server *uServer4;
 public slots:
-    void setStoneControl(int value);
+    void setStoneControl(int);
+signals:
+    void setStone(int);
 private:
     int width, heigth, players;
 
