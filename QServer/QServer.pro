@@ -8,7 +8,5 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += Logic.h server.h socket.h superserver.h \
-    alternativemain.h
-SOURCES += Logic.cpp main.cpp server.cpp socket.cpp superserver.cpp \
-    alternativemain.cpp
+HEADERS += Logic.h server.h socket.h superserver.h
+SOURCES += Logic.cpp main.cpp server.cpp socket.cpp superserver.cpp

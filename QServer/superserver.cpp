@@ -10,6 +10,20 @@
 using namespace std;
 
 SuperServer::SuperServer(int breite, int hoehe, int Spieler){
+
+    QObject::connect(this->uServer1,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
+    QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
+    if(Spieler >= 3){
+        QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
+    }
+    if(Spieler == 4){
+        QObject::connect(this->uServer4,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
+    }
+
     stringstream String100;
     String100 << "100,";
     String100 << breite;
