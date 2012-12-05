@@ -12,8 +12,9 @@ int main()
 
 
 
+    sleep(1);
 
     //senden
-    meinCl.ausfuehren();
+    meinCl.senden("");
     return 0;
 }

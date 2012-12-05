@@ -9,20 +9,25 @@
 using namespace std;
 
 class Client: public QThread{
+    Q_OBJECT
 public:
     Client(string host);
-    void ausfuehren();
+    void senden(string mes);
     void run();
-    int width = 0;
-    int height = 0;
+    int width;
+    int height;
+    int getAktPlayer();
 private:
-    string spielerName;
-    int feldDa = 0;
+    string name;
     int id, players;
+    bool running;
     vector<vector<int> > fields;
     vector<string> explode(const string& str, char delimiter);
     Socket client;
+    int aktPlayer;
+    vector<string> playersNames;
     std::string werte = "";
+
 };
 
 #endif // CLIENT_H
