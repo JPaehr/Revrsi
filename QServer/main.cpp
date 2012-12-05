@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+//#include <QApplication>
 #include "socket.h"
 #include <iostream>
 #include "server.h"
@@ -6,8 +7,9 @@
 #include <string>
 #include "superserver.h"
 
-int main(){
+int main(int argc, char *argv[]){
 
+    QApplication a(argc, argv);
     /*
     Server meinServer("55313", 10, 10, 3);
 
@@ -45,9 +47,9 @@ int main(){
 
     //    connect(meinSServer, SIGNAL(setStone(int)), meinSServer,SLOT());
 
-    while(1){
+    //while(1){
         //cout << "in while";
-    }
-
-    return 0;
+    //}
+    cout << "pre exec";
+    return a.exec();
 }

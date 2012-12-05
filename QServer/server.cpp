@@ -5,16 +5,18 @@
 
 using namespace std;
 
-Server::Server(string port, int breite, int hoehe, int anzSpieler){
+Server::Server(QObject *parent, string port, int breite, int hoehe, int anzSpieler) : QThread(parent){
     //this->fields.assign(hoehe,vector<int>(breite,0));
     /*
     this->ThreadLogic = new Logic(breite, hoehe, anzSpieler);
     this->ThreadLogic->setInitStones();
     this->fields = this->ThreadLogic->getFields();
     */
-
     this->breite = breite;
     this->hoehe = hoehe;
+    this->port = port;
+}
+void Server::initServer(){
     cout << "Hier war ich Server" << endl;
     this->sock1.create();
     cout << "Server erstellt" << endl;
@@ -39,8 +41,8 @@ Server::Server(string port, int breite, int hoehe, int anzSpieler){
     this->sock1.bind(nport);
     this->sock1.listen();
     this->sock1.accept(this->sock2);
-
 }
+
 void Server::run(){
     string s;
 
@@ -112,7 +114,7 @@ void Server::run(){
                             //senden(StringSpielstand());
                         }*/
                         cout << "emit ab hier" << endl;
-                        emit setStone(spalte, zeile, id);
+                        emit this->setStone(spalte, zeile, id);
 
                         break;
                     default:
@@ -166,6 +168,7 @@ string Server::StringSpielstand(){
     }
     return spielstand;
 }
+
 vector<string> Server::explode(const string& str, char delimiter){
     vector<string> tokens;
     stringstream tokenStream(str);
