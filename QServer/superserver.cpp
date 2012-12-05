@@ -50,25 +50,36 @@ SuperServer::SuperServer(int breite, int hoehe, int Spieler){
 
     this->uServer1->initServer();
     this->uServer1->start();
+    this->uServer1->senden("800,1,");
+    this->uServer1->senden("999,1,");
     this->uServer1->senden(String100.str());
     this->uServer1->senden(StringSpielstand());
 
     this->uServer2->initServer();
     this->uServer2->start();
+    this->uServer2->senden("800,2,");
+    this->uServer2->senden("999,1,");
     this->uServer2->senden(String100.str());
     this->uServer2->senden(StringSpielstand());
 
     if(Spieler >= 3){
         this->uServer3->initServer();
         //this->uServer3 = new Server("55315", breite, hoehe, Spieler, this);
+        this->uServer3->start();
+        this->uServer3->senden("800,3,");
+        this->uServer3->senden("999,1,");
         this->uServer3->senden(String100.str());
         this->uServer3->senden(StringSpielstand());
     }
     if(Spieler == 4){
         this->uServer4->initServer();
         //this->uServer4 = new Server("55316", breite, hoehe, Spieler, this);
+        this->uServer4->start();
+        this->uServer4->senden("800,4,");
+        this->uServer4->senden("999,1,");
         this->uServer4->senden(String100.str());
         this->uServer4->senden(StringSpielstand());
+
     }
 }
 void SuperServer::SpielStandaktSenden(){
@@ -85,15 +96,23 @@ void SuperServer::SpielStandaktSenden(){
 string SuperServer::StringSpielstand(){
     string spielstand;
     stringstream anhang;
+    stringstream sstr;
     spielstand = "500,";
     for(int i = 0; i < this->heigth; i++){
         for(int j = 0; j < this->width; j++){
-            anhang << this->fields[i][j];
+            anhang << this->logic->getFields()[i][j];
             spielstand += anhang.str();
             spielstand += ",";
+
             anhang.str("");
         }
     }
+    spielstand += "999,";
+    sstr << this->logic->getAktPlayer();
+    spielstand += sstr.str();
+    spielstand += ",";
+    sstr.str("");
+    cout << "Spielstand Senden: " << spielstand << endl;
     return spielstand;
 }
 void SuperServer::setStoneControl(int spalte, int hoehe, int id){

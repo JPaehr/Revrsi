@@ -34,6 +34,8 @@ private:
     string port;
     Socket sock1, sock2;
     string empfang;
+    string name;
+    int id;
     string implode( const string &glue, const vector<string> &pieces );
 
 };
