@@ -2,13 +2,14 @@
 #define SERVER_THREAD_H
 
 #include <QtGui>
-#include "socket.h"
+#include "../socket.h"
 #include <iostream>
 #include "server.h"
 #include <vector>
 #include <string>
 #include <QObject>
 #include "../../interfaces/server_gui.h"
+#include "superserver.h"
 
 using namespace std;
 

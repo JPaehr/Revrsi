@@ -24,8 +24,11 @@ SOURCES += main.cpp\
     player.cpp \
     animation/anim_test.cpp \
     net/server/server_thread.cpp \
-    net/server/socket.cpp \
     net/server/server.cpp \
+    net/socket.cpp \
+    net/client/client.cpp \
+    net/server/superserver.cpp \
+    net/client/client_thread.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -38,8 +41,12 @@ HEADERS  += revrsi.h \
     player.h \
     animation/anim_test.h \
     net/server/server_thread.h \
-    net/server/socket.h \
     net/server/server.h \
+    net/socket.h \
+    net/client/client.h \
+    net/server/superserver.h \
+    net/server/server_thread.h \
+    net/client/client_thread.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \

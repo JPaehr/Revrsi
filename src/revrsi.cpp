@@ -70,10 +70,11 @@ Revrsi::Revrsi(QWidget *parent) :
 
     //connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
 
-    connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
-
     connect(this->atest,SIGNAL(delayedStart()),this,SLOT(warpStart()));
-    //emit delayedStart();
+
+    //Network MODE
+    connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
+    connect(this->clientInterface,SIGNAL(send_startClient()),this,SLOT(runClient()));
 
 }
 
@@ -123,6 +124,30 @@ void Revrsi::warpStart(){
 void Revrsi::runServer(){
     this->ServerThread = new server_thread(this, this->serverInterface);
     this->ServerThread->start();
+}
+
+void Revrsi::runClient(){
+    this->ClientThread = new client_thread(this, this->clientInterface);
+    this->ClientThread->start();
+    connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(net_field_clicked(std::vector<std::vector<int> >)));
+
+}
+
+void Revrsi::net_field_clicked(vector<vector<int> > new_field){
+    this->new_array = new_field;
+
+    this->old_array = this->new_array;
+    this->new_array = this->logic->getFields();
+    for(uint i = 0 ; i<this->new_array.size() ; i++){
+        for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
+            if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
+                this->setupToken(ii,i,this->new_array[i][ii]);
+            }
+            else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
+                this->change_token(ii,i,this->new_array[i][ii]);
+            }
+        }
+    }
 }
 
 Revrsi::~Revrsi(){

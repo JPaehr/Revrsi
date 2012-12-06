@@ -14,6 +14,12 @@ class client_gui : public QDialog
 public:
     explicit client_gui(QWidget *parent = 0);
     ~client_gui();
+
+signals:
+    void send_startClient();
+
+public slots:
+    void startClient();
     
 private:
     Ui::client_gui *ui;

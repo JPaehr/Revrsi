@@ -5,16 +5,18 @@
 
 using namespace std;
 
-Server::Server(string port, int breite, int hoehe, int anzSpieler){
+Server::Server(QObject *parent, string port, int breite, int hoehe, int anzSpieler) : QThread(parent){
     //this->fields.assign(hoehe,vector<int>(breite,0));
-
+    /*
     this->ThreadLogic = new Logic(breite, hoehe, anzSpieler);
     this->ThreadLogic->setInitStones();
     this->fields = this->ThreadLogic->getFields();
-
-
+    */
     this->breite = breite;
     this->hoehe = hoehe;
+    this->port = port;
+}
+void Server::initServer(){
     cout << "Hier war ich Server" << endl;
     this->sock1.create();
     cout << "Server erstellt" << endl;
@@ -39,8 +41,8 @@ Server::Server(string port, int breite, int hoehe, int anzSpieler){
     this->sock1.bind(nport);
     this->sock1.listen();
     this->sock1.accept(this->sock2);
-
 }
+
 void Server::run(){
     string s;
 
@@ -59,41 +61,27 @@ void Server::run(){
 
                     cout << "aktueller erster wert: " << atoi(explode(s, ',')[abschnitt].c_str()) << endl;
                     switch(atoi(explode(s, ',')[abschnitt].c_str())){
-                    //breite, hoehe, anzSpieler
-                    case 100:
-                        this->width = atoi(explode(s, ',')[abschnitt+1].c_str());
-                        this->height =atoi(explode(s, ',')[abschnitt+2].c_str());
-                        abschnitt+=3;
-                        this->fields.assign(this->height,vector<int>(this->width,0));
-                        break;
-                    //Spielername, id <-vom server zugewiesen
-                    /*case 200:
-                        this->spielerName = explode(s, ',')[abschnitt+1].c_str();
-                        this->id = atoi(explode(s, ',')[abschnitt+2].c_str());
-                        abschnitt+=3;
-                        cout << "Spielername: " << this->spielerName << endl;
-                        break;
-                    */
+
                     //Spieler weg
                     case 201:
                         break;
                     //Spielstart
-                    case 400:
 
-                        break;
                     //Status
                     case 300:
                         break;
 
+                    case 222:
+                        if(this->id == atoi(explode(s, 's')[abschnitt+2].c_str())){
+                            this->name = explode(s, ',')[abschnitt+1].c_str();
+                        }
+                        else{
+                            cout << "Client mit nicht zugewiesener oder falscher id hat versucht seinen Name zu verschicken" << endl;
+                            cout << "empfangene id: " << atoi(explode(s, 's')[abschnitt+2].c_str()) << endl;
+                            cout << "eigentliche id: " << this->id;
+                        }
 
-                    //id vom Server zugewiesen
-                    case 800:
-                        break;
-
-                    //winvector
-                    case 900:
-                        break;
-
+                    //breite, hoehe, id von Client an Server
                     case 600:
                         cout << "in600spalte" << endl;
                         int zeile, spalte,id;
@@ -102,8 +90,18 @@ void Server::run(){
                         zeile = atoi(explode(s, ',')[abschnitt+2].c_str());
                         id = atoi(explode(s, ',')[abschnitt+3].c_str());
 
-                        cout << "Client " << id << "will seitzen auf: x="<<spalte<<" y="<<zeile<<endl;
+
+                        cout << "Client " << id << " will setzen auf: x = "<<spalte << " y = "<< zeile << endl;
                         abschnitt+=4;
+                        /*if(id == this->aktPlayer){
+
+                            this->ThreadLogic->setField(spalte, zeile);
+                            this->fields = this->ThreadLogic->getFields();
+                            //senden(StringSpielstand());
+                        }*/
+                        cout << "emit ab hier" << endl;
+                        emit this->setStone(spalte, zeile, id);
+
                         break;
                     default:
                         break;
@@ -156,6 +154,7 @@ string Server::StringSpielstand(){
     }
     return spielstand;
 }
+
 vector<string> Server::explode(const string& str, char delimiter){
     vector<string> tokens;
     stringstream tokenStream(str);

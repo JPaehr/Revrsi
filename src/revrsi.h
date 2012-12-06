@@ -14,6 +14,7 @@
 #include "player.h"
 #include "animation/anim_test.h"
 #include "net/server/server_thread.h"
+#include "net/client/client_thread.h"
 
 namespace Ui {
 class Revrsi;
@@ -49,6 +50,9 @@ public slots:
 
     //Netzwerk
     void runServer();
+    void runClient();
+
+    void net_field_clicked(std::vector<std::vector<int> >);
 
 private:
     double                  scale;
@@ -106,6 +110,7 @@ private:
 
 
     server_thread *ServerThread;
+    client_thread *ClientThread;
 //    void resizeEvent(QResizeEvent *);
     void closeEvent(QCloseEvent *);
 };
