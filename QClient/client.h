@@ -34,6 +34,8 @@ signals:
     void NetNewField(vector<vector<int> >);
     void NetWinVector(QVector<int>);
     void NetGameStart();
+    void NetPlayersNames(vector<string>);
+    void NetAktPlayer(int);
 
 };
 

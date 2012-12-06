@@ -41,9 +41,6 @@ void Client::run(){
     int abschnitt = 0;
     int index = 1;
     int max;
-    int nId;
-
-
 
     while(1){
         this->client.recv(s);
@@ -58,21 +55,23 @@ void Client::run(){
                     switch(atoi(explode(s, ',')[abschnitt].c_str())){
                     //breite, hoehe, anzSpieler
                     case 100:
-                        cout << "100 getroffen" << endl;
+                        //cout << "100 getroffen" << endl;
                         this->width = atoi(explode(s, ',')[abschnitt+1].c_str());
                         this->height =atoi(explode(s, ',')[abschnitt+2].c_str());
                         this->players = atoi(explode(s, ',')[abschnitt+3].c_str());
                         abschnitt+=4;
-                        cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
+                        //cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
                         this->fields.assign(this->height,vector<int>(this->width,0));
                         break;
                     //Spielername, id <-vom server zugewiesen
                     case 200:
-                        cout << "Case 200 wurde aufgerufen"<< endl;
+                        //cout << "Case 200 wurde aufgerufen"<< endl;
 
                         this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] = explode(s, ',')[abschnitt+1].c_str();
-                        cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
+                        //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
                         abschnitt+=3;
+
+                        emit NetPlayersNames(this->playersNames);
                         break;
                     //Spieler weg
                     case 201:
@@ -81,6 +80,7 @@ void Client::run(){
                     case 400:
                         this->running = true;
                         abschnitt+=2;
+                        emit NetGameStart();
 
                         break;
                     //Status
@@ -88,8 +88,8 @@ void Client::run(){
                         break;
                     //Feldarray
                     case 500:
-                        cout << "500 getroffen" << endl;
-                        cout << "Abschnitt zahl: " << abschnitt << endl;
+                        //cout << "500 getroffen" << endl;
+                        //cout << "Abschnitt zahl: " << abschnitt << endl;
                         //cout << s << endl;
                         for(int i = 0; i < this->height; i++){
                             for(int j = 0; j < this->width; j++){
@@ -99,7 +99,7 @@ void Client::run(){
                         }
 
                         abschnitt+=index;
-
+                        /*
                         for(int i = 0; i < this->height; i++){
                             for(int j = 0; j < this->width; j++){
                                 cout << this->fields[i][j] << " ";
@@ -107,17 +107,17 @@ void Client::run(){
                             cout << endl;
                         }
                         cout << "Eigene id" << this->id << endl;
-
-
+                        */
 
                         index = 1;
+                        emit NetNewField(this->fields);
 
                     break;
 
                     //id vom Server zugewiesen
                     case 800:
-                        cout << "800 getroffen" << endl;
-                        cout << "neue id: " << atoi(explode(s, ',')[abschnitt+1].c_str()) << endl;
+                        //cout << "800 getroffen" << endl;
+                        //cout << "neue id: " << atoi(explode(s, ',')[abschnitt+1].c_str()) << endl;
 
                         this->id = atoi(explode(s, ',')[abschnitt+1].c_str());
 
@@ -127,12 +127,18 @@ void Client::run(){
                         break;
                     //winvector
                     case 900:
+
+
+                        emit NetWinVector(QVector<int>);
                         break;
+
                     case 999:
-                        cout << "999 ausgelöst" << endl;
+                        //cout << "999 ausgelöst" << endl;
                         this->aktPlayer = atoi(explode(s, ',')[abschnitt+1].c_str());
-                        cout << "Spieler " << this->aktPlayer << " ist dran" << endl;
+                        //cout << "Spieler " << this->aktPlayer << " ist dran" << endl;
                         abschnitt+=2;
+
+                        emit NetAktPlayer(this->aktPlayer);
                         break;
                     default:
                         break;
@@ -196,6 +202,7 @@ void Client::senden(string mes){
         this->client.send(mes);
     }
 }
+
 vector<string> Client::explode(const string& str, char delimiter){
     vector<string> tokens;
     stringstream tokenStream(str);
