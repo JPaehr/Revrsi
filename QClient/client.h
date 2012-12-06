@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include <QThread>
-#include "../socket.h"
+#include "socket.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -18,7 +18,9 @@ public:
     int width;
     int height;
     int getAktPlayer();
+    void setStoneClient(int x, int y);
 private:
+    bool debug_mode;
     string name;
     int id, players;
     bool running;
@@ -28,7 +30,6 @@ private:
     int aktPlayer;
     vector<string> playersNames;
     string werte;
-    bool debug_mode;
 
 signals:
     void NetNewField(vector<vector<int> >);

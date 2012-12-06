@@ -1,5 +1,5 @@
 #include "client.h"
-#include "../socket.h"
+#include "socket.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -45,7 +45,7 @@ void Client::run(){
     while(1){
         this->client.recv(s);
             //cout << s << endl;
-            vector<string> empfangen;
+            //vector<string> empfangen;
             if(s.length() > 0){
                 max = count(s.begin(), s.end(), ',')-1;
 
@@ -129,7 +129,7 @@ void Client::run(){
                     case 900:
 
 
-                        emit NetWinVector(QVector<int>);
+                        //emit NetWinVector(QVector<int>);
                         break;
 
                     case 999:
@@ -156,6 +156,28 @@ void Client::run(){
 }
 int Client::getAktPlayer(){
     return this->aktPlayer;
+}
+void Client::setStoneClient(int x, int y){
+    if(this->debug_mode){
+        cout << "x: "<< x << " Y: " << y  << endl;
+    }
+    stringstream sstrX, sstrY, sstrID;
+    string zuSenden;
+    sstrX << x;
+    sstrY << y;
+    sstrID << this->id;
+    zuSenden = "600,";
+    zuSenden += sstrX.str();
+    zuSenden += ",";
+    zuSenden += sstrY.str();
+    zuSenden += ",";
+    zuSenden += sstrID.str();
+    zuSenden += ",";
+
+    if(this->debug_mode){
+        cout << "zu Senden: " << zuSenden << endl;
+    }
+    senden(zuSenden);
 }
 
 void Client::senden(string mes){
