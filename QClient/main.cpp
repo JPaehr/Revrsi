@@ -10,11 +10,13 @@ int main()
     //recv in Thread
     meinCl.start();
 
-
-
-    sleep(1);
-
     //senden
-    meinCl.senden("");
+    //meinCl.senden("");
+
+    //stein vom Client setzen syntax int x, int y -> kann erst aufgerufen werden wenn id bekannt
+    meinCl.setStoneClient(2,2);
+
+    while(1){
+    }
     return 0;
 }

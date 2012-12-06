@@ -41,6 +41,7 @@ void Client::run(){
     int abschnitt = 0;
     int index = 1;
     int max;
+    int winPlus = 0;
 
     while(1){
         this->client.recv(s);
@@ -127,15 +128,41 @@ void Client::run(){
                         break;
                     //winvector
                     case 900:
+                        winPlus = 0;
+                        if(this->debug_mode){
+                            cout << 900 << " getroffen" << endl;
+
+                        }
+
+                        this->winVector[0] = atoi(explode(s, ',')[abschnitt+1].c_str());
+                        this->winVector[1] = atoi(explode(s, ',')[abschnitt+2].c_str());
+                        this->winVector[2] = atoi(explode(s, ',')[abschnitt+3].c_str());
+                        winPlus = 4;
+                        if(this->players >= 3){
+                            this->winVector[3] = atoi(explode(s, ',')[abschnitt+4].c_str());
+                            winPlus= 5;
+                        }
+                        if(this->players == 4){
+                            this->winVector[4] = atoi(explode(s, ',')[abschnitt+5].c_str());
+                            winPlus= 6;
+                        }
+
+                        abschnitt+=winPlus;
 
 
-                        //emit NetWinVector(QVector<int>);
+
+                        emit NetWinVector(this->winVector);
                         break;
 
                     case 999:
-                        //cout << "999 ausgelöst" << endl;
+                        if(this->debug_mode){
+                            cout << "999 ausgelöst" << endl;
+                        }
                         this->aktPlayer = atoi(explode(s, ',')[abschnitt+1].c_str());
-                        //cout << "Spieler " << this->aktPlayer << " ist dran" << endl;
+                        if(this->debug_mode){
+                            cout << "Spieler " << this->aktPlayer << " ist dran" << endl;
+
+                        }
                         abschnitt+=2;
 
                         emit NetAktPlayer(this->aktPlayer);
@@ -181,7 +208,7 @@ void Client::setStoneClient(int x, int y){
 }
 
 void Client::senden(string mes){
-    if(debug_mode){
+    if(this->debug_mode){
         if(mes == ""){
             string mes;
             string x;

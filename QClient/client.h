@@ -21,6 +21,7 @@ public:
     void setStoneClient(int x, int y);
 private:
     bool debug_mode;
+    vector<int> winVector;
     string name;
     int id, players;
     bool running;
@@ -33,7 +34,7 @@ private:
 
 signals:
     void NetNewField(vector<vector<int> >);
-    void NetWinVector(QVector<int>);
+    void NetWinVector(vector<int>);
     void NetGameStart();
     void NetPlayersNames(vector<string>);
     void NetAktPlayer(int);
