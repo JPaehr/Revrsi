@@ -1,43 +1,36 @@
-#ifndef SERVER_H
-#define SERVER_H
-#include <QThread>
-#include "../socket.h"
-#include <string>
-#include <vector>
+#ifndef SUPERSERVER_H
+#define SUPERSERVER_H
+#include"subServer.h"
 #include "Logic.h"
-//#include <QObject>
-#include <QtGui>
+#include <QObject>
+#include <vector>
 
 using namespace std;
-class Server : public QThread
+
+class Server : public QObject
 {
     Q_OBJECT
-signals:
-    void setStone(int, int, int);
-
 public:
-    Server(QObject *parent, string port, int breite, int hoehe, int anzSpieler);
-    void run();
-    void senden(string nachrict);
-    vector<vector<int> > getFelder();
-    string StringSpielstand();
+    Server(int breite, int hoehe, int Spieler);
 
-    vector<vector<int> > fields;
 
-    void initServer();
+    subServer *uServer1;
+    subServer *uServer2;
+    subServer *uServer3;
+    subServer *uServer4;
+public slots:
+    void setStoneControl(int, int, int);
 
 private:
-    Logic *ThreadLogic;
-    vector<std::string> explode(const string& str, char delimiter);
-    int width, height, aktPlayer;
-    int breite, hoehe;
-    string port;
-    Socket sock1, sock2;
-    string empfang;
-    string name;
-    int id;
-    string implode( const string &glue, const vector<string> &pieces );
+    int width, heigth, players;
+
+
+    Logic *logic;
+
+    vector<vector<int> > fields;
+    string StringSpielstand();
+    void SpielStandaktSenden();
 
 };
 
-#endif // SERVER_H
+#endif // SUPERSERVER_H
