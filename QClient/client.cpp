@@ -8,7 +8,8 @@
 
 using namespace std;
 
-Client::Client(string host){
+Client::Client(string host,bool debug_mode = false){
+    this->debug_mode = debug_mode;
     this->running = false;
     string s;
     this->client.create();
@@ -152,38 +153,43 @@ int Client::getAktPlayer(){
 }
 
 void Client::senden(string mes){
-    if(mes == ""){
-        string mes;
-        string x;
-        string y;
-        string senden;
-        stringstream sstr;
-        stringstream sstrY;
-        do {
+    if(debug_mode){
+        if(mes == ""){
+            string mes;
+            string x;
+            string y;
+            string senden;
+            stringstream sstr;
+            stringstream sstrY;
+            do {
 
-            cout << "X: ";
-            cin >> x;
-            cout << "Y: ";
-            cin >> y;
-            cout << endl;
-            senden = "600,";
-            senden += x;
-            senden += ",";
-            senden += y;
-            senden += ",";
-            sstr << this->id;
-            senden += sstr.str();
-            senden += ",";
-            sstr.str("");
+                cout << "X: ";
+                cin >> x;
+                cout << "Y: ";
+                cin >> y;
+                cout << endl;
+                senden = "600,";
+                senden += x;
+                senden += ",";
+                senden += y;
+                senden += ",";
+                sstr << this->id;
+                senden += sstr.str();
+                senden += ",";
+                sstr.str("");
 
-            cout << "das soll gesendet werden " << senden << endl;
+                cout << "das soll gesendet werden " << senden << endl;
 
-            this->client.send(senden);
-            cout << this->getAktPlayer() << " ist dran " << endl;
+                this->client.send(senden);
+                cout << this->getAktPlayer() << " ist dran " << endl;
 
-            cout << "die eigene id: " << this->id <<endl;
+                cout << "die eigene id: " << this->id <<endl;
 
-        } while( mes != "quit" );
+            } while( mes != "quit" );
+        }
+        else{
+            this->client.send(mes);
+        }
     }
     else{
         this->client.send(mes);

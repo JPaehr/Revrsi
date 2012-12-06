@@ -11,12 +11,13 @@ using namespace std;
 class Client: public QThread{
     Q_OBJECT
 public:
-    Client(string host);
+    Client(string host,bool debug_mode);
     void senden(string mes);
     void run();
     int width;
     int height;
     int getAktPlayer();
+    bool debug_mode;
 private:
     string name;
     int id, players;
@@ -26,7 +27,7 @@ private:
     Socket client;
     int aktPlayer;
     vector<string> playersNames;
-    std::string werte = "";
+    std::string werte;
 
 };
 

@@ -5,7 +5,7 @@
 int main()
 {
     std::cout << "Hallo Welt" << std::endl;
-    Client meinCl("localhost");
+    Client meinCl("localhost", 1);
 
     //recv in Thread
     meinCl.start();
