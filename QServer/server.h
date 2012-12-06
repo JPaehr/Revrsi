@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include <QThread>
-#include "socket.h"
+#include "../socket.h"
 #include <string>
 #include <vector>
 #include "Logic.h"

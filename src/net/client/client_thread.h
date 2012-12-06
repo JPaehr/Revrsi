@@ -16,9 +16,13 @@ public:
     client_thread(QObject *parent, client_gui *ClientInterface);
     Client *myClient;
     void run();
+signals:
+    void NetCreateConnects();
+    void NetNewGame();
 public slots:
-    void fieldChange(std::vector<std::vector<int> >);
-
+    void NetFieldChange(std::vector<std::vector<int> >);
+    void NetGameStart();
+    void NetFieldClicked();
 private:
     client_gui *ClientInterface;
     vector<vector<int> > field_vector;

@@ -1,23 +1,23 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include <QThread>
-#include "socket.h"
+#include "../socket.h"
 #include <string>
 #include <iostream>
 #include <vector>
+#include <QVector>
 
 using namespace std;
 
 class Client: public QThread{
     Q_OBJECT
 public:
-    Client(string host,bool debug_mode);
+    Client(string host, bool debug_mode);
     void senden(string mes);
     void run();
     int width;
     int height;
     int getAktPlayer();
-    bool debug_mode;
 private:
     string name;
     int id, players;
@@ -27,7 +27,13 @@ private:
     Socket client;
     int aktPlayer;
     vector<string> playersNames;
-    std::string werte;
+    string werte;
+    bool debug_mode;
+
+signals:
+    void NetNewField(vector<vector<int> >);
+    void NetWinVector(QVector<int>);
+    void NetGameStart();
 
 };
 

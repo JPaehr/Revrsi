@@ -1,5 +1,5 @@
 #include "client.h"
-#include "socket.h"
+#include "../socket.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Client::Client(string host,bool debug_mode = false){
+Client::Client(string host, bool debug_mode = false){
     this->debug_mode = debug_mode;
     this->running = false;
     string s;
@@ -190,11 +190,11 @@ void Client::senden(string mes){
         else{
             this->client.send(mes);
         }
+        //this->client.close();
     }
     else{
         this->client.send(mes);
     }
-    //this->client.close();
 }
 vector<string> Client::explode(const string& str, char delimiter){
     vector<string> tokens;

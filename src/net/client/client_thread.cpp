@@ -5,7 +5,7 @@ client_thread::client_thread(QObject *parent, client_gui *ClientInterface) : QTh
 }
 
 void client_thread::run(){
-    this->myClient = new Client("localhost");
+    this->myClient = new Client("localhost", false);
 
     //recv in Thread
     this->myClient->start();
@@ -21,7 +21,13 @@ void client_thread::run(){
     this->myClient->senden("");
 }
 
-void client_thread::fieldChange(vector<vector<int> > in_field_vector){
+void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
     this->field_vector = in_field_vector;
 
+}
+
+void client_thread::NetGameStart(){
+}
+
+void client_thread::NetFieldClicked(){
 }

@@ -15,6 +15,9 @@ public:
     explicit client_gui(QWidget *parent = 0);
     ~client_gui();
 
+    QVector<QString> getAllNames();
+    QString getPlayerName();
+
 signals:
     void send_startClient();
 

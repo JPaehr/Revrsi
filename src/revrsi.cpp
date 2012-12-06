@@ -129,11 +129,11 @@ void Revrsi::runServer(){
 void Revrsi::runClient(){
     this->ClientThread = new client_thread(this, this->clientInterface);
     this->ClientThread->start();
-    connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(net_field_clicked(std::vector<std::vector<int> >)));
+    connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(std::vector<std::vector<int> >)));
 
 }
 
-void Revrsi::net_field_clicked(vector<vector<int> > new_field){
+void Revrsi::NetFieldClicked(vector<vector<int> > new_field){
     this->new_array = new_field;
 
     this->old_array = this->new_array;
@@ -148,6 +148,15 @@ void Revrsi::net_field_clicked(vector<vector<int> > new_field){
             }
         }
     }
+}
+
+void Revrsi::NetCreateConnects(){
+}
+
+void Revrsi::NetNewGame(){
+}
+
+void Revrsi::NetUpdatePlayer(){
 }
 
 Revrsi::~Revrsi(){

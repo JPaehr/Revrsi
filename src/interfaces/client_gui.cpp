@@ -12,6 +12,14 @@ client_gui::~client_gui(){
     delete ui;
 }
 
+QVector<QString> client_gui::getAllNames()
+{
+}
+
+QString client_gui::getPlayerName()
+{
+}
+
 void client_gui::startClient(){
     emit send_startClient();
 }

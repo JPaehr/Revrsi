@@ -5,13 +5,14 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <QVector>
 
 using namespace std;
 
 class Client: public QThread{
     Q_OBJECT
 public:
-    Client(string host);
+    Client(string host, bool debug_mode);
     void senden(string mes);
     void run();
     int width;
@@ -27,9 +28,12 @@ private:
     int aktPlayer;
     vector<string> playersNames;
     string werte;
+    bool debug_mode;
 
 signals:
-    void fieldChange(vector<vector<int> >);
+    void NetNewField(vector<vector<int> >);
+    void NetWinVector(QVector<int>);
+    void NetGameStart();
 
 };
 

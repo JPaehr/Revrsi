@@ -52,7 +52,11 @@ public slots:
     void runServer();
     void runClient();
 
-    void net_field_clicked(std::vector<std::vector<int> >);
+    void NetFieldClicked(std::vector<std::vector<int> >);
+    void NetCreateConnects();
+    void NetNewGame();
+    void NetUpdatePlayer();
+
 
 private:
     double                  scale;
