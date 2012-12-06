@@ -1,5 +1,6 @@
 #include "client.h"
 #include "socket.h"
+#include "../QServer/socket.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>

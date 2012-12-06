@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include <QThread>
-#include "socket.h"
+#include "../QServer/socket.h"
 #include <string>
 #include <iostream>
 #include <vector>
