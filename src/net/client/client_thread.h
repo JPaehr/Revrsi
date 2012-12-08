@@ -22,10 +22,14 @@ signals:
 public slots:
     void NetFieldChange(std::vector<std::vector<int> >);
     void NetGameStart();
-    void NetFieldClicked();
+    void NetFieldClicked(int, int);
+    void NetSendName(QString);
+    void NetGetID(int);
 private:
     client_gui *ClientInterface;
     vector<vector<int> > field_vector;
+    QVector<QString> playerNames;
+    int ID;
 };
 
 #endif // CLIENT_THREAD_H

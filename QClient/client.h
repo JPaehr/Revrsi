@@ -19,6 +19,7 @@ public:
     int height;
     int getAktPlayer();
     void setStoneClient(int x, int y);
+    void sendNameClient(QString ownName);
 private:
     bool debug_mode;
     vector<int> winVector;
@@ -33,12 +34,13 @@ private:
     string werte;
 
 signals:
-    void NetNewField(vector<vector<int> >);
+    void NetNewField(vector<int>);
     void NetWinVector(vector<int>);
     void NetGameStart();
     void NetPlayersNames(vector<string>);
     void NetAktPlayer(int);
-
+    void NetGameValues(int, int, int);
+    void NetGotID(int);
 };
 
 #endif // CLIENT_H

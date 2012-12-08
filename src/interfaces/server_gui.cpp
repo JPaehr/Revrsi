@@ -7,7 +7,7 @@ server_gui::server_gui(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->startServer_button,SIGNAL(clicked()),this,SLOT(setupServer()));
-
+    connect(ui->starGame_button,SIGNAL(clicked()),this,SLOT(NetSendStartGame()));
 }
 
 server_gui::~server_gui(){
@@ -41,5 +41,10 @@ QVector<int> server_gui::getGameValues()
 
 void server_gui::setupServer(){
     emit startServer();
+    ui->starGame_button->setEnabled(true);
+}
+
+void server_gui::NetSendStartGame(){
+    emit NetStartGame();
 }
 

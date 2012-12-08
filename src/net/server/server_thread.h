@@ -9,7 +9,7 @@
 #include <string>
 #include <QObject>
 #include "../../interfaces/server_gui.h"
-#include "superserver.h"
+#include "server.h"
 
 using namespace std;
 
@@ -19,6 +19,8 @@ class server_thread : public QThread
 public:
     server_thread(QObject *parent, server_gui *serverInterface);
     void run();
+public slots:
+    void NetServerStartGame();
 
 private:
     Server *meinServer;

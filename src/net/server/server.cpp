@@ -1,167 +1,138 @@
 #include "server.h"
+#include "subServer.h"
+//#include "Logic.h"
+//#include <vector>
+#include <string>
 #include <iostream>
 #include <sstream>
-#include <vector>
 
 using namespace std;
 
-Server::Server(QObject *parent, string port, int breite, int hoehe, int anzSpieler) : QThread(parent){
-    //this->fields.assign(hoehe,vector<int>(breite,0));
-    /*
-    this->ThreadLogic = new Logic(breite, hoehe, anzSpieler);
-    this->ThreadLogic->setInitStones();
-    this->fields = this->ThreadLogic->getFields();
-    */
-    this->breite = breite;
-    this->hoehe = hoehe;
-    this->port = port;
-}
-void Server::initServer(){
-    cout << "Hier war ich Server" << endl;
-    this->sock1.create();
-    cout << "Server erstellt" << endl;
-    this->sock1.bind(55312);
-    cout << "Server gebunden" << endl;
-    this->sock1.listen();
-    cout << "Server hoert zu" << endl;
-    this->sock1.accept(this->sock2);
-    cout << "Server akzeptiert" << endl;
-    this->sock2.send(port);
+Server::Server(int breite, int hoehe, int Spieler){
 
-    this->sock2.close();
-    this->sock1.close();
-
-    this->sock1.create();
-
-    stringstream sstr(port);
-
-    int nport;
-    sstr >> nport;
-
-    this->sock1.bind(nport);
-    this->sock1.listen();
-    this->sock1.accept(this->sock2);
-}
-
-void Server::run(){
-    string s;
-
-    int abschnitt = 0;
-    int index = 1;
-    int max;
-
-    while(1){
-        if(this->sock2.recv(s)){
-            cout << s << endl;
-            vector<string> empfangen;
-            if(s.length() > 0){
-                max = count(s.begin(), s.end(), ',')-1;
-
-                while(abschnitt < max){
-
-                    cout << "aktueller erster wert: " << atoi(explode(s, ',')[abschnitt].c_str()) << endl;
-                    switch(atoi(explode(s, ',')[abschnitt].c_str())){
-
-                    //Spieler weg
-                    case 201:
-                        break;
-                    //Spielstart
-
-                    //Status
-                    case 300:
-                        break;
-
-                    case 222:
-                        if(this->id == atoi(explode(s, 's')[abschnitt+2].c_str())){
-                            this->name = explode(s, ',')[abschnitt+1].c_str();
-                        }
-                        else{
-                            cout << "Client mit nicht zugewiesener oder falscher id hat versucht seinen Name zu verschicken" << endl;
-                            cout << "empfangene id: " << atoi(explode(s, 's')[abschnitt+2].c_str()) << endl;
-                            cout << "eigentliche id: " << this->id;
-                        }
-
-                    //breite, hoehe, id von Client an Server
-                    case 600:
-                        cout << "in600spalte" << endl;
-                        int zeile, spalte,id;
-
-                        spalte = atoi(explode(s, ',')[abschnitt+1].c_str());
-                        zeile = atoi(explode(s, ',')[abschnitt+2].c_str());
-                        id = atoi(explode(s, ',')[abschnitt+3].c_str());
-
-
-                        cout << "Client " << id << " will setzen auf: x = "<<spalte << " y = "<< zeile << endl;
-                        abschnitt+=4;
-                        /*if(id == this->aktPlayer){
-
-                            this->ThreadLogic->setField(spalte, zeile);
-                            this->fields = this->ThreadLogic->getFields();
-                            //senden(StringSpielstand());
-                        }*/
-                        cout << "emit ab hier" << endl;
-                        emit this->setStone(spalte, zeile, id);
-
-                        break;
-                    default:
-                        break;
-
-                    }
-                }
-                abschnitt = 0;
-                index = 1;
-
-
-            }
-            s.clear();
-
-        }
+    this->uServer1 = new subServer(this,"55313", breite, hoehe, Spieler);
+    this->uServer2 = new subServer(this,"55314", breite, hoehe, Spieler);
+    if(Spieler >= 3){
+        this->uServer3 = new subServer(this,"55315", breite, hoehe, Spieler);
+    }
+    if(Spieler == 4){
+        this->uServer4 = new subServer(this,"55316", breite, hoehe, Spieler);
+    }
+    QObject::connect(this->uServer1,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+    QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+    if(Spieler >= 3){
+        QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
+    }
+    if(Spieler == 4){
+        QObject::connect(this->uServer4,SIGNAL(setStone(int, int, int)),
+                     this,SLOT(setStoneControl(int, int, int)));
     }
 
-    cout << this->empfang << endl;
-}
-void Server::senden(string nachricht){
+    stringstream String100;
+    String100 << "100,";
+    String100 << breite;
+    String100 << ",";
+    String100 << hoehe;
+    String100 << ",";
+    String100 << Spieler;
+    String100 << ",";
+    cout << String100.str() << endl;
 
-    this->sock2.send( nachricht );
-}
-vector<vector<int> > Server::getFelder(){
-    return this->fields;
-}
-string implode( const string &glue, const vector<string> &pieces )
-{
-    string a;
-    int leng=pieces.size();
-    for(int i=0; i<leng; i++)
-    {
-        a+= pieces[i];
-        if (  i < (leng-1) )
-            a+= glue;
+
+    this->logic = new Logic(breite, hoehe, Spieler);
+    this->logic->setInitStones();
+    this->fields = this->logic->getFields();
+
+    this->width = breite;
+    this->heigth = hoehe;
+    this->players = Spieler;
+
+    this->uServer1->initServer();
+    this->uServer1->start();
+    this->uServer1->senden("800,1,"); //Neue Client ID
+    this->uServer1->senden("999,1,"); //Akt Player
+    this->uServer1->senden(String100.str()); //Code 100 FeldDaten breite höhe spielernum
+    this->uServer1->senden(StringSpielstand()); //Code 500 FeldVektor senden
+
+    this->uServer2->initServer();
+    this->uServer2->start();
+    this->uServer2->senden("800,2,"); //Neue Client ID
+    this->uServer2->senden("999,1,"); //Akt Player
+    this->uServer2->senden(String100.str()); //Code 100
+    this->uServer2->senden(StringSpielstand()); //Code 500
+
+    if(Spieler >= 3){
+        this->uServer3->initServer();
+        //this->uServer3 = new Server("55315", breite, hoehe, Spieler, this);
+        this->uServer3->start();
+        this->uServer3->senden("800,3,");
+        this->uServer3->senden("999,1,");
+        this->uServer3->senden(String100.str());
+        this->uServer3->senden(StringSpielstand());
     }
-    return a;
+    if(Spieler == 4){
+        this->uServer4->initServer();
+        //this->uServer4 = new Server("55316", breite, hoehe, Spieler, this);
+        this->uServer4->start();
+        this->uServer4->senden("800,4,");
+        this->uServer4->senden("999,1,");
+        this->uServer4->senden(String100.str());
+        this->uServer4->senden(StringSpielstand());
+    }
+}
+
+void Server::globalSend(string msg){
+    cout << "Server Message To Send\t" << msg << endl;
+    this->uServer1->senden(msg);
+    this->uServer2->senden(msg);
+    if(this->players >= 3){
+        this->uServer3->senden(msg);
+    }
+    if(this->players == 4){
+        this->uServer4->senden(msg);
+    }
+}
+void Server::SpielStandaktSenden(){
+    this->uServer1->senden(StringSpielstand());
+    this->uServer2->senden(StringSpielstand());
+    if(this->players >= 3){
+        this->uServer3->senden(StringSpielstand());
+    }
+    if(this->players == 4){
+        this->uServer4->senden(StringSpielstand());
+    }
 }
 
 string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;
+    stringstream sstr;
     spielstand = "500,";
-    for(int i = 0; i < this->hoehe; i++){
-        for(int j = 0; j < this->breite; j++){
-            anhang << this->fields[i][j];
+    for(int i = 0; i < this->heigth; i++){
+        for(int j = 0; j < this->width; j++){
+            anhang << this->logic->getFields()[i][j];
             spielstand += anhang.str();
             spielstand += ",";
+
             anhang.str("");
         }
     }
+    spielstand += "999,";
+    sstr << this->logic->getAktPlayer();
+    spielstand += sstr.str();
+    spielstand += ",";
+    sstr.str("");
+    cout << "Spielstand Senden: " << spielstand << endl;
     return spielstand;
 }
+void Server::setStoneControl(int spalte, int hoehe, int id){
 
-vector<string> Server::explode(const string& str, char delimiter){
-    vector<string> tokens;
-    stringstream tokenStream(str);
-    string tempStr;
-
-    while(getline(tokenStream, tempStr, delimiter))
-        tokens.push_back(tempStr);
-
-    return tokens;
+    cout << "StoneControl ausgefuehrt" << endl;
+    cout << spalte << " " << hoehe << " " << id << endl;
+    if(this->logic->getAktPlayer() == id){
+        this->logic->setField(spalte, hoehe);
+    }
+    SpielStandaktSenden();
 }
+

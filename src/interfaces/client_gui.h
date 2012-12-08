@@ -16,16 +16,24 @@ public:
     ~client_gui();
 
     QVector<QString> getAllNames();
-    QString getPlayerName();
 
 signals:
     void send_startClient();
+    void addPlayerS(std::vector<std::string>);
+    void sendOwnName(QString);
 
 public slots:
     void startClient();
+    void NetAddPlayer(std::vector<std::string>);
+    void addPlayer(std::vector<std::string>);
+    void getPlayerNameOnChange(QString);
     
 private:
     Ui::client_gui *ui;
+    QVector<std::vector<std::string> > NetPlayerNames;
+    int playerCounter;
+    QString ownName;
+    QString getPlayerName();
 };
 
 #endif // CLIENT_GUI_H

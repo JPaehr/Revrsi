@@ -366,6 +366,29 @@
     </item>
    </layout>
   </widget>
+  <widget class="QLabel" name="spielername_label">
+   <property name="geometry">
+    <rect>
+     <x>292</x>
+     <y>183</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Spielername</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="spielername_lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>180</y>
+     <width>113</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>

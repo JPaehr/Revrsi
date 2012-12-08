@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include <QThread>
-#include "../socket.h"
+#include "../QServer/socket.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -18,7 +18,11 @@ public:
     int width;
     int height;
     int getAktPlayer();
+    void setStoneClient(int x, int y);
+    void sendNameClient(QString ownName);
 private:
+    bool debug_mode;
+    vector<int> winVector;
     string name;
     int id, players;
     bool running;
@@ -28,13 +32,15 @@ private:
     int aktPlayer;
     vector<string> playersNames;
     string werte;
-    bool debug_mode;
 
 signals:
-    void NetNewField(vector<vector<int> >);
-    void NetWinVector(QVector<int>);
+    void NetNewField(vector<int>);
+    void NetWinVector(vector<int>);
     void NetGameStart();
-
+    void NetPlayersNames(vector<string>);
+    void NetAktPlayer(int);
+    void NetGameValues(int, int, int);
+    void NetGotID(int);
 };
 
 #endif // CLIENT_H

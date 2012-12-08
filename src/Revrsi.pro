@@ -27,8 +27,8 @@ SOURCES += main.cpp\
     net/server/server.cpp \
     net/socket.cpp \
     net/client/client.cpp \
-    net/server/superserver.cpp \
-    net/client/client_thread.cpp
+    net/client/client_thread.cpp \
+    net/server/subServer.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -44,9 +44,9 @@ HEADERS  += revrsi.h \
     net/server/server.h \
     net/socket.h \
     net/client/client.h \
-    net/server/superserver.h \
     net/server/server_thread.h \
-    net/client/client_thread.h
+    net/client/client_thread.h \
+    net/server/subServer.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \

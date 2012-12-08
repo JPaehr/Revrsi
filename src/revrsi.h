@@ -32,6 +32,9 @@ signals:
     void win(QVector<int>, QVector<QString>);
     void delayedStart();
 
+    //Network
+    void NetFieldClickedTransmit(int, int);
+
 public slots:
     void test_slot();
     void server_gui_slot();
@@ -49,13 +52,18 @@ public slots:
     void warpStart();
 
     //Netzwerk
+    void setNetModeEnabled();
+    void setNetModeDisabled();
     void runServer();
     void runClient();
 
-    void NetFieldClicked(std::vector<std::vector<int> >);
-    void NetCreateConnects();
+    void NetNewFieldSL(vector<int>);
+    void NetCreateConnectsSL();
     void NetNewGame();
-    void NetUpdatePlayer();
+    void NetUpdatePlayer(int);
+    void NetFieldClickedTransmithelper(int,int);
+    void NetSetGameValues(int, int, int);
+    void NetUpdateWinVector(vector<int>);
 
 
 private:
@@ -94,12 +102,15 @@ private:
     bool    direction;
     int animatedPlayer;
 
+    bool NetMode;
+    bool NetGameStart;
+
     bool firstRun;
 
     void change_token(int x, int y,  int player);
-    void init_placeTokens(Logic *logic);
+    void init_placeTokens();
     void new_game();
-    void placeTokens(Logic *logic);
+    //void placeTokens();
     void set_scale(double scale = 50);
     void setupBackground(int x, int y);
     void setupToken(int x, int y,  int player);

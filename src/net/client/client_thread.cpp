@@ -6,7 +6,7 @@ client_thread::client_thread(QObject *parent, client_gui *ClientInterface) : QTh
 
 void client_thread::run(){
     this->myClient = new Client("localhost", false);
-
+    emit NetCreateConnects();
     //recv in Thread
     this->myClient->start();
 
@@ -18,7 +18,10 @@ void client_thread::run(){
     //while(this->message == "NONE"){
 
     //}
-    this->myClient->senden("");
+    //while(1){
+        //this->myClient->senden("");
+    //}
+    this->exec();
 }
 
 void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
@@ -27,7 +30,19 @@ void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
 }
 
 void client_thread::NetGameStart(){
+    this->playerNames = this->ClientInterface->getAllNames();
+    this->ClientInterface->setVisible(false);
+    emit NetNewGame();
 }
 
-void client_thread::NetFieldClicked(){
+void client_thread::NetFieldClicked(int x, int y){
+    this->myClient->setStoneClient(x,y);
+}
+
+void client_thread::NetSendName(QString ownName){
+    this->myClient->sendNameClient(ownName);
+}
+
+void client_thread::NetGetID(int id){
+    this->ID = id;
 }

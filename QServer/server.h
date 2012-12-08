@@ -1,7 +1,7 @@
 #ifndef SUPERSERVER_H
 #define SUPERSERVER_H
 #include"subServer.h"
-#include "Logic.h"
+#include "../../Logic.h"
 #include <QObject>
 #include <vector>
 
@@ -12,7 +12,7 @@ class Server : public QObject
     Q_OBJECT
 public:
     Server(int breite, int hoehe, int Spieler);
-
+    void globalSend(std::string msg);
 
     subServer *uServer1;
     subServer *uServer2;

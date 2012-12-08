@@ -31,6 +31,9 @@ Revrsi::Revrsi(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     //this->atest = new anim_test;
 
+    this->NetMode = false;
+    this->NetGameStart = false;
+
     this->setupBackgroundTheme();
 
     this->animatedPlayer = 0;
@@ -75,7 +78,8 @@ Revrsi::Revrsi(QWidget *parent) :
     //Network MODE
     connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
     connect(this->clientInterface,SIGNAL(send_startClient()),this,SLOT(runClient()));
-
+    connect(ui->actionClient,SIGNAL(triggered()),this,SLOT(setNetModeEnabled()));
+    connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(setNetModeDisabled()));
 }
 
 
@@ -121,42 +125,135 @@ void Revrsi::warpStart(){
     this->new_game();
 }
 
+void Revrsi::setNetModeEnabled(){
+    this->NetMode = true;
+}
+
+void Revrsi::setNetModeDisabled(){
+    this->NetMode = false;
+}
+
 void Revrsi::runServer(){
     this->ServerThread = new server_thread(this, this->serverInterface);
     this->ServerThread->start();
+    connect(this->serverInterface,SIGNAL(NetStartGame()),this->ServerThread,SLOT(NetServerStartGame()));
 }
 
 void Revrsi::runClient(){
     this->ClientThread = new client_thread(this, this->clientInterface);
+    connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
     this->ClientThread->start();
-    connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(std::vector<std::vector<int> >)));
-
 }
 
-void Revrsi::NetFieldClicked(vector<vector<int> > new_field){
-    this->new_array = new_field;
+//Funktion die nach einem Click ausgeführt wird. Um neue Felder zu setzen
+void Revrsi::NetNewFieldSL(vector<int> new_field){
+    int index = 0;
+    for(int i = 0; i < this->height; i++){
+        for(int j = 0; j < this->width; j++){
+            this->new_array[i][j] = new_field[index];
+            index++;
+        }
+    }
+    //this->new_array = new_field;
 
-    this->old_array = this->new_array;
-    this->new_array = this->logic->getFields();
-    for(uint i = 0 ; i<this->new_array.size() ; i++){
-        for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
-            if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
-                this->setupToken(ii,i,this->new_array[i][ii]);
-            }
-            else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
-                this->change_token(ii,i,this->new_array[i][ii]);
+    if(this->NetGameStart){
+        this->old_array = this->new_array;
+        this->new_array = this->logic->getFields();
+        for(uint i = 0 ; i<this->new_array.size() ; i++){
+            for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
+                if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
+                    this->setupToken(ii,i,this->new_array[i][ii]);
+                }
+                else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
+                    this->change_token(ii,i,this->new_array[i][ii]);
+                }
             }
         }
     }
 }
 
-void Revrsi::NetCreateConnects(){
+void Revrsi::NetCreateConnectsSL(){
+    out << "\n\nIm in Create COnnects\n\n";
+    connect(this->ClientThread->myClient,SIGNAL(NetNewField(vector<int>)),this,SLOT(NetNewFieldSL(vector<int>)));
+    connect(this->ClientThread->myClient,SIGNAL(NetGameStart()),this,SLOT(NetNewGame()));
+    connect(this->ClientThread->myClient,SIGNAL(NetWinVector(vector<int>)),this,SLOT(NetUpdateWinVector(vector<int>)));
+    connect(this,SIGNAL(NetFieldClickedTransmit(int,int)),this->ClientThread,SLOT(NetFieldClicked(int, int)));
+    connect(this->ClientThread->myClient,SIGNAL(NetAktPlayer(int)),this,SLOT(NetUpdatePlayer(int)));
+    connect(this->clientInterface,SIGNAL(sendOwnName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
+    connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
+    //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
 }
 
 void Revrsi::NetNewGame(){
+    this->NetGameStart = true;
+    this->new_game();
 }
 
-void Revrsi::NetUpdatePlayer(){
+void Revrsi::NetUpdatePlayer(int NetAktPlayer){
+    if(NetAktPlayer == 1){
+        ui->Akt_Spieler_Label->setText(QString("Schwarz"));
+    }
+    else if(NetAktPlayer == 2){
+        ui->Akt_Spieler_Label->setText("Orange");
+    }
+    else if(NetAktPlayer == 3){
+        ui->Akt_Spieler_Label->setText("Grün");
+    }
+    else if(NetAktPlayer == 4){
+        ui->Akt_Spieler_Label->setText("Blau");
+    }
+
+    for(int i = 1; i<=this->player_num; i++){
+        if(i == NetAktPlayer){
+            this->p_fields[i-1]->setActive(true);
+            this->p_fields[i-1]->setTokensVisible(false);
+        }
+        else{
+            this->p_fields[i-1]->setActive(false);
+            this->p_fields[i-1]->setTokensVisible(true);
+        }
+    }
+}
+
+void Revrsi::NetFieldClickedTransmithelper(int x, int y){
+    emit NetFieldClickedTransmit(x, y);
+}
+
+void Revrsi::NetSetGameValues(int width, int height, int player_num){
+    this->width = width;
+    this->height = height;
+    this->player_num = player_num;
+}
+
+void Revrsi::NetUpdateWinVector(vector<int> WinVector){
+    for(uint i = 0; i < WinVector.size(); i++){
+        //std::string t;
+        //t = WinVector[i];
+        //QString qt;
+        //qt.fromStdString(t);
+        //int pb = qt.toInt();
+        this->win_vector.push_back(WinVector[i]);
+    }
+    //this->win_vector = WinVector;
+
+    if(this->win_vector[0] != -1){
+        QVector<int> vector_to_convert;
+        for(int i = 0, size = this->win_vector.size(); i < size;i++){
+            vector_to_convert.push_back(this->win_vector[i]);
+        }
+        this->winInterface->show();
+        emit this->win(vector_to_convert, this->playerNames);
+    }
+    else{
+        p_fields[0]->setTokens(this->win_vector[1]);
+        p_fields[1]->setTokens(this->win_vector[2]);
+        if(this->player_num == 3){
+            p_fields[2]->setTokens(this->win_vector[3]);
+        }
+        if(this->player_num == 4){
+            p_fields[3]->setTokens(this->win_vector[4]);
+        }
+    }
 }
 
 Revrsi::~Revrsi(){
@@ -251,8 +348,10 @@ void Revrsi::client_gui_slot(){
     this->clientInterface->show();
 }
 
-void Revrsi::init_placeTokens(Logic *logic){
-    this->new_array = logic->getFields();
+void Revrsi::init_placeTokens(){
+    if(!this->NetMode){
+        this->new_array = this->logic->getFields();
+    }
     for(uint i = 0 ; i<this->new_array.size() ; i++){
         for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
             if(this->new_array[i][ii]){
@@ -347,24 +446,33 @@ void Revrsi::new_game(){
         this->TokenContainer->~TokenItem();
         //this->scene->removeItem(this->TokenContainer);
     }
+
     // Lese neue Spieldaten
-    if(!this->firstRun){
+    if(!this->firstRun && !this->NetMode){
         this->player_num = ngs->get_choosen_number();
         this->width = ngs->get_field_size().x();
         this->height = ngs->get_field_size().y();
     }
 
     // Erstelle neue Logicklasse
-    this->logic = new Logic(this->width,this->width,this->player_num);
-    logic->setInitStones();
-    this->new_array = logic->getFields();
+    if(!this->NetMode){
+        this->logic = new Logic(this->width,this->width,this->player_num);
+        logic->setInitStones();
+        this->new_array = logic->getFields();
+    }
 
     // Setup Background und InitStones
     this->setupBackground(this->width,this->height);
-    this->init_placeTokens(logic);
+    this->init_placeTokens();
 
     //Setup Players
-    this->playerNames = ngs->get_player_names();
+    if(!this->NetMode){
+        this->playerNames = ngs->get_player_names();
+    }
+    else{
+        this->playerNames = this->clientInterface->getAllNames();
+    }
+
     this->addPlayersToList();
 
     //Run Animation
@@ -375,10 +483,10 @@ void Revrsi::new_game(){
     this->firstRun = false;
 }
 
-void Revrsi::placeTokens(Logic *logic){
+/*void Revrsi::placeTokens(){
     this->old_array = this->new_array;
     this->new_array = logic->getFields();
-}
+}*/
 
 void Revrsi::setupBackground(int x, int y){
     QPixmap back_pic1;
@@ -437,7 +545,12 @@ void Revrsi::setupBackground(int x, int y){
                 item->set_scale(smaller_value/x);
                 this->set_scale(smaller_value/x);
 
-                connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
+                if(this->NetMode){
+                    connect(item, SIGNAL(FieldClicked(int,int)),this, SLOT(NetFieldClickedTransmithelper(int,int)));
+                }
+                else{
+                    connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
+                }
 
                 this->fields.push_back(item);
                 if(this->FieldBackSet == false){this->setupFieldBack();this->FieldBackSet = true;}

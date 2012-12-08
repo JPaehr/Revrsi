@@ -17,9 +17,11 @@ public:
     QVector<int> getGameValues();
 signals:
     void startServer();
+    void NetStartGame();
 
 public slots:
     void setupServer();
+    void NetSendStartGame();
 
 private:
     Ui::server_gui *ui;

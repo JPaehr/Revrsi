@@ -7,6 +7,6 @@ anim_test::anim_test(QObject *parent) : QThread(parent){
 
 void anim_test::run(){
     out << "im in thread";
-        sleep(2);
+        sleep(1);
         emit delayedStart();
 }

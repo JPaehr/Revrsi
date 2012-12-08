@@ -1,7 +1,7 @@
 #include "server.h"
 #include "subServer.h"
-#include "Logic.h"
-#include <vector>
+//#include "Logic.h"
+//#include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -50,17 +50,17 @@ Server::Server(int breite, int hoehe, int Spieler){
 
     this->uServer1->initServer();
     this->uServer1->start();
-    this->uServer1->senden("800,1,");
-    this->uServer1->senden("999,1,");
-    this->uServer1->senden(String100.str());
-    this->uServer1->senden(StringSpielstand());
+    this->uServer1->senden("800,1,"); //Neue Client ID
+    this->uServer1->senden("999,1,"); //Akt Player
+    this->uServer1->senden(String100.str()); //Code 100 FeldDaten breite höhe spielernum
+    this->uServer1->senden(StringSpielstand()); //Code 500 FeldVektor senden
 
     this->uServer2->initServer();
     this->uServer2->start();
-    this->uServer2->senden("800,2,");
-    this->uServer2->senden("999,1,");
-    this->uServer2->senden(String100.str());
-    this->uServer2->senden(StringSpielstand());
+    this->uServer2->senden("800,2,"); //Neue Client ID
+    this->uServer2->senden("999,1,"); //Akt Player
+    this->uServer2->senden(String100.str()); //Code 100
+    this->uServer2->senden(StringSpielstand()); //Code 500
 
     if(Spieler >= 3){
         this->uServer3->initServer();
@@ -79,7 +79,18 @@ Server::Server(int breite, int hoehe, int Spieler){
         this->uServer4->senden("999,1,");
         this->uServer4->senden(String100.str());
         this->uServer4->senden(StringSpielstand());
+    }
+}
 
+void Server::globalSend(string msg){
+    cout << "Server Message To Send\t" << msg << endl;
+    this->uServer1->senden(msg);
+    this->uServer2->senden(msg);
+    if(this->players >= 3){
+        this->uServer3->senden(msg);
+    }
+    if(this->players == 4){
+        this->uServer4->senden(msg);
     }
 }
 void Server::SpielStandaktSenden(){

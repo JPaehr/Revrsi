@@ -1,6 +1,6 @@
 #include "client.h"
-#include "socket.h"
-#include "../QServer/socket.h"
+//#include "socket.h"
+//#include "../QServer/socket.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -43,6 +43,7 @@ void Client::run(){
     int index = 1;
     int max;
     int winPlus = 0;
+    vector<int> vec;
 
     while(1){
         this->client.recv(s);
@@ -64,6 +65,7 @@ void Client::run(){
                         abschnitt+=4;
                         //cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
                         this->fields.assign(this->height,vector<int>(this->width,0));
+                        emit NetGameValues(this->width, this->height, this->players);
                         break;
                     //Spielername, id <-vom server zugewiesen
                     case 200:
@@ -72,6 +74,7 @@ void Client::run(){
                         this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] = explode(s, ',')[abschnitt+1].c_str();
                         //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
                         abschnitt+=3;
+
 
                         emit NetPlayersNames(this->playersNames);
                         break;
@@ -112,7 +115,15 @@ void Client::run(){
                         */
 
                         index = 1;
-                        emit NetNewField(this->fields);
+
+                        //Muss sein, da std::vector<std::vector<int>> nicht über connect übermittelt werden kann
+                        for(int i = 0; i < this->height; i++){
+                            for(int j = 0; j < this->width; j++){
+                                //this->fields[i][j] = atoi(explode(s, ',')[abschnitt+index].c_str());
+                                vec.push_back(this->fields[i][j]);
+                            }
+                        }
+                        emit NetNewField(vec);
 
                     break;
 
@@ -125,7 +136,7 @@ void Client::run(){
 
 
                         abschnitt+=2;
-
+                        emit NetGotID(this->id);
                         break;
                     //winvector
                     case 900:
@@ -198,6 +209,25 @@ void Client::setStoneClient(int x, int y){
     zuSenden += sstrX.str();
     zuSenden += ",";
     zuSenden += sstrY.str();
+    zuSenden += ",";
+    zuSenden += sstrID.str();
+    zuSenden += ",";
+
+    if(this->debug_mode){
+        cout << "zu Senden: " << zuSenden << endl;
+    }
+    senden(zuSenden);
+}
+
+void Client::sendNameClient(QString ownName){
+    if(this->debug_mode){
+        cout << "Client Name: "<< QString(ownName).toStdString() << " Y: " << endl;
+    }
+    stringstream sstrX, sstrY, sstrID;
+    string zuSenden;
+    sstrID << this->id;
+    zuSenden = "222,";
+    zuSenden += ownName.toStdString();
     zuSenden += ",";
     zuSenden += sstrID.str();
     zuSenden += ",";
