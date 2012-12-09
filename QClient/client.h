@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <QVector>
+#include <QMetaType>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     int getAktPlayer();
     void setStoneClient(int x, int y);
     void sendNameClient(QString ownName);
+    vector<vector<int> > getFields();
 private:
     bool debug_mode;
     vector<int> winVector;
@@ -34,7 +36,7 @@ private:
     string werte;
 
 signals:
-    void NetNewField(vector<int>);
+    void NetNewField();
     void NetWinVector(vector<int>);
     void NetGameStart();
     void NetPlayersNames(vector<string>);

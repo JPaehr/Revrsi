@@ -43,7 +43,6 @@ void Client::run(){
     int index = 1;
     int max;
     int winPlus = 0;
-    vector<int> vec;
 
     while(1){
         this->client.recv(s);
@@ -115,15 +114,7 @@ void Client::run(){
                         */
 
                         index = 1;
-
-                        //Muss sein, da std::vector<std::vector<int>> nicht über connect übermittelt werden kann
-                        for(int i = 0; i < this->height; i++){
-                            for(int j = 0; j < this->width; j++){
-                                //this->fields[i][j] = atoi(explode(s, ',')[abschnitt+index].c_str());
-                                vec.push_back(this->fields[i][j]);
-                            }
-                        }
-                        emit NetNewField(vec);
+                        emit NetNewField();
 
                     break;
 
@@ -236,6 +227,10 @@ void Client::sendNameClient(QString ownName){
         cout << "zu Senden: " << zuSenden << endl;
     }
     senden(zuSenden);
+}
+
+vector<vector<int> > Client::getFields(){
+    return this->fields;
 }
 
 void Client::senden(string mes){

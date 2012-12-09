@@ -15,21 +15,25 @@ class client_thread : public QThread
 public:
     client_thread(QObject *parent, client_gui *ClientInterface);
     Client *myClient;
+    vector<vector<int> > getFields();
     void run();
 signals:
     void NetCreateConnects();
     void NetNewGame();
+    void NetNewFields();
 public slots:
     void NetFieldChange(std::vector<std::vector<int> >);
     void NetGameStart();
     void NetFieldClicked(int, int);
     void NetSendName(QString);
     void NetGetID(int);
+    void NetGetNewField();
 private:
     client_gui *ClientInterface;
     vector<vector<int> > field_vector;
     QVector<QString> playerNames;
     int ID;
+    vector<vector<int> > fields;
 };
 
 #endif // CLIENT_THREAD_H

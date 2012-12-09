@@ -4,6 +4,10 @@ client_thread::client_thread(QObject *parent, client_gui *ClientInterface) : QTh
     this->ClientInterface = ClientInterface;
 }
 
+vector<vector<int> > client_thread::getFields(){
+    return this->fields;
+}
+
 void client_thread::run(){
     this->myClient = new Client("localhost", false);
     emit NetCreateConnects();
@@ -45,4 +49,9 @@ void client_thread::NetSendName(QString ownName){
 
 void client_thread::NetGetID(int id){
     this->ID = id;
+}
+
+void client_thread::NetGetNewField(){
+    this->fields = this->myClient->getFields();
+    emit NetNewFields();
 }

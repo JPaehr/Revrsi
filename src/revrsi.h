@@ -57,7 +57,7 @@ public slots:
     void runServer();
     void runClient();
 
-    void NetNewFieldSL(vector<int>);
+    void NetNewFieldSL();
     void NetCreateConnectsSL();
     void NetNewGame();
     void NetUpdatePlayer(int);

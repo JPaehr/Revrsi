@@ -141,20 +141,13 @@ void Revrsi::runServer(){
 
 void Revrsi::runClient(){
     this->ClientThread = new client_thread(this, this->clientInterface);
-    connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
     this->ClientThread->start();
+    connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
 }
 
 //Funktion die nach einem Click ausgeführt wird. Um neue Felder zu setzen
-void Revrsi::NetNewFieldSL(vector<int> new_field){
-    int index = 0;
-    for(int i = 0; i < this->height; i++){
-        for(int j = 0; j < this->width; j++){
-            this->new_array[i][j] = new_field[index];
-            index++;
-        }
-    }
-    //this->new_array = new_field;
+void Revrsi::NetNewFieldSL(){
+    this->new_array = this->ClientThread->getFields();
 
     if(this->NetGameStart){
         this->old_array = this->new_array;
@@ -174,7 +167,9 @@ void Revrsi::NetNewFieldSL(vector<int> new_field){
 
 void Revrsi::NetCreateConnectsSL(){
     out << "\n\nIm in Create COnnects\n\n";
-    connect(this->ClientThread->myClient,SIGNAL(NetNewField(vector<int>)),this,SLOT(NetNewFieldSL(vector<int>)));
+    //connect(this->ClientThread->myClient,SIGNAL(NetNewField(vector<int>)),this,SLOT(NetNewFieldSL(vector<int>)));
+    connect(this->ClientThread,SIGNAL(NetNewFields()),this,SLOT(NetNewFieldSL()));
+    connect(this->ClientThread->myClient,SIGNAL(NetNewField()),this->ClientThread,SLOT(NetGetNewField()));
     connect(this->ClientThread->myClient,SIGNAL(NetGameStart()),this,SLOT(NetNewGame()));
     connect(this->ClientThread->myClient,SIGNAL(NetWinVector(vector<int>)),this,SLOT(NetUpdateWinVector(vector<int>)));
     connect(this,SIGNAL(NetFieldClickedTransmit(int,int)),this->ClientThread,SLOT(NetFieldClicked(int, int)));
