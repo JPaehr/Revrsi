@@ -147,6 +147,7 @@ void Revrsi::runClient(){
 
 //Funktion die nach einem Click ausgeführt wird. Um neue Felder zu setzen
 void Revrsi::NetNewFieldSL(){
+    cout << "Revrsi SLOT:\t" << "NetNewFieldsSL" << endl;
     this->new_array = this->ClientThread->getFields();
 
     if(this->NetGameStart){
@@ -166,25 +167,28 @@ void Revrsi::NetNewFieldSL(){
 }
 
 void Revrsi::NetCreateConnectsSL(){
-    out << "\n\nIm in Create COnnects\n\n";
+    cout << "Revrsi SLOT:\t" << "NetCreateConnects" << endl;
     //connect(this->ClientThread->myClient,SIGNAL(NetNewField(vector<int>)),this,SLOT(NetNewFieldSL(vector<int>)));
     connect(this->ClientThread,SIGNAL(NetNewFields()),this,SLOT(NetNewFieldSL()));
     connect(this->ClientThread->myClient,SIGNAL(NetNewField()),this->ClientThread,SLOT(NetGetNewField()));
-    connect(this->ClientThread->myClient,SIGNAL(NetGameStart()),this,SLOT(NetNewGame()));
+    connect(this->ClientThread->myClient,SIGNAL(NetServerWantGameStart()),this,SLOT(NetNewGame()));
     connect(this->ClientThread->myClient,SIGNAL(NetWinVector(vector<int>)),this,SLOT(NetUpdateWinVector(vector<int>)));
     connect(this,SIGNAL(NetFieldClickedTransmit(int,int)),this->ClientThread,SLOT(NetFieldClicked(int, int)));
     connect(this->ClientThread->myClient,SIGNAL(NetAktPlayer(int)),this,SLOT(NetUpdatePlayer(int)));
     connect(this->clientInterface,SIGNAL(sendOwnName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
+    connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
 }
 
 void Revrsi::NetNewGame(){
+    cout << "Revrsi SLOT:\t" << "NetNewGame" << endl;
     this->NetGameStart = true;
     this->new_game();
 }
 
 void Revrsi::NetUpdatePlayer(int NetAktPlayer){
+    cout << "Revrsi SLOT:\t" << "NetUpdatePlayer" << endl;
     if(NetAktPlayer == 1){
         ui->Akt_Spieler_Label->setText(QString("Schwarz"));
     }
@@ -215,12 +219,14 @@ void Revrsi::NetFieldClickedTransmithelper(int x, int y){
 }
 
 void Revrsi::NetSetGameValues(int width, int height, int player_num){
+    cout << "Revrsi SLOT:\t" << "NetSetGameValues" << endl;
     this->width = width;
     this->height = height;
     this->player_num = player_num;
 }
 
 void Revrsi::NetUpdateWinVector(vector<int> WinVector){
+    cout << "Revrsi SLOT:\t" << "NetUpdateWinVector" << endl;
     for(uint i = 0; i < WinVector.size(); i++){
         //std::string t;
         //t = WinVector[i];
@@ -548,7 +554,10 @@ void Revrsi::setupBackground(int x, int y){
                 }
 
                 this->fields.push_back(item);
-                if(this->FieldBackSet == false){this->setupFieldBack();this->FieldBackSet = true;}
+                if(this->FieldBackSet == false){
+                    this->setupFieldBack();
+                    this->FieldBackSet = true;
+                }
                 this->scene->addItem(item);
 
                 QPropertyAnimation *an = new QPropertyAnimation(item,"pos");

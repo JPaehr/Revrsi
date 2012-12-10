@@ -9,7 +9,7 @@ vector<vector<int> > client_thread::getFields(){
 }
 
 void client_thread::run(){
-    this->myClient = new Client("localhost", false);
+    this->myClient = new Client("localhost", true);
     emit NetCreateConnects();
     //recv in Thread
     this->myClient->start();
@@ -34,24 +34,29 @@ void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
 }
 
 void client_thread::NetGameStart(){
+    cout << "ClientThread SLOT:" << "NetGameStart" << endl;
     this->playerNames = this->ClientInterface->getAllNames();
     this->ClientInterface->setVisible(false);
     emit NetNewGame();
 }
 
 void client_thread::NetFieldClicked(int x, int y){
+    cout << "ClientThread SLOT:" << "NetFieldClicked" << endl;
     this->myClient->setStoneClient(x,y);
 }
 
 void client_thread::NetSendName(QString ownName){
+    cout << "ClientThread SLOT:" << "NetSendName" << endl;
     this->myClient->sendNameClient(ownName);
 }
 
 void client_thread::NetGetID(int id){
     this->ID = id;
+    cout << "ClientThread:\t" << "ID bekommen: " << this->ID << endl;
 }
 
 void client_thread::NetGetNewField(){
+    cout << "ClientThread SLOT:\t" << "NetGetNewField" << endl;
     this->fields = this->myClient->getFields();
     emit NetNewFields();
 }

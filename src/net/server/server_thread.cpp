@@ -14,12 +14,12 @@ void server_thread::run(){
 
     int breite = 8, hoehe = 8, Spieler = 2;
 
-    Server *meinSServer=new Server(breite, hoehe, Spieler);
+    this->meinServer = new Server(breite, hoehe, Spieler);
 
     message = "none";
     this->exec();
 }
 
 void server_thread::NetServerStartGame(){
-    this->meinServer->globalSend("400");
+    this->meinServer->globalSend("400,");
 }

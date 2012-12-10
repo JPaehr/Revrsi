@@ -38,7 +38,7 @@ private:
 signals:
     void NetNewField();
     void NetWinVector(vector<int>);
-    void NetGameStart();
+    void NetServerWantGameStart();
     void NetPlayersNames(vector<string>);
     void NetAktPlayer(int);
     void NetGameValues(int, int, int);
