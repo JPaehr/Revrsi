@@ -49,15 +49,15 @@ void Client::run(){
             //cout << s << endl;
             //vector<string> empfangen;
             if(s.length() > 0){
-                max = count(s.begin(), s.end(), ',')-1;
-
+                max = count(s.begin(), s.end(), ',');
+                if(max > 1){max--;}
                 while(abschnitt < max){
 
 
                     switch(atoi(explode(s, ',')[abschnitt].c_str())){
                     //breite, hoehe, anzSpieler
                     case 100:
-                        //cout << "100 getroffen" << endl;
+                        if(debug_mode){cout << "Client:\t" << "Case 100 bearbeiten" << endl;}
                         this->width = atoi(explode(s, ',')[abschnitt+1].c_str());
                         this->height =atoi(explode(s, ',')[abschnitt+2].c_str());
                         this->players = atoi(explode(s, ',')[abschnitt+3].c_str());
@@ -65,34 +65,41 @@ void Client::run(){
                         //cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
                         this->fields.assign(this->height,vector<int>(this->width,0));
                         emit NetGameValues(this->width, this->height, this->players);
+                        if(debug_mode){cout << "Client:\t" << "Case 100 verarbeitet\t" << "EMIT: NetGameValues" << endl;}
                         break;
                     //Spielername, id <-vom server zugewiesen
                     case 200:
-                        //cout << "Case 200 wurde aufgerufen"<< endl;
+                        if(debug_mode){cout << "Client:\t" << "Case 200 bearbeiten" << endl;}
 
                         this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] = explode(s, ',')[abschnitt+1].c_str();
                         //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
                         abschnitt+=3;
 
-
                         emit NetPlayersNames(this->playersNames);
+                        if(debug_mode){cout << "Client:\t" << "Case 200 verarbeitet\t" << "EMIT: NetPlayerNames" << endl;}
                         break;
                     //Spieler weg
                     case 201:
+                        if(debug_mode){cout << "Client:\t" << "Case 201 bearbeiten" << endl;}
+                        if(debug_mode){cout << "Client:\t" << "Case 201 verarbeitet\t" << endl;}
                         break;
                     //Spielstart
                     case 400:
+                        if(debug_mode){cout << "Client:\t" << "Case 400 bearbeiten" << endl;}
                         this->running = true;
                         abschnitt+=2;
                         emit NetGameStart();
+                        if(debug_mode){cout << "Client:\t" << "Case 400 verarbeitet\t" << "EMIT: NetGameStart" << endl;}
 
                         break;
                     //Status
                     case 300:
+                        if(debug_mode){cout << "Client:\t" << "Case 300 bearbeiten" << endl;}
+                        if(debug_mode){cout << "Client:\t" << "Case 300 verarbeitet\t" << endl;}
                         break;
                     //Feldarray
                     case 500:
-                        //cout << "500 getroffen" << endl;
+                        if(debug_mode){cout << "Client:\t" << "Case 500 bearbeiten" << endl;}
                         //cout << "Abschnitt zahl: " << abschnitt << endl;
                         //cout << s << endl;
                         for(int i = 0; i < this->height; i++){
@@ -116,11 +123,12 @@ void Client::run(){
                         index = 1;
                         emit NetNewField();
 
-                    break;
+                        if(debug_mode){cout << "Client:\t" << "Case 500 verarbeitet\t" << "EMIT: NetNewField" << endl;}
+                        break;
 
                     //id vom Server zugewiesen
                     case 800:
-                        //cout << "800 getroffen" << endl;
+                        if(debug_mode){cout << "Client:\t" << "Case 800 bearbeiten" << endl;}
                         //cout << "neue id: " << atoi(explode(s, ',')[abschnitt+1].c_str()) << endl;
 
                         this->id = atoi(explode(s, ',')[abschnitt+1].c_str());
@@ -128,14 +136,12 @@ void Client::run(){
 
                         abschnitt+=2;
                         emit NetGotID(this->id);
+                        if(debug_mode){cout << "Client:\t" << "Case 800 verarbeitet\t" << "EMIT: NetGotID" << endl;}
                         break;
                     //winvector
                     case 900:
+                        if(debug_mode){cout << "Client:\t" << "Case 900 bearbeiten" << endl;}
                         winPlus = 0;
-                        if(this->debug_mode){
-                            cout << 900 << " getroffen" << endl;
-
-                        }
 
                         this->winVector[0] = atoi(explode(s, ',')[abschnitt+1].c_str());
                         this->winVector[1] = atoi(explode(s, ',')[abschnitt+2].c_str());
@@ -155,12 +161,12 @@ void Client::run(){
 
 
                         emit NetWinVector(this->winVector);
+                        if(debug_mode){cout << "Client:\t" << "Case 900 verarbeitet\t" << "EMIT: NetWinVector" << endl;}
                         break;
 
                     case 999:
-                        if(this->debug_mode){
-                            cout << "999 ausgelöst" << endl;
-                        }
+                        if(debug_mode){cout << "Client:\t" << "Case 999 bearbeiten" << endl;}
+
                         this->aktPlayer = atoi(explode(s, ',')[abschnitt+1].c_str());
                         if(this->debug_mode){
                             cout << "Spieler " << this->aktPlayer << " ist dran" << endl;
@@ -169,6 +175,7 @@ void Client::run(){
                         abschnitt+=2;
 
                         emit NetAktPlayer(this->aktPlayer);
+                        if(debug_mode){cout << "Client:\t" << "Case 999 verarbeitet\t" << "EMIT: NetAktPlayer" << endl;}
                         break;
                     default:
                         break;
