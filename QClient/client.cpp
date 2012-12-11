@@ -12,6 +12,7 @@ using namespace std;
 Client::Client(string host, bool debug_mode = false){
     this->debug_mode = debug_mode;
     this->running = false;
+    this->runtime = 0;
     string s;
     this->client.create();
     this->client.connect( host, 55312);
@@ -46,7 +47,7 @@ void Client::run(){
 
     while(1){
         this->client.recv(s);
-        if(debug_mode){cout << "Client:\t\t" << "Received: " << s << endl;}
+        //if(debug_mode){cout << "Client:\t\t" << "Received: " << s << endl;}
             //cout << s << endl;
             //vector<string> empfangen;
             if(s.length() > 0){
@@ -65,6 +66,7 @@ void Client::run(){
                         abschnitt+=4;
                         //cout << "Spiel ist " << this->width << " breit und " << this->height << "hoch "<< endl;
                         this->fields.assign(this->height,vector<int>(this->width,0));
+                        this->runtime++;
                         emit NetGameValues(this->width, this->height, this->players);
                         if(debug_mode){cout << "Client:\t\t" << "Case 100 verarbeitet\t" << "EMIT: NetGameValues" << endl;}
                         break;
@@ -122,6 +124,7 @@ void Client::run(){
                         */
 
                         index = 1;
+                        this->runtime++;
                         emit NetNewField();
 
                         if(debug_mode){cout << "Client:\t\t" << "Case 500 verarbeitet\t" << "EMIT: NetNewField" << endl;}
@@ -137,6 +140,7 @@ void Client::run(){
 
                         abschnitt+=2;
                         emit NetGotID(this->id);
+                        this->runtime++;
                         if(debug_mode){cout << "Client:\t\t" << "Case 800 verarbeitet\t" << "EMIT: NetGotID" << endl;}
                         break;
                     //winvector
@@ -176,6 +180,7 @@ void Client::run(){
                         abschnitt+=2;
 
                         emit NetAktPlayer(this->aktPlayer);
+                        this->runtime++;
                         if(debug_mode){cout << "Client:\t\t" << "Case 999 verarbeitet\t" << "EMIT: NetAktPlayer" << endl;}
                         break;
                     default:

@@ -26,11 +26,12 @@ QVector<QString> client_gui::getAllNames(){
 
 QString client_gui::getPlayerName(){
     this->ownName = ui->spielername_lineEdit->text();
+    return this->ownName;
 }
 
 void client_gui::getPlayerNameOnChange(QString ownName){
     this->ownName = ownName;
-    emit sendOwnName(this->ownName);
+    //emit sendOwnName(this->ownName);
 }
 
 void client_gui::startClient(){
@@ -41,7 +42,9 @@ void client_gui::startClient(){
         warning.setStandardButtons(QMessageBox::Ok);
         warning.exec();
     }
-    else{emit send_startClient();}
+    else{
+        emit send_startClient();
+    }
 }
 
 void client_gui::NetAddPlayer(std::string pl){

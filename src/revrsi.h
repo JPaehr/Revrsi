@@ -65,7 +65,6 @@ public slots:
     void NetSetGameValues(int, int, int);
     void NetUpdateWinVector(vector<int>);
 
-
 private:
     double                  scale;
     int                     width;

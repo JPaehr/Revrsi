@@ -21,20 +21,19 @@ public:
 signals:
     void send_startClient();
     void addPlayerS(std::vector<std::string>);
-    void sendOwnName(QString);
 
 public slots:
     void startClient();
     void NetAddPlayer(std::string);
     void addPlayer(std::vector<std::string>);
     void getPlayerNameOnChange(QString);
+    QString getPlayerName();
     
 private:
     Ui::client_gui *ui;
     QVector<std::vector<std::string> > NetPlayerNames;
     int playerCounter;
     QString ownName;
-    QString getPlayerName();
     int clientCounter;
 };
 

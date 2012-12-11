@@ -14,10 +14,10 @@ class subServer : public QThread
     Q_OBJECT
 signals:
     void setStone(int, int, int);
-    void NetServerNewClient(string, int);
+    void NetServerNewClient(QString, int);
 
 public:
-    subServer(QObject *parent, string port, int breite, int hoehe, int anzSpieler);
+    subServer(QObject *parent, string port, int breite, int hoehe, int anzSpieler, int ID);
     void run();
     void senden(string nachrict);
     vector<vector<int> > getFelder();

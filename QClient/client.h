@@ -22,6 +22,8 @@ public:
     void setStoneClient(int x, int y);
     void sendNameClient(QString ownName);
     vector<vector<int> > getFields();
+    int runtime;
+
 private:
     bool debug_mode;
     vector<int> winVector;
@@ -43,6 +45,7 @@ signals:
     void NetAktPlayer(int);
     void NetGameValues(int, int, int);
     void NetGotID(int);
+
 };
 
 #endif // CLIENT_H

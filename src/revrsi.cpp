@@ -175,11 +175,13 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,SIGNAL(NetWinVector(vector<int>)),this,SLOT(NetUpdateWinVector(vector<int>)));
     connect(this,SIGNAL(NetFieldClickedTransmit(int,int)),this->ClientThread,SLOT(NetFieldClicked(int, int)));
     connect(this->ClientThread->myClient,SIGNAL(NetAktPlayer(int)),this,SLOT(NetUpdatePlayer(int)));
-    connect(this->clientInterface,SIGNAL(sendOwnName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
+    connect(this->ClientThread,SIGNAL(NetClientSendName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(std::string)),this->clientInterface,SLOT(NetAddPlayer(std::string)));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
+    cout << "Revrsi SLOT:\t" << "All Connects Created" << endl;
+    this->ClientThread->setCreateConnectsState(true);
 }
 
 void Revrsi::NetNewGame(){

@@ -20,7 +20,7 @@ public:
     subServer *uServer4;
 public slots:
     void setStoneControl(int, int, int);
-    void NetSendNewClient(string, int);
+    void NetSendNewClient(QString, int);
 
 private:
     int width, heigth, players;

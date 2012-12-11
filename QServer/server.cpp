@@ -10,16 +10,16 @@ using namespace std;
 
 Server::Server(int breite, int hoehe, int Spieler){
 
-    this->uServer1 = new subServer(this,"55313", breite, hoehe, Spieler);
-    this->uServer2 = new subServer(this,"55314", breite, hoehe, Spieler);
+    this->uServer1 = new subServer(this,"55313", breite, hoehe, Spieler, 1);
+    this->uServer2 = new subServer(this,"55314", breite, hoehe, Spieler, 2);
     if(Spieler >= 3){
-        this->uServer3 = new subServer(this,"55315", breite, hoehe, Spieler);
+        this->uServer3 = new subServer(this,"55315", breite, hoehe, Spieler, 3);
     }
     if(Spieler == 4){
-        this->uServer4 = new subServer(this,"55316", breite, hoehe, Spieler);
+        this->uServer4 = new subServer(this,"55316", breite, hoehe, Spieler, 4);
     }
     QObject::connect(this->uServer1,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
-    QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(string, int)),this,SLOT(NetSendNewClient(string,int)));
+    QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
 
     QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
     if(Spieler >= 3){
@@ -54,6 +54,7 @@ Server::Server(int breite, int hoehe, int Spieler){
     this->uServer1->start();
     this->uServer1->senden("800,1,"); //Neue Client ID
     this->uServer1->senden("999,1,"); //Akt Player
+    this->uServer1->id = 1;
     this->uServer1->senden(String100.str()); //Code 100 FeldDaten breite höhe spielernum
     this->uServer1->senden(StringSpielstand()); //Code 500 FeldVektor senden
 
@@ -125,12 +126,12 @@ string Server::StringSpielstand(){
     spielstand += sstr.str();
     spielstand += ",";
     sstr.str("");
-    cout << "Spielstand Senden: " << spielstand << endl;
+    //cout << "Spielstand Senden: " << spielstand << endl;
     return spielstand;
 }
 void Server::setStoneControl(int spalte, int hoehe, int id){
 
-    cout << "StoneControl ausgefuehrt" << endl;
+    cout << "Server:\t\t" << "StoneControl ausgefuehrt" << endl;
     cout << spalte << " " << hoehe << " " << id << endl;
     if(this->logic->getAktPlayer() == id){
         this->logic->setField(spalte, hoehe);
@@ -138,11 +139,12 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
     SpielStandaktSenden();
 }
 
-void Server::NetSendNewClient(string Name, int ID){
+void Server::NetSendNewClient(QString Name, int ID){
+    cout << "saeslgjahojaobmhonfuöoNUIVBUIRHWIEHRBWUHRVAUÖEHRUV" << endl;
     stringstream id;
     string NewClient;
     id << ID;
-    NewClient = "200," + Name + "," + id.str() + ",";
+    NewClient = "200," + Name.toStdString() + "," + id.str() + ",";
 
     if(this->uServer1->connected){
         this->uServer1->senden(NewClient);
