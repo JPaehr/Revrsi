@@ -39,7 +39,7 @@ signals:
     void NetNewField();
     void NetWinVector(vector<int>);
     void NetServerWantGameStart();
-    void NetPlayersNames(vector<string>);
+    void NetPlayersNames(std::string);
     void NetAktPlayer(int);
     void NetGameValues(int, int, int);
     void NetGotID(int);

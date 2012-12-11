@@ -19,6 +19,8 @@ Server::Server(int breite, int hoehe, int Spieler){
         this->uServer4 = new subServer(this,"55316", breite, hoehe, Spieler);
     }
     QObject::connect(this->uServer1,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+    QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(string, int)),this,SLOT(NetSendNewClient(string,int)));
+
     QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
     if(Spieler >= 3){
         QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),
@@ -134,5 +136,29 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
         this->logic->setField(spalte, hoehe);
     }
     SpielStandaktSenden();
+}
+
+void Server::NetSendNewClient(string Name, int ID){
+    stringstream id;
+    string NewClient;
+    id << ID;
+    NewClient = "200," + Name + "," + id.str() + ",";
+
+    if(this->uServer1->connected){
+        this->uServer1->senden(NewClient);
+    }
+    if(this->uServer2->connected){
+        this->uServer2->senden(NewClient);
+    }
+    if(this->players >= 3){
+        if(this->uServer3->connected){
+            this->uServer3->senden(NewClient);
+        }
+    }
+    if(this->players == 4){
+        if(this->uServer4->connected){
+            this->uServer4->senden(NewClient);
+        }
+    }
 }
 

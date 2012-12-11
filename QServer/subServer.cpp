@@ -16,6 +16,7 @@ subServer::subServer(QObject *parent, string port, int breite, int hoehe, int an
     this->breite = breite;
     this->hoehe = hoehe;
     this->port = port;
+    this->connected = false;
 }
 void subServer::initServer(){
     cout << "Hier war ich Server" << endl;
@@ -42,6 +43,7 @@ void subServer::initServer(){
     this->sock1.bind(nport);
     this->sock1.listen();
     this->sock1.accept(this->sock2);
+    this->connected = true;
 }
 
 void subServer::run(){
@@ -77,6 +79,13 @@ void subServer::run(){
                         if(this->id == atoi(explode(s, 's')[abschnitt+2].c_str())){
                             this->name = explode(s, ',')[abschnitt+1].c_str();
                             cout << this->name;
+                            vector<string> vec;
+                            stringstream sstrID;
+                            sstrID << this->id;
+                            vec.push_back(this->name);
+                            vec.push_back(sstrID.str());
+                            this->players.push_back(vec);
+                            emit NetServerNewClient(this->name, this->id);
                         }
                         else{
                             cout << "Client mit nicht zugewiesener oder falscher id hat versucht seinen Name zu verschicken" << endl;

@@ -14,6 +14,7 @@ class subServer : public QThread
     Q_OBJECT
 signals:
     void setStone(int, int, int);
+    void NetServerNewClient(string, int);
 
 public:
     subServer(QObject *parent, string port, int breite, int hoehe, int anzSpieler);
@@ -25,6 +26,8 @@ public:
     vector<vector<int> > fields;
 
     void initServer();
+    bool connected;
+    int id;
 
 private:
     Logic *ThreadLogic;
@@ -35,8 +38,8 @@ private:
     Socket sock1, sock2;
     string empfang;
     string name;
-    int id;
     string implode( const string &glue, const vector<string> &pieces );
+    vector<vector<string> > players;
 
 };
 

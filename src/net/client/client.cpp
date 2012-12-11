@@ -76,7 +76,7 @@ void Client::run(){
                         //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
                         abschnitt+=3;
 
-                        emit NetPlayersNames(this->playersNames);
+                        emit NetPlayersNames(this->playersNames[0]);
                         if(debug_mode){cout << "Client:\t\t" << "Case 200 verarbeitet\t" << "EMIT: NetPlayerNames" << endl;}
                         break;
                     //Spieler weg
@@ -220,9 +220,9 @@ void Client::setStoneClient(int x, int y){
 
 void Client::sendNameClient(QString ownName){
     if(this->debug_mode){
-        cout << "Client Name: "<< QString(ownName).toStdString() << " Y: " << endl;
+        cout << "Client:\t\t" << "Case 222 bearbeiten\t" << "Eigenen Namen + ID senden:\t" << "Name: " << QString(ownName).toStdString() << "\tID: " << this->id << endl;
     }
-    stringstream sstrX, sstrY, sstrID;
+    stringstream sstrID;
     string zuSenden;
     sstrID << this->id;
     zuSenden = "222,";
@@ -232,7 +232,7 @@ void Client::sendNameClient(QString ownName){
     zuSenden += ",";
 
     if(this->debug_mode){
-        cout << "zu Senden: " << zuSenden << endl;
+        cout << "Client:\t\t" << "Case 222 verarbeitet\t" << endl;
     }
     senden(zuSenden);
 }

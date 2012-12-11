@@ -2,6 +2,7 @@
 #define CLIENT_GUI_H
 
 #include <QDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class client_gui;
@@ -24,7 +25,7 @@ signals:
 
 public slots:
     void startClient();
-    void NetAddPlayer(std::vector<std::string>);
+    void NetAddPlayer(std::string);
     void addPlayer(std::vector<std::string>);
     void getPlayerNameOnChange(QString);
     
@@ -34,6 +35,7 @@ private:
     int playerCounter;
     QString ownName;
     QString getPlayerName();
+    int clientCounter;
 };
 
 #endif // CLIENT_GUI_H

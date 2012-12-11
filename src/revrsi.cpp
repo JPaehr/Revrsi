@@ -178,6 +178,7 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->clientInterface,SIGNAL(sendOwnName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
+    connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(std::string)),this->clientInterface,SLOT(NetAddPlayer(std::string)));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
 }
 

@@ -6,6 +6,7 @@ client_gui::client_gui(QWidget *parent) :
     ui(new Ui::client_gui){
     ui->setupUi(this);
     this->playerCounter = 0;
+    this->clientCounter = 0;
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
     connect(this,SIGNAL(addPlayerS(std::vector<std::string>)),this,SLOT(addPlayer(std::vector<std::string>)));
     connect(ui->spielername_lineEdit,SIGNAL(textChanged(QString)),this,SLOT(getPlayerNameOnChange(QString)));
@@ -33,12 +34,34 @@ void client_gui::getPlayerNameOnChange(QString ownName){
 }
 
 void client_gui::startClient(){
-    emit send_startClient();
+    if(ui->spielername_lineEdit->text() == QString("")){
+        QMessageBox warning;
+        warning.setWindowTitle("Fehler");
+        warning.setText("KeinSpielername angegeben.");
+        warning.setStandardButtons(QMessageBox::Ok);
+        warning.exec();
+    }
+    else{emit send_startClient();}
 }
 
-void client_gui::NetAddPlayer(std::vector<std::string> pl){
-    this->NetPlayerNames.push_back(pl);
-    emit addPlayerS(pl);
+void client_gui::NetAddPlayer(std::string pl){
+    //this->NetPlayerNames.push_back(pl);
+    this->clientCounter++;
+    QString a;
+    a = QString::fromStdString(pl);
+    if(this->playerCounter == 1){
+        ui->player1->setText(a);
+    }
+    else if(this->clientCounter == 2){
+        ui->player2->setText(a);
+    }
+    else if(this->clientCounter == 3){
+        ui->player3->setText(a);
+    }
+    else if(this->clientCounter == 4){
+        ui->player4->setText(a);
+    }
+    //emit addPlayerS(pl);
 }
 
 void client_gui::addPlayer(std::vector<std::string> player){
