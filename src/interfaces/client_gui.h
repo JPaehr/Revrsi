@@ -23,6 +23,7 @@ public:
 signals:
     void send_startClient();
     void addPlayerS(std::vector<std::string>);
+    void setLocked();
 
 public slots:
     void startClient();
@@ -30,10 +31,12 @@ public slots:
     void addPlayer(std::vector<std::string>);
     void getPlayerNameOnChange(QString);
     QString getPlayerName();
+    string getIP();
+    void setLockedSL();
     
 private:
     Ui::client_gui *ui;
-    QVector<std::vector<std::string> > NetPlayerNames;
+    QVector<QString> NetPlayerNames;
     int playerCounter;
     QString ownName;
     int clientCounter;

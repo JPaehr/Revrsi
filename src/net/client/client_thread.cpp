@@ -9,7 +9,7 @@ vector<vector<int> > client_thread::getFields(){
 }
 
 void client_thread::run(){
-    this->myClient = new Client("localhost", true);
+    this->myClient = new Client(this->ClientInterface->getIP(), true);
     this->CreateConnectsSuccessful = false;
     emit NetCreateConnects();
     while(!this->CreateConnectsSuccessful){}
@@ -53,7 +53,7 @@ void client_thread::NetGameStart(){
 }
 
 void client_thread::NetFieldClicked(int x, int y){
-    cout << "ClientThread SLOT:" << "NetFieldClicked" << endl;
+    cout << "ClientThread SLOT:\t" << "NetFieldClicked" << endl;
     this->myClient->setStoneClient(x,y);
 }
 

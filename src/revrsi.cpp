@@ -148,11 +148,11 @@ void Revrsi::runClient(){
 //Funktion die nach einem Click ausgeführt wird. Um neue Felder zu setzen
 void Revrsi::NetNewFieldSL(){
     cout << "Revrsi SLOT:\t" << "NetNewFieldsSL" << endl;
+    this->old_array = this->new_array;
     this->new_array = this->ClientThread->getFields();
 
-    if(this->NetGameStart){
-        this->old_array = this->new_array;
-        this->new_array = this->logic->getFields();
+    if(this->NetGameStart){        
+        //this->new_array = this->logic->getFields();
         for(uint i = 0 ; i<this->new_array.size() ; i++){
             for(uint ii = 0 ; ii<this->new_array[i].size() ; ii++){
                 if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
@@ -279,6 +279,10 @@ void Revrsi::server_gui_slot(){
 }
 
 void Revrsi::field_clicked_slot(int x, int y){
+    if(NetMode){
+        emit this->NetFieldClickedTransmit(x,y);
+        return;
+    }
     this->logic->setField(x,y);
 
     this->old_array = this->new_array;
@@ -549,12 +553,7 @@ void Revrsi::setupBackground(int x, int y){
                 item->set_scale(smaller_value/x);
                 this->set_scale(smaller_value/x);
 
-                if(this->NetMode){
-                    connect(item, SIGNAL(FieldClicked(int,int)),this, SLOT(NetFieldClickedTransmithelper(int,int)));
-                }
-                else{
-                    connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
-                }
+                connect(item, SIGNAL(FieldClicked(int, int)),this, SLOT(field_clicked_slot(int, int)));
 
                 this->fields.push_back(item);
                 if(this->FieldBackSet == false){

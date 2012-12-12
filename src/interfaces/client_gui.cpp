@@ -17,16 +17,21 @@ client_gui::~client_gui(){
 }
 
 QVector<QString> client_gui::getAllNames(){
-    QVector<QString> names;
-    for(int i = 1; i<= this->playerCounter; i++){
-        names.push_back(QString::fromStdString(this->NetPlayerNames[i][0]));
-    }
-    return names;
+    return this->NetPlayerNames;
 }
 
 QString client_gui::getPlayerName(){
     this->ownName = ui->spielername_lineEdit->text();
     return this->ownName;
+}
+
+string client_gui::getIP(){
+    return ui->serverIP_lineEdit->text().toStdString();
+}
+
+void client_gui::setLockedSL(){
+    ui->serverIP_lineEdit->setDisabled(true);
+    ui->spielername_lineEdit->setDisabled(true);
 }
 
 void client_gui::getPlayerNameOnChange(QString ownName){
@@ -52,18 +57,30 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
         if(pl[i+1] == "1"){
             ui->player1->setText(pl[i]);
             ui->ID1_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
         }
         else if(pl[i+1] == "2"){
             ui->player2->setText(pl[i]);
             ui->ID2_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
         }
         else if(pl[i+1] == "3"){
             ui->player3->setText(pl[i]);
             ui->ID3_label->setText("ID: " + pl[i+2]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
         }
         else if(pl[i+1] == "4"){
             ui->player4->setText(pl[i]);
             ui->ID4_label->setText("ID: " + pl[i+3]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
         }
     }
     //emit addPlayerS(pl);
