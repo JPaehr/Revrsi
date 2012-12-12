@@ -34,14 +34,15 @@ private:
     vector<string> explode(const string& str, char delimiter);
     Socket client;
     int aktPlayer;
-    vector<string> playersNames;
+    QVector<QString> playersNames;
     string werte;
+    int ConnectedClients;
 
 signals:
     void NetNewField();
     void NetWinVector(vector<int>);
     void NetServerWantGameStart();
-    void NetPlayersNames(std::string);
+    void NetPlayersNames(QVector<QString>);
     void NetAktPlayer(int);
     void NetGameValues(int, int, int);
     void NetGotID(int);

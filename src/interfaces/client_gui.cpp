@@ -47,22 +47,24 @@ void client_gui::startClient(){
     }
 }
 
-void client_gui::NetAddPlayer(std::string pl){
-    //this->NetPlayerNames.push_back(pl);
-    this->clientCounter++;
-    QString a;
-    a = QString::fromStdString(pl);
-    if(this->playerCounter == 1){
-        ui->player1->setText(a);
-    }
-    else if(this->clientCounter == 2){
-        ui->player2->setText(a);
-    }
-    else if(this->clientCounter == 3){
-        ui->player3->setText(a);
-    }
-    else if(this->clientCounter == 4){
-        ui->player4->setText(a);
+void client_gui::NetAddPlayer(QVector<QString> pl){
+    for(int i = 0; i<pl.size(); i+=2){
+        if(pl[i+1] == "1"){
+            ui->player1->setText(pl[i]);
+            ui->ID1_label->setText("ID: " + pl[i+1]);
+        }
+        else if(pl[i+1] == "2"){
+            ui->player2->setText(pl[i]);
+            ui->ID2_label->setText("ID: " + pl[i+1]);
+        }
+        else if(pl[i+1] == "3"){
+            ui->player3->setText(pl[i]);
+            ui->ID3_label->setText("ID: " + pl[i+2]);
+        }
+        else if(pl[i+1] == "4"){
+            ui->player4->setText(pl[i]);
+            ui->ID4_label->setText("ID: " + pl[i+3]);
+        }
     }
     //emit addPlayerS(pl);
 }

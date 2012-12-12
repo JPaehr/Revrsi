@@ -13,7 +13,10 @@ Client::Client(string host, bool debug_mode = false){
     this->debug_mode = debug_mode;
     this->running = false;
     this->runtime = 0;
+    this->ConnectedClients = 0;
     string s;
+    qRegisterMetaType<QVector<QString> >("QVector<QString>");
+
     this->client.create();
     this->client.connect( host, 55312);
     this->client.recv(s);
@@ -44,6 +47,7 @@ void Client::run(){
     int index = 1;
     int max;
     int winPlus = 0;
+    //QVector<string> str;
 
     while(1){
         this->client.recv(s);
@@ -73,12 +77,13 @@ void Client::run(){
                     //Spielername, id <-vom server zugewiesen
                     case 200:
                         if(debug_mode){cout << "Client:\t\t" << "Case 200 bearbeiten" << endl;}
-
-                        this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] = explode(s, ',')[abschnitt+1].c_str();
+                        this->playersNames.push_back(explode(s, ',')[abschnitt+1].c_str());
+                        this->playersNames.push_back(explode(s, ',')[abschnitt+2].c_str());
+                        //this->playersNames.push_back(str);
                         //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
                         abschnitt+=3;
-
-                        emit NetPlayersNames(this->playersNames[0]);
+                        emit this->NetPlayersNames(this->playersNames);
+                        this->ConnectedClients++;
                         if(debug_mode){cout << "Client:\t\t" << "Case 200 verarbeitet\t" << "EMIT: NetPlayerNames" << endl;}
                         break;
                     //Spieler weg

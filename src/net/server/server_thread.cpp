@@ -16,7 +16,6 @@ void server_thread::run(){
 
     this->meinServer = new Server(breite, hoehe, Spieler);
 
-    message = "none";
     this->exec();
 }
 

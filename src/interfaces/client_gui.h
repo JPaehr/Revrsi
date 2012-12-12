@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QMessageBox>
 
+using namespace std;
+
 namespace Ui {
 class client_gui;
 }
@@ -24,7 +26,7 @@ signals:
 
 public slots:
     void startClient();
-    void NetAddPlayer(std::string);
+    void NetAddPlayer(QVector<QString>);
     void addPlayer(std::vector<std::string>);
     void getPlayerNameOnChange(QString);
     QString getPlayerName();

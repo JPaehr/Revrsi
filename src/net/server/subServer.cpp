@@ -88,7 +88,7 @@ void subServer::run(){
                             vec.push_back(this->name);
                             vec.push_back(sstrID.str());
                             this->players.push_back(vec);
-                            emit NetServerNewClient(nnn, this->id);
+                            emit this->NetServerNewClient(nnn, this->id);
                             cout << "Server:\t\tCase 222 verarbeitet. Bekommen Name: " << this->name << " ID: " << this->id << " EMIT NetServerNewClient" << endl;
                         }
                         else{

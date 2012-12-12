@@ -22,13 +22,17 @@ Server::Server(int breite, int hoehe, int Spieler){
     QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
 
     QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+    QObject::connect(this->uServer2,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+
     if(Spieler >= 3){
-        QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),
-                     this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer3,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+
     }
     if(Spieler == 4){
-        QObject::connect(this->uServer4,SIGNAL(setStone(int, int, int)),
-                     this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer4,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer4,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+
     }
 
     stringstream String100;
@@ -140,12 +144,11 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
 }
 
 void Server::NetSendNewClient(QString Name, int ID){
-    cout << "saeslgjahojaobmhonfuöoNUIVBUIRHWIEHRBWUHRVAUÖEHRUV" << endl;
     stringstream id;
     string NewClient;
     id << ID;
     NewClient = "200," + Name.toStdString() + "," + id.str() + ",";
-
+    cout << "Server:\t\tSenden Case " << NewClient;
     if(this->uServer1->connected){
         this->uServer1->senden(NewClient);
     }
