@@ -21,16 +21,20 @@ public:
 public slots:
     void setStoneControl(int, int, int);
     void NetSendNewClient(QString, int);
+    void NetSendSpielstandSL();
+    void NetSetServerConnectedSL(int);
 
 private:
     int width, heigth, players;
 
+    bool uServer1Connected,uServer2Connected,uServer3Connected,uServer4Connected;
 
     Logic *logic;
 
     vector<vector<int> > fields;
     string StringSpielstand();
     void SpielStandaktSenden();
+    vector<string> AllClients;
 
 };
 

@@ -15,7 +15,28 @@ void server_thread::run(){
     int breite = 8, hoehe = 8, Spieler = 2;
 
     this->meinServer = new Server(breite, hoehe, Spieler);
+    QApplication::processEvents();
 
+    this->meinServer->uServer1->start();
+    while(!this->meinServer->uServer1->connected ){
+        QApplication::processEvents();
+    }
+
+    this->meinServer->uServer2->start();
+    while(!this->meinServer->uServer2->connected){
+        QApplication::processEvents();
+    }
+
+    if(Spieler > 2){
+        while(!this->meinServer->uServer3->connected){
+            QApplication::processEvents();
+        }
+    }
+    if(Spieler >= 4){
+        while(!this->meinServer->uServer4->connected){
+            QApplication::processEvents();
+        }
+    }
     this->exec();
 }
 

@@ -21,6 +21,7 @@ void client_thread::run(){
             emit this->NetClientSendName(this->ClientInterface->getPlayerName());
             break;
         }
+        QApplication::processEvents();
     }
 
     sleep(1);
