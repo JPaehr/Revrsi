@@ -109,7 +109,7 @@ void subServer::run(){
     string s;
 
     int abschnitt = 0;
-    int index = 1;
+    //int index = 1;
     int max;
 
     while(1){
@@ -186,7 +186,7 @@ void subServer::run(){
                     }
                 }
                 abschnitt = 0;
-                index = 1;
+                //index = 1;
 
 
             }

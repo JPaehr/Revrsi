@@ -48,7 +48,7 @@ void Client::run(){
     int max;
     int winPlus = 0;
     //QVector<string> str;
-
+    cout << "#########################\nPreRun\n#############################";
     while(1){
         this->client.recv(s);
         //if(debug_mode){cout << "Client:\t\t" << "Received: " << s << endl;}

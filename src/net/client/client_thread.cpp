@@ -12,8 +12,7 @@ void client_thread::run(){
     this->myClient = new Client(this->ClientInterface->getIP(), true);
     this->CreateConnectsSuccessful = false;
     emit NetCreateConnects();
-    while(!this->CreateConnectsSuccessful){}
-
+    while(!this->CreateConnectsSuccessful){QApplication::processEvents();}
     this->myClient->start();
 
     while(1){
