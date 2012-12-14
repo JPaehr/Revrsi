@@ -23,6 +23,8 @@ public:
     void sendNameClient(QString ownName);
     vector<vector<int> > getFields();
     int runtime;
+    bool disconnectSend;
+
 
 private:
     bool debug_mode;

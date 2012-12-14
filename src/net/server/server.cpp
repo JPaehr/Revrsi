@@ -22,19 +22,23 @@ Server::Server(int breite, int hoehe, int Spieler){
     QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
     QObject::connect(this->uServer1,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
     QObject::connect(this->uServer1,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+    QObject::connect(this->uServer1,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+    QObject::connect(this->uServer1,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
     QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
     QObject::connect(this->uServer2,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
     QObject::connect(this->uServer2,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
     QObject::connect(this->uServer2,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
-
-
+    QObject::connect(this->uServer2,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+    QObject::connect(this->uServer2,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
     if(Spieler >= 3){
         QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
         QObject::connect(this->uServer3,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
         QObject::connect(this->uServer3,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
         QObject::connect(this->uServer3,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer3,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer3,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
     }
     if(Spieler == 4){
@@ -42,6 +46,8 @@ Server::Server(int breite, int hoehe, int Spieler){
         QObject::connect(this->uServer4,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
         QObject::connect(this->uServer4,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
         QObject::connect(this->uServer4,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer4,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer4,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
     }
     this->uServer1Connected = false;
@@ -49,7 +55,7 @@ Server::Server(int breite, int hoehe, int Spieler){
     this->uServer3Connected = false;
     this->uServer4Connected = false;
 
-    stringstream String100;
+    /*stringstream String100;
     String100 << "100,";
     String100 << breite;
     String100 << ",";
@@ -57,7 +63,7 @@ Server::Server(int breite, int hoehe, int Spieler){
     String100 << ",";
     String100 << Spieler;
     String100 << ",";
-    cout << String100.str() << endl;
+    cout << String100.str() << endl;*/
 
 
     this->logic = new Logic(breite, hoehe, Spieler);
@@ -67,42 +73,9 @@ Server::Server(int breite, int hoehe, int Spieler){
     this->width = breite;
     this->heigth = hoehe;
     this->players = Spieler;
-
-    //this->uServer1->initServer();
-    //this->uServer1->start();
-    //this->uServer1->senden("800,1,"); //Neue Client ID
-    //this->uServer1->senden("999,1,"); //Akt Player
-    //this->uServer1->id = 1;
-    //this->uServer1->senden(String100.str()); //Code 100 FeldDaten breite höhe spielernum
-    //this->uServer1->senden(StringSpielstand()); //Code 500 FeldVektor senden
-    //QApplication::processEvents();
-
-    //this->uServer2->initServer();
-    //this->uServer2->start();
-    //this->uServer2->senden("800,2,"); //Neue Client ID
-    //this->uServer2->senden("999,1,"); //Akt Player
-    //this->uServer2->senden(String100.str()); //Code 100
-    //this->uServer2->senden(StringSpielstand()); //Code 500
-
-    if(Spieler >= 3){
-        this->uServer3->initServer();
-        //this->uServer3 = new Server("55315", breite, hoehe, Spieler, this);
-        this->uServer3->start();
-        this->uServer3->senden("800,3,");
-        this->uServer3->senden("999,1,");
-        this->uServer3->senden(String100.str());
-        this->uServer3->senden(StringSpielstand());
-    }
-    if(Spieler == 4){
-        this->uServer4->initServer();
-        //this->uServer4 = new Server("55316", breite, hoehe, Spieler, this);
-        this->uServer4->start();
-        this->uServer4->senden("800,4,");
-        this->uServer4->senden("999,1,");
-        this->uServer4->senden(String100.str());
-        this->uServer4->senden(StringSpielstand());
-    }
 }
+
+
 
 void Server::globalSend(string msg){
     cout << "Server Message To Send\t" << msg << endl;
@@ -193,6 +166,35 @@ void Server::NetSendNewClient(QString Name, int ID){
     }
 }
 
+void Server::NetSendAllClientsSL(int del){
+    vector<string> nerv;
+    for(uint i = 0; i<AllClients.size();i++){
+        string bla = AllClients[i];
+        if(atoi(&bla[bla.length()-2]) != del){
+            nerv.push_back(AllClients[i]);
+        }
+    }
+for(uint i = 0; i < AllClients.size(); i++){
+
+    if(this->uServer1->connected){
+        this->uServer1->senden(AllClients[i]);
+    }
+    if(this->uServer2->connected){
+        this->uServer2->senden(AllClients[i]);
+    }
+    if(this->players >= 3){
+        if(this->uServer3->connected){
+            this->uServer3->senden(AllClients[i]);
+        }
+    }
+    if(this->players == 4){
+        if(this->uServer4->connected){
+            this->uServer4->senden(AllClients[i]);
+        }
+    }
+}
+}
+
 void Server::NetSendSpielstandSL(){
     if(uServer1Connected){
         this->uServer1->senden(StringSpielstand());
@@ -220,6 +222,77 @@ void Server::NetSetServerConnectedSL(int server){
     }
     else if(server == 4){
         this->uServer4Connected = true;
+    }
+}
+
+void Server::NetDestroyServer(int uServerNumber){
+    if(uServerNumber == 1){
+        this->uServer1->disconnect();
+        this->uServer1->terminate();
+        this->uServer1->wait();
+        this->uServer1->~subServer();
+        this->uServer1 = new subServer(this,"55313", this->width, this->heigth, this->players, 1);
+        this->uServer1Connected = false;
+
+        QObject::connect(this->uServer1,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer1,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+        QObject::connect(this->uServer1,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
+        QObject::connect(this->uServer1,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer1,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer1,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
+
+        emit NetNewServer(1);
+    }
+    else if(uServerNumber == 2){
+        this->uServer2->disconnect();
+        this->uServer2->terminate();
+        this->uServer2->wait();
+        this->uServer2->~subServer();
+        this->uServer2 = new subServer(this,"55314", this->width, this->heigth, this->players, 2);
+        this->uServer2Connected = false;
+
+        QObject::connect(this->uServer2,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer2,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+        QObject::connect(this->uServer2,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
+        QObject::connect(this->uServer2,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer2,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer2,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
+
+        emit NetNewServer(2);
+    }
+    else if(uServerNumber == 3){
+        this->uServer3->disconnect();
+        this->uServer3->terminate();
+        this->uServer3->wait();
+        this->uServer3->~subServer();
+        this->uServer3 = new subServer(this,"55315", this->width, this->heigth, this->players, 3);
+        this->uServer3Connected = false;
+
+        QObject::connect(this->uServer3,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer3,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+        QObject::connect(this->uServer3,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
+        QObject::connect(this->uServer3,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer3,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer3,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
+
+        emit NetNewServer(3);
+    }
+    else if(uServerNumber == 4){
+        this->uServer4->disconnect();
+        this->uServer4->terminate();
+        this->uServer4->wait();
+        this->uServer4->~subServer();
+        this->uServer4 = new subServer(this,"55316", this->width, this->heigth, this->players, 4);
+        this->uServer4Connected = false;
+
+        QObject::connect(this->uServer4,SIGNAL(setStone(int, int, int)),this,SLOT(setStoneControl(int, int, int)));
+        QObject::connect(this->uServer4,SIGNAL(NetServerNewClient(QString, int)),this,SLOT(NetSendNewClient(QString,int)));
+        QObject::connect(this->uServer4,SIGNAL(NetSendSpielstand()),this,SLOT(NetSendSpielstandSL()));
+        QObject::connect(this->uServer4,SIGNAL(NetSetServerConnected(int)),this,SLOT(NetSetServerConnectedSL(int)));
+        QObject::connect(this->uServer4,SIGNAL(NetDisconnectServer(int)),this,SLOT(NetDestroyServer(int)));
+        QObject::connect(this->uServer4,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
+
+        emit NetNewServer(4);
     }
 }
 

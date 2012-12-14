@@ -18,16 +18,21 @@ public:
     subServer *uServer2;
     subServer *uServer3;
     subServer *uServer4;
+    bool uServer1Connected,uServer2Connected,uServer3Connected,uServer4Connected;
+
 public slots:
     void setStoneControl(int, int, int);
     void NetSendNewClient(QString, int);
+    void NetSendAllClientsSL(int);
     void NetSendSpielstandSL();
     void NetSetServerConnectedSL(int);
+    void NetDestroyServer(int);
+
+signals:
+    void NetNewServer(int);
 
 private:
     int width, heigth, players;
-
-    bool uServer1Connected,uServer2Connected,uServer3Connected,uServer4Connected;
 
     Logic *logic;
 

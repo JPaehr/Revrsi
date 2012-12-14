@@ -17,9 +17,12 @@ signals:
     void NetServerNewClient(QString, int);
     void NetSendSpielstand();
     void NetSetServerConnected(int);
+    void NetDisconnectServer(int);
+    void NetSendAllClients(int);
 
 public:
     subServer(QObject *parent, string port, int breite, int hoehe, int anzSpieler, int ID);
+    virtual ~subServer();
     void run();
     void senden(string nachrict);
     vector<vector<int> > getFelder();

@@ -6,6 +6,7 @@
 #include "client.h"
 #include <QObject>
 #include "../../interfaces/client_gui.h"
+#include <sstream>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ signals:
     void NetNewGame();
     void NetNewFields();
     void NetClientSendName(QString);
+    void NetCloseClientInterface();
 
 public slots:
     void NetFieldChange(std::vector<std::vector<int> >);
@@ -31,6 +33,7 @@ public slots:
     void NetSendName(QString);
     void NetGetID(int);
     void NetGetNewField();
+    void NetPlayerDisconnect();
 
 private:
     client_gui *ClientInterface;

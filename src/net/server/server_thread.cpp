@@ -15,31 +15,99 @@ void server_thread::run(){
     int breite = 8, hoehe = 8, Spieler = 2;
 
     this->meinServer = new Server(breite, hoehe, Spieler);
+    connect(this->meinServer,SIGNAL(NetNewServer(int)),this,SLOT(NetJumpToConnection(int)));
     QApplication::processEvents();
 
-    this->meinServer->uServer1->start();
-    while(!this->meinServer->uServer1->connected ){
+    this->loop = 1;
+    while(1){
+        if(this->loop == 1){
+            int temp_loop = this->loop;
+            if(!this->meinServer->uServer1Connected){
+                this->meinServer->uServer1->start();
+                while(!this->meinServer->uServer1->connected){
+                    QApplication::processEvents();
+                    if(this->loop != temp_loop){
+                        this->meinServer->uServer1->disconnect();
+                        this->meinServer->uServer1->terminate();
+                        this->meinServer->uServer1->wait();
+                        break;
+                    }
+                }
+            }
+            if(this->loop == temp_loop){
+                this->loop = 2;
+            }
+        }
+
+        if(this->loop == 2){
+            int temp_loop = this->loop;
+            if(!this->meinServer->uServer2Connected){
+                this->meinServer->uServer2->start();
+                this->loop = 2;
+                while(!this->meinServer->uServer2->connected){
+                    QApplication::processEvents();
+                    if(this->loop != temp_loop){
+                        this->meinServer->uServer2->disconnect();
+                        this->meinServer->uServer2->terminate();
+                        this->meinServer->uServer2->wait();
+                        break;
+                    }
+                }
+            }
+            if(this->loop == temp_loop){
+                this->loop = 3;
+            }
+        }
+        if(this->loop == 3){
+            int temp_loop = this->loop;
+            if(Spieler > 2){
+                if(!this->meinServer->uServer3Connected){
+                    this->meinServer->uServer3->start();
+                    this->loop = 3;
+                    while(!this->meinServer->uServer3->connected){
+                        QApplication::processEvents();
+                        if(this->loop != temp_loop){
+                            this->meinServer->uServer3->disconnect();
+                            this->meinServer->uServer3->terminate();
+                            this->meinServer->uServer3->wait();
+                            break;
+                        }
+                    }
+                }
+            }
+            if(this->loop == temp_loop){
+                this->loop = 4;
+            }
+        }
+        if(this->loop == 4){
+            int temp_loop = this->loop;
+            if(Spieler >= 4){
+                if(!this->meinServer->uServer4Connected){
+                    this->meinServer->uServer4->start();
+                    this->loop = 4;
+                    while(!this->meinServer->uServer4->connected){
+                        QApplication::processEvents();
+                        if(this->loop != temp_loop){
+                            this->meinServer->uServer4->disconnect();
+                            this->meinServer->uServer4->terminate();
+                            this->meinServer->uServer4->wait();
+                            break;
+                        }
+                    }
+                }
+            }
+            if(this->loop == temp_loop){
+                this->loop = 0;
+            }
+        }
         QApplication::processEvents();
     }
-
-    this->meinServer->uServer2->start();
-    while(!this->meinServer->uServer2->connected){
-        QApplication::processEvents();
-    }
-
-    if(Spieler > 2){
-        while(!this->meinServer->uServer3->connected){
-            QApplication::processEvents();
-        }
-    }
-    if(Spieler >= 4){
-        while(!this->meinServer->uServer4->connected){
-            QApplication::processEvents();
-        }
-    }
-    this->exec();
 }
 
 void server_thread::NetServerStartGame(){
     this->meinServer->globalSend("400,");
+}
+
+void server_thread::NetJumpToConnection(int loop){
+    this->loop = loop;
 }

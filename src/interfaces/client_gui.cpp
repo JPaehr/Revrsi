@@ -38,7 +38,12 @@ void client_gui::setLockedSL(){
 }
 
 void client_gui::cclose(){
-    this->hide();
+    this->close();
+}
+
+void client_gui::closeEvent(QCloseEvent *event){
+    emit disconnect();
+    event->accept();
 }
 
 //void client_gui::closeEvent(QCloseEvent *){
@@ -100,6 +105,37 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
                 this->NetPlayerNames.push_back(pl[i]);
             }
         }
+    }
+    bool p1 = false ,p2 = false,p3 = false,p4 = false;
+    for(int i = 1;i < pl.size(); i+=2 ){
+        if(pl[i] == "1"){
+            p1 = true;
+        }
+        if(pl[i] == "2"){
+            p2 = true;
+        }
+        if(pl[i] == "3"){
+            p3 = true;
+        }
+        if(pl[i] == "4"){
+            p4 = true;
+        }
+    }
+    if(!p1){
+        ui->player1->setText("");
+        ui->ID1_label->setText("ID: ");
+    }
+    if(!p2){
+        ui->player2->setText("");
+        ui->ID2_label->setText("ID: ");
+    }
+    if(!p3){
+        ui->player3->setText("");
+        ui->ID3_label->setText("ID: ");
+    }
+    if(!p4){
+        ui->player4->setText("");
+        ui->ID4_label->setText("ID: ");
     }
     //emit addPlayerS(pl);
 }

@@ -27,6 +27,7 @@ signals:
     void setLocked();
     void NetTerminateClient();
     void test_signal();
+    void disconnect();
 
 public slots:
     void startClient();
@@ -44,6 +45,7 @@ private:
     int playerCounter;
     QString ownName;
     int clientCounter;
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // CLIENT_GUI_H

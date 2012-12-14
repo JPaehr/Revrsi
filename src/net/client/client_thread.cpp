@@ -47,7 +47,7 @@ void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
 void client_thread::NetGameStart(){
     cout << "ClientThread SLOT:" << "NetGameStart" << endl;
     this->playerNames = this->ClientInterface->getAllNames();
-    this->ClientInterface->setVisible(false);
+    emit NetCloseClientInterface();
     emit NetNewGame();
 }
 
@@ -70,4 +70,11 @@ void client_thread::NetGetNewField(){
     cout << "ClientThread SLOT:\t" << "NetGetNewField" << endl;
     this->fields = this->myClient->getFields();
     emit NetNewFields();
+}
+
+void client_thread::NetPlayerDisconnect(){
+    stringstream sstrID;
+    sstrID << this->ID;
+    this->myClient->senden("201," + sstrID.str() + ",");
+    this->myClient->disconnect();
 }

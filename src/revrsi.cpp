@@ -183,6 +183,8 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
+    connect(this->ClientThread,SIGNAL(NetCloseClientInterface()),this->clientInterface,SLOT(cclose()));
+    connect(this->clientInterface,SIGNAL(disconnect()),this->ClientThread,SLOT(NetPlayerDisconnect()));
     //connect(this->clientInterface,SIGNAL(test_signal()),this,SLOT(TerminateCThread()));
     //connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(TerminateClientThread()));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
@@ -193,6 +195,7 @@ void Revrsi::NetCreateConnectsSL(){
 void Revrsi::NetNewGame(){
     cout << "Revrsi SLOT:\t" << "NetNewGame" << endl;
     this->NetGameStart = true;
+    this->clientInterface->hide();
     this->new_game();
 }
 
@@ -745,11 +748,14 @@ void Revrsi::startThread(){
 
 void Revrsi::closeEvent(QCloseEvent *){
     atest->terminate();
+    atest->wait();
     if(this->ClientThread->isRunning()){
         this->ClientThread->terminate();
+        this->ClientThread->wait();
     }
     if(this->ServerThread->isRunning()){
         this->ServerThread->terminate();
+        this->ServerThread->wait();
     }
     //this->close();
     this->destroy();

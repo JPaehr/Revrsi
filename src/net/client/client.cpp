@@ -14,6 +14,7 @@ Client::Client(string host, bool debug_mode = false){
     this->running = false;
     this->runtime = 0;
     this->ConnectedClients = 0;
+    this->disconnectSend = false;
     string s;
     qRegisterMetaType<QVector<QString> >("QVector<QString>");
 

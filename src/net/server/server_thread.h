@@ -21,11 +21,13 @@ public:
     void run();
 public slots:
     void NetServerStartGame();
+    void NetJumpToConnection(int);
 
 private:
     Server *meinServer;
     QString message;
     server_gui *serverInterface;
+    int loop;
 };
 
 #endif // SERVER_THREAD_H
