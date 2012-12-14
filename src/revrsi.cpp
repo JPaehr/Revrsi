@@ -80,6 +80,7 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(this->clientInterface,SIGNAL(send_startClient()),this,SLOT(runClient()));
     connect(ui->actionClient,SIGNAL(triggered()),this,SLOT(setNetModeEnabled()));
     connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(setNetModeDisabled()));
+
 }
 
 
@@ -141,6 +142,9 @@ void Revrsi::runServer(){
 
 void Revrsi::runClient(){
     this->ClientThread = new client_thread(this, this->clientInterface);
+    if(this->ClientThread->isRunning()){
+        this->ClientThread->terminate();
+    }
     this->ClientThread->start();
     connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
 }
@@ -179,6 +183,8 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
+    //connect(this->clientInterface,SIGNAL(test_signal()),this,SLOT(TerminateCThread()));
+    //connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(TerminateClientThread()));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
     cout << "Revrsi SLOT:\t" << "All Connects Created" << endl;
     this->ClientThread->setCreateConnectsState(true);
@@ -739,6 +745,14 @@ void Revrsi::startThread(){
 
 void Revrsi::closeEvent(QCloseEvent *){
     atest->terminate();
+    if(this->ClientThread->isRunning()){
+        this->ClientThread->terminate();
+    }
+    if(this->ServerThread->isRunning()){
+        this->ServerThread->terminate();
+    }
+    //this->close();
+    this->destroy();
 }
 
 void Revrsi::set_scale(double scale){

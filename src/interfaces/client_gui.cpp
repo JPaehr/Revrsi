@@ -7,7 +7,10 @@ client_gui::client_gui(QWidget *parent) :
     ui->setupUi(this);
     this->playerCounter = 0;
     this->clientCounter = 0;
+    connect(ui->close_button,SIGNAL(clicked()),this,SLOT(cclose()));
+    //connect(this,SIGNAL(destroyed()),this,SLOT(cclose()));
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
+    connect(this,SIGNAL(send_startClient()),this,SLOT(setLockedSL()));
     connect(this,SIGNAL(addPlayerS(std::vector<std::string>)),this,SLOT(addPlayer(std::vector<std::string>)));
     connect(ui->spielername_lineEdit,SIGNAL(textChanged(QString)),this,SLOT(getPlayerNameOnChange(QString)));
 }
@@ -34,6 +37,14 @@ void client_gui::setLockedSL(){
     ui->spielername_lineEdit->setDisabled(true);
 }
 
+void client_gui::cclose(){
+    this->hide();
+}
+
+//void client_gui::closeEvent(QCloseEvent *){
+
+//}
+
 void client_gui::getPlayerNameOnChange(QString ownName){
     this->ownName = ownName;
     //emit sendOwnName(this->ownName);
@@ -43,7 +54,14 @@ void client_gui::startClient(){
     if(ui->spielername_lineEdit->text() == QString("")){
         QMessageBox warning;
         warning.setWindowTitle("Fehler");
-        warning.setText("KeinSpielername angegeben.");
+        warning.setText("Kein Spielername angegeben.");
+        warning.setStandardButtons(QMessageBox::Ok);
+        warning.exec();
+    }
+    else if(ui->serverIP_lineEdit->text() == QString("")){
+        QMessageBox warning;
+        warning.setWindowTitle("Fehler");
+        warning.setText("Keine Server IP angegeben.");
         warning.setStandardButtons(QMessageBox::Ok);
         warning.exec();
     }

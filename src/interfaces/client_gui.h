@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QtGui>
 
 using namespace std;
 
@@ -24,6 +25,8 @@ signals:
     void send_startClient();
     void addPlayerS(std::vector<std::string>);
     void setLocked();
+    void NetTerminateClient();
+    void test_signal();
 
 public slots:
     void startClient();
@@ -33,7 +36,8 @@ public slots:
     QString getPlayerName();
     string getIP();
     void setLockedSL();
-    
+    void cclose();
+
 private:
     Ui::client_gui *ui;
     QVector<QString> NetPlayerNames;
