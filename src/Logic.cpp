@@ -24,7 +24,9 @@ Logic::Logic(int width, int height, int players) {
 	//Felder mit inhalt 0 sollen nicht belegt sein
 	//this->fields[5][5] = {0};
 	this->fields.assign(height,vector<int>(width,0));
+    this->oldFields = this->fields;
 }
+
 //Array als rueckgabewert einer Methode ist in c schwierig->nachsehen wie das geht
 vector<vector<int> > Logic::getFields(){
 	return this->fields;
@@ -110,6 +112,8 @@ void Logic::setInitStones(){
 			counter++;
 		}
 	}
+
+    this->oldFields = this->fields;
 	/*
 	// testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
 	this->fields[1][2] = 1;
@@ -310,6 +314,8 @@ bool Logic::validation(int x, int y){
 	return false;
 }
 void Logic::setField(int x, int y){
+    this->oldFields = this->fields;
+
 	if(this->validation(x, y)){
 		//y und x verdreht, weil y fuer zeilen steht und x fuer breite
 		this->fields[y][x] = this->aktPlayer;
@@ -343,9 +349,96 @@ void Logic::setField(int x, int y){
 			}
 			durchlauf++;
 		}
-	}
-	//vector<int> win();
+        //geaenderte Steine finden
+
+        //alte Werte loeschen
+        this->aniStonesInZaehlerRichtung.clear();
+        this->aniStonesStern.clear();
+
+        //aniStonesInZaehlerRichtung
+        for(int i = 0; i < this->height; i++){
+            for(int j = 0; j < this->width; j++){
+                if(this->fields[i][j] != this->oldFields[i][j]){
+                    //cout << "Neues Feld bei x: " <<  j << " und y: " << i << " " << this->fields[i][j] << endl;
+                    //cout << "Altes Feld bei x: " << j << " und y: " << i << " " << this->oldFields[i][j] << endl;
+                    this->aniStonesInZaehlerRichtung.push_back(j);
+                    this->aniStonesInZaehlerRichtung.push_back(i);
+                }
+            }
+        }
+
+        //aniStonesStern
+        int distanceFinden = 0;
+        if(this->height > this->width){
+            distanceFinden = this->height;
+        }
+        else{
+            distanceFinden = this->width;
+        }
+
+        for(int distance = 0; distance < distanceFinden+1; distance++){
+
+            for(int i = 0; i < this->height; i++){
+                for(int j = 0; j < this->width; j++){
+                    if((this->fields[i][j] != this->oldFields[i][j]) && (getDistance(x, y, j, i) == distance) && (this->oldFields[i][j] != (-1))){
+                        //cout << "Distanz: " << distance << endl;
+                        //cout << "Neues Feld bei x: " <<  j << " und y: " << i << " " << this->fields[i][j] << endl;
+                        //cout << "Altes Feld bei x: " << j << " und y: " << i << " " << this->oldFields[i][j] << endl;
+                        this->oldFields[i][j] = -1;
+                        this->aniStonesStern.push_back(j);
+                        this->aniStonesStern.push_back(i);
+                    }
+                }
+            }
+
+        }
+
+        /*for(int i = 0; i < this->aniStonesStern.size()-1; i+=2){
+            //cout << "X: " << this->aniStonesStern[i] << " Y: " << this->aniStonesStern[i+1] << endl;
+        }*/
+
+
+
+
+    }//validation Ende
+
 }
+int Logic::getDistance(int xSource, int ySource, int xdest, int ydest){
+    int xdiff = xSource - xdest;
+    int ydiff = ySource - ydest;
+    if(xdiff < 0){
+        xdiff = xdiff * (-1);
+    }
+    if(ydiff < 0){
+        ydiff = ydiff * (-1);
+    }
+    if(xdiff > ydiff){
+        return xdiff;
+    }
+    else{
+        return ydiff;
+    }
+
+}
+
+
+vector<int> Logic::getAniStones(int aniArt){
+    //-1 fuer Stern
+    //-2 fuer stumpfes vorgehen in reihe
+    switch(aniArt){
+        case -1:
+            return this->aniStonesStern;
+            break;
+        case -2:
+            return this->aniStonesInZaehlerRichtung;
+            break;
+        default:
+        break;
+            //return new vector<int>;
+    }
+    return this->aniStonesInZaehlerRichtung;
+}
+
 vector<int> Logic::win(){
 	vector<int> sieger;
 	for(int anz = 0; anz <= this->players; anz++){

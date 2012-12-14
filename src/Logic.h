@@ -18,16 +18,22 @@ private:
 	//Leeres array ohne begrenzungen weil konstruktor noch nicht aufgerufen, wahrscheinlich eine schlechte idee
 	//gibt auch einen Error beim kompilieren
 	vector<vector<int> > fields;//(4,vector<int>(4,0));
+    vector<vector<int> > oldFields;
 	int aktPlayer;
 	void turnStones(int x, int y, int richtung, int anzahl);
 	bool validation(int x, int y);
 	vector<int> sternSteine(int x, int y);
+    vector<int> aniStonesStern;
+    vector<int>aniStonesInZaehlerRichtung;
+    int getDistance(int xSource, int ySource, int xdest, int ydest);
+
 
 public:
+    vector<int> getAniStones(int aniArt);
 	vector<int> win();
 	void setAktPlayer(int player);
 	Logic(int width, int height, int players);
-	void setInitStones();
+    void setInitStones();
 	vector<vector<int> > getFields();
 	void setField(int x, int y);
 	int getAktPlayer();
