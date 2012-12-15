@@ -11,9 +11,7 @@ using namespace std;
 Server::Server(int breite, int hoehe, int Spieler){
 
     this->uServer1 = new subServer(this,"55313", breite, hoehe, Spieler, 1);
-
     this->uServer2 = new subServer(this,"55314", breite, hoehe, Spieler, 2);
-
     if(Spieler >= 3){
         this->uServer3 = new subServer(this,"55315", breite, hoehe, Spieler, 3);
     }
@@ -152,8 +150,9 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
     cout << spalte << " " << hoehe << " " << id << endl;
     if(this->logic->getAktPlayer() == id){
         this->logic->setField(spalte, hoehe);
-        SpielStandaktSenden();
+		SpielStandaktSenden();
     }
+    
 }
 
 void Server::NetSendNewClient(QString Name, int ID){

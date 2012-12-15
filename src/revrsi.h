@@ -15,6 +15,8 @@
 #include "animation/anim_test.h"
 #include "net/server/server_thread.h"
 #include "net/client/client_thread.h"
+#include "AI/ai_thread.h"
+#include "interfaces/ai_settings.h"
 
 namespace Ui {
 class Revrsi;
@@ -34,6 +36,8 @@ signals:
 
     //Network
     void NetFieldClickedTransmit(int, int);
+    void emitField(vector<vector<int> >);
+    void emitAktPlayer(int);
 
 public slots:
     void test_slot();
@@ -50,6 +54,7 @@ public slots:
     void switchOpacityWay();
 
     void warpStart();
+    void AIClickSlot(int,int);
 
     //Netzwerk
     void setNetModeEnabled();
@@ -72,6 +77,7 @@ private:
     int                     player_num;
     int                     player_act;
     new_game_settings       *ngs;
+    AI_settings             *ais;
     Logic                   *logic;
     Ui::Revrsi              *ui;
     //QAnimationGroup         Anim;
@@ -83,6 +89,7 @@ private:
     QVector<TokenItem *>    tokens;
     QVector<player *>       p_fields;
     TokenItem               *TokenContainer;
+    QVector<AI_Thread *>      ai_list;
     client_gui              *clientInterface;
     server_gui              *serverInterface;
     win_gui                 *winInterface;
@@ -95,6 +102,8 @@ private:
     int                     sceneOffset_x;
     int                     sceneOffset_y;
     double                  sceneOffset_scale;
+
+    int                     playerCounter;
 
     bool                    FieldBackSet;
 
@@ -116,6 +125,7 @@ private:
     void addPlayersToList();
     void setupBackgroundTheme();
     void setupFieldBack();
+    void createAIs();
 
     void runPlayerFieldAnimation();
 

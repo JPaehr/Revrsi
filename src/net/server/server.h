@@ -19,7 +19,7 @@ public:
     subServer *uServer3;
     subServer *uServer4;
     bool uServer1Connected,uServer2Connected,uServer3Connected,uServer4Connected;
-    void SpielStandaktSenden();
+	void SpielStandaktSenden();
 
 public slots:
     void setStoneControl(int, int, int);
@@ -39,6 +39,7 @@ private:
 
     vector<vector<int> > fields;
     string StringSpielstand();
+    
     QVector<QVector<string> > AllClients;
 
 };

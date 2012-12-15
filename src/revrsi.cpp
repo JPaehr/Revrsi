@@ -14,6 +14,7 @@ Revrsi::Revrsi(QWidget *parent) :
     serverInterface = new server_gui;
     clientInterface = new client_gui;
     winInterface = new win_gui;
+    ais = new AI_settings;
     this->FieldBackSet = false;
     this->height = 8;
     this->width = 8;
@@ -60,7 +61,7 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionNeu, SIGNAL(triggered()), this, SLOT(test_slot()));
     connect(ui->actionServer, SIGNAL(triggered()), this, SLOT(server_gui_slot()));
     connect(ui->actionClient, SIGNAL(triggered()), this, SLOT(client_gui_slot()));
-    //connect(ui->actionBeenden,SIGNAL(triggered()), this, SLOT(exit()));
+    connect(ui->actionKI_Einstellungen,SIGNAL(triggered()),this->ais,SLOT(show()));
 
     connect(this, SIGNAL(win(QVector<int>, QVector<QString>)),this->winInterface, SLOT(win_slot(QVector<int>, QVector<QString>)));
 
@@ -70,8 +71,6 @@ Revrsi::Revrsi(QWidget *parent) :
     connect(ui->actionDown,SIGNAL(triggered()),this,SLOT(step_down()));
     connect(ui->actionZoom,SIGNAL(triggered()),this,SLOT(zoom_in()));
     connect(ui->actionShrink,SIGNAL(triggered()),this,SLOT(zoom_out()));
-
-    //connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
 
     connect(this->atest,SIGNAL(delayedStart()),this,SLOT(warpStart()));
 
@@ -124,6 +123,10 @@ void Revrsi::warpStart(){
     //sleep(5);
     out << "in warp start";
     this->new_game();
+}
+
+void Revrsi::AIClickSlot(int x, int y){
+
 }
 
 void Revrsi::setNetModeEnabled(){
@@ -183,7 +186,7 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
-    connect(this->ClientThread,SIGNAL(NetCloseClientInterface()),this->clientInterface,SLOT(cclose()));
+    //connect(this->ClientThread,SIGNAL(NetCloseClientInterface()),this->clientInterface,SLOT(cclose()));
     connect(this->clientInterface,SIGNAL(disconnect()),this->ClientThread,SLOT(NetPlayerDisconnect()));
     //connect(this->clientInterface,SIGNAL(test_signal()),this,SLOT(TerminateCThread()));
     //connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(TerminateClientThread()));
@@ -358,7 +361,7 @@ void Revrsi::field_clicked_slot(int x, int y){
         this->runPlayerFieldAnimation();
         connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
     }
-
+    emit emitAktPlayer(this->logic->getAktPlayer());
 }
 
 void Revrsi::client_gui_slot(){
@@ -433,6 +436,7 @@ void Revrsi::change_token(int x, int y, int player){
 }
 
 void Revrsi::new_game(){
+    this->playerCounter = 0;
     //Beende Animation
     if(!this->firstRun){
         this->anim->setLoopCount(0);
@@ -485,10 +489,16 @@ void Revrsi::new_game(){
     //Setup Players
     if(!this->NetMode){
         this->playerNames = ngs->get_player_names();
+        this->logic->getAktPlayer();
+        this->createAIs();
     }
     else{
         this->playerNames = this->clientInterface->getAllNames();
     }
+
+    //Transmit Field to AI
+    emit this->emitField(this->logic->getFields());
+    emit this->emitAktPlayer(this->logic->getAktPlayer());
 
     this->addPlayersToList();
 
@@ -688,6 +698,10 @@ void Revrsi::addPlayersToList(){
         spieler->activ_text.setPos(11,23);
         spieler->activ_text.setVisible(false);
         spieler->tokens.setPos(16,23);
+        if(this->ais->aiActivated(i)){
+            spieler->setKindText("Test KI");
+            //spieler->kind_text.setScale(qreal(0.5,0.5));
+        }
         if(this->player_num == 2){spieler->setTokens(2);}
         else if(this->player_num == 3){spieler->setTokens(3);}
         else if(this->player_num == 4){spieler->setTokens(4);}
@@ -724,6 +738,19 @@ void Revrsi::setupFieldBack(){
     fback->setPixmap(field_back);
     fback->setOpacity(0.75);
     this->scene->addItem(fback);
+}
+
+void Revrsi::createAIs(){
+    for(int i = 1; i <= this->player_num; i++){
+        if(this->ais->aiActivated(i)){
+            AI_Thread *ai = new AI_Thread(this,1,i);
+            connect(this,SIGNAL(emitField(vector<vector<int> >)),ai,SLOT(setField(vector<vector<int> >)));
+            connect(ai,SIGNAL(AIClicked(int,int)),this,SLOT(AIClickSlot(int,int)));
+            connect(this,SIGNAL(emitAktPlayer(int)),ai,SLOT(setAktPlayer(int)));
+            this->ai_list.push_back(ai);
+            ai->start();
+        }
+    }
 }
 
 void Revrsi::runPlayerFieldAnimation(){

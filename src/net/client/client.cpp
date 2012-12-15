@@ -48,7 +48,7 @@ void Client::run(){
     int index = 1;
     int max;
     int winPlus = 0;
-    int dazu;
+	int dazu;
     //QVector<string> str;
     while(1){
         this->client.recv(s);
@@ -105,8 +105,9 @@ void Client::run(){
                     //Spielstart
                     case 400:
                         if(debug_mode){cout << "Client:\t\t" << "Case 400 bearbeiten" << endl;}
-                        this->running = true;
-                        abschnitt+=1;
+                        
+						this->running = true;                 
+						abschnitt+=1;
                         emit NetServerWantGameStart();
                         if(debug_mode){cout << "Client:\t\t" << "Case 400 verarbeitet\t" << "EMIT: NetGameStart" << endl;}
 
@@ -128,8 +129,8 @@ void Client::run(){
                             }
                         }
 
-                        abschnitt+=index;
-                        if(debug_mode){
+                        abschnitt+=index;                       
+						if(debug_mode){
                             for(int i = 0; i < this->height; i++){
                                 for(int j = 0; j < this->width; j++){
                                     cout << this->fields[i][j] << " ";
@@ -138,8 +139,7 @@ void Client::run(){
                             }
                             /*cout << "Eigene id" << this->id << endl;
                             */
-                        }
-
+                        }						
                         index = 1;
                         this->runtime++;
                         emit NetNewField();
@@ -199,9 +199,8 @@ void Client::run(){
                         emit NetAktPlayer(this->aktPlayer);
                         this->runtime++;
                         if(debug_mode){cout << "Client:\t\t" << "Case 999 verarbeitet\t" << "EMIT: NetAktPlayer" << endl;}
-                        break;
-
-                    //Animationscode x, y, x, y, -10
+                        break;						
+					//Animationscode x, y, x, y, -10
                     case 909:
                         if(debug_mode){cout << "Client:\t\t" << "Case 909 bearbeiten" << endl;}
 
@@ -214,7 +213,6 @@ void Client::run(){
                         }
                         abschnitt+= dazu;
                         cout << "Abschnitt: " << dazu << endl;
-
 
                     default:
                         break;
@@ -281,8 +279,7 @@ vector<vector<int> > Client::getFields(){
 
 void Client::senden(string mes){
     if(this->debug_mode){
-
-        string mes;
+    string mes;
         string x;
         string y;
         string senden;
@@ -310,16 +307,12 @@ void Client::senden(string mes){
             senden += sstr.str();
             senden += ",";
             sstr.str("");
-
             cout << "das soll gesendet werden " << senden << endl;
-
-            this->client.send(senden);
+			this->client.send(senden);
             cout << this->getAktPlayer() << " ist dran " << endl;
 
-            cout << "die eigene id: " << this->id <<endl;
-
-        } while( mes != "quit" );
-
+            cout << "die eigene id: " << this->id <<endl;			
+            } while( mes != "quit" );
     }
     else{
         this->client.send(mes);

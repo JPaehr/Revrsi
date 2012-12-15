@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     net/socket.cpp \
     net/client/client.cpp \
     net/client/client_thread.cpp \
-    net/server/subServer.cpp
+    net/server/subServer.cpp \
+    AI/ai_thread.cpp \
+    interfaces/ai_settings.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -47,13 +49,16 @@ HEADERS  += revrsi.h \
     net/client/client.h \
     net/server/server_thread.h \
     net/client/client_thread.h \
-    net/server/subServer.h
+    net/server/subServer.h \
+    AI/ai_thread.h \
+    interfaces/ai_settings.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \
     interfaces/server_gui.ui \
     interfaces/new_game_settings.ui \
-    interfaces/client_gui.ui
+    interfaces/client_gui.ui \
+    interfaces/ai_settings.ui
 
 RESOURCES += \
     res/resources.qrc \

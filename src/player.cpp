@@ -15,6 +15,7 @@ void player::set_parents(QGraphicsItem *item){
     this->activ_text.setParentItem(&this->player_field);
     this->name.setParentItem(&this->player_field);
     this->tokens.setParentItem(&this->player_field);
+    this->kind_text.setParentItem(&this->player_field);
 }
 
 void player::setPlayerField(QPixmap pixmap){
@@ -46,4 +47,8 @@ void player::setTokens(int tokens){
 
 void player::setTokensVisible(bool vis){
     this->tokens.setVisible(vis);
+}
+
+void player::setKindText(QString text){
+    this->kind_text.setPlainText(text);
 }

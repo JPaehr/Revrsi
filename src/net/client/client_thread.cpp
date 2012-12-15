@@ -9,7 +9,7 @@ vector<vector<int> > client_thread::getFields(){
 }
 
 void client_thread::run(){
-    this->myClient = new Client(this->ClientInterface->getIP(), true);
+    this->myClient = new Client(this->ClientInterface->getIP(), false);
     this->CreateConnectsSuccessful = false;
     emit NetCreateConnects();
     while(!this->CreateConnectsSuccessful){QApplication::processEvents();}

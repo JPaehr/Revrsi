@@ -27,7 +27,8 @@ public:
 
 
 private:
-    vector<int> VecAnimation;
+
+	vector<int> VecAnimation;
     bool debug_mode;
     vector<int> winVector;
     string name;

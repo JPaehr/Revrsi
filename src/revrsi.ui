@@ -95,8 +95,15 @@
     <addaction name="actionHilfe"/>
     <addaction name="action_ber"/>
    </widget>
+   <widget class="QMenu" name="menuEinstellungen">
+    <property name="title">
+     <string>Einstellungen</string>
+    </property>
+    <addaction name="actionKI_Einstellungen"/>
+   </widget>
    <addaction name="menuSpiel"/>
    <addaction name="menuNetzwerk"/>
+   <addaction name="menuEinstellungen"/>
    <addaction name="menuHilfe"/>
   </widget>
   <action name="actionNeu">
@@ -213,6 +220,11 @@
    </property>
    <property name="toolTip">
     <string>Spielfeld herauszoomen</string>
+   </property>
+  </action>
+  <action name="actionKI_Einstellungen">
+   <property name="text">
+    <string>KI Einstellungen</string>
    </property>
   </action>
  </widget>

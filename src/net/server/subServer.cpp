@@ -34,15 +34,14 @@ void subServer::initServer(){
     cout << "Server:\t\tWarte auf Client" << endl;
     this->sock1.accept(this->sock2);
     cout << "Server:\t\tClient Akzeptiert. Verbindung wird aufgebaut..." << endl;
-    cout << "Hallo Welt" << endl;
-    this->sock2.send(this->port);
-    cout << "hier" << endl;
+    this->sock2.send(port);
+
     this->sock2.close();
     this->sock1.close();
 
     this->sock1.create();
 
-    stringstream sstr(this->port);
+    stringstream sstr(port);
 
     int nport;
     sstr >> nport;
@@ -50,7 +49,6 @@ void subServer::initServer(){
     this->sock1.bind(nport);
     this->sock1.listen();
     this->sock1.accept(this->sock2);
-    cout << "bis hier gekommen" << endl;
     //this->connected = true;
 }
 
@@ -64,14 +62,14 @@ void subServer::run(){
     cout << "Server:\t\tWarte auf Client" << endl;
     this->sock1.accept(this->sock2);
     cout << "Server:\t\tClient Akzeptiert. Verbindung wird aufgebaut..." << endl;
-
-    this->sock2.send(this->port);
+    this->sock2.send(port);
 
     this->sock2.close();
     this->sock1.close();
+
     this->sock1.create();
 
-    stringstream sstr(this->port);
+    stringstream sstr(port);
 
     int nport;
     sstr >> nport;
@@ -79,7 +77,6 @@ void subServer::run(){
     this->sock1.bind(nport);
     this->sock1.listen();
     this->sock1.accept(this->sock2);
-
     this->connected = true;
     emit this->NetSetServerConnected(this->id);
 

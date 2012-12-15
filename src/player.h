@@ -15,6 +15,7 @@ public:
     QGraphicsTextItem activ_text;
     QGraphicsTextItem name;
     QGraphicsTextItem tokens;
+    QGraphicsTextItem kind_text;
 
     void set_parents(QGraphicsItem *item);
     void setPlayerField(QPixmap pixmap);
@@ -24,6 +25,7 @@ public:
     void setActive(bool act);
     void setTokens(int tokens);
     void setTokensVisible(bool vis);
+    void setKindText(QString text);
 private:
     int tokensnumber;
 };
