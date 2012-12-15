@@ -75,6 +75,7 @@ void client_thread::NetGetNewField(){
 void client_thread::NetPlayerDisconnect(){
     stringstream sstrID;
     sstrID << this->ID;
+    cout << "ClientThread\t Case 201 senden" << endl;
     this->myClient->senden("201," + sstrID.str() + ",");
     this->myClient->disconnect();
 }

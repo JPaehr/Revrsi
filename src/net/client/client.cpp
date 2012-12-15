@@ -77,14 +77,24 @@ void Client::run(){
                     //Spielername, id <-vom server zugewiesen
                     case 200:
                         if(debug_mode){cout << "Client:\t\t" << "Case 200 bearbeiten" << endl;}
-                        this->playersNames.push_back(explode(s, ',')[abschnitt+1].c_str());
-                        this->playersNames.push_back(explode(s, ',')[abschnitt+2].c_str());
+                        this->playersNames.clear();
+                        for(int i = 1; ; i+=2){
+                            if(strcmp(explode(s, ',')[abschnitt+i].c_str(),"END__OF__LINE") != 0){
+                                this->playersNames.push_back(explode(s, ',')[abschnitt+i].c_str());
+                                this->playersNames.push_back(explode(s, ',')[abschnitt+(i+1)].c_str());
+                            }
+                            else{
+                                emit this->NetPlayersNames(this->playersNames);
+                                this->ConnectedClients++;
+                                if(debug_mode){cout << "Client:\t\t" << "Case 200 verarbeitet\t" << "EMIT: NetPlayerNames" << endl;}
+                                abschnitt += i;
+                                break;
+                            }
+                        }
                         //this->playersNames.push_back(str);
                         //cout << "Neuer Spielername aufgenommen: " <<  this->playersNames[atoi(explode(s, ',')[abschnitt+2].c_str())] << endl;
-                        abschnitt+=3;
-                        emit this->NetPlayersNames(this->playersNames);
-                        this->ConnectedClients++;
-                        if(debug_mode){cout << "Client:\t\t" << "Case 200 verarbeitet\t" << "EMIT: NetPlayerNames" << endl;}
+                        //abschnitt+=3;
+
                         break;
                     //Spieler weg
                     case 201:

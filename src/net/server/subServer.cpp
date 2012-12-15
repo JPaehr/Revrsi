@@ -132,6 +132,7 @@ void subServer::run(){
                     case 201:
                         cout << "Case 201 bearbeiten. Player Disconnect." << endl;
                         cout << "Player mit ID: " << atoi(explode(s, ',')[abschnitt+1].c_str()) << " wurde getrennt" << endl;
+                        this->connected = false;
                         emit NetDisconnectServer(atoi(explode(s, ',')[abschnitt+1].c_str()));
                         emit NetSendAllClients(atoi(explode(s, ',')[abschnitt+1].c_str()));
                         abschnitt += 2;
@@ -147,15 +148,15 @@ void subServer::run(){
                         cout << "Server:\t\tCase 222 bearbeiten. Spielername und Client ID erwartet." << endl;
                         if(this->id == atoi(explode(s, ',')[abschnitt+2].c_str())){
                             this->name = explode(s, ',')[abschnitt+1].c_str();
-                            //cout << this->name;
-                            vector<string> vec;
-                            stringstream sstrID;
                             QString nnn = QString::fromStdString(this->name);
+                            //cout << this->name;
+                            /*vector<string> vec;
+                            stringstream sstrID;
                             //nnn = QString(this->name);
                             sstrID << this->id;
                             vec.push_back(this->name);
                             vec.push_back(sstrID.str());
-                            this->players.push_back(vec);
+                            this->players.push_back(vec);*/
                             emit this->NetServerNewClient(nnn, this->id);
                             cout << "Server:\t\tCase 222 verarbeitet. Bekommen Name: " << this->name << " ID: " << this->id << " EMIT NetServerNewClient" << endl;
                         }

@@ -140,59 +140,79 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
 }
 
 void Server::NetSendNewClient(QString Name, int ID){
+    QVector<string> tmp;
     stringstream id;
     string NewClient;
+    string clients = "";
     id << ID;
-    NewClient = "200," + Name.toStdString() + "," + id.str() + ",";
-    AllClients.push_back(NewClient);
+    NewClient = Name.toStdString() + "," + id.str() + ",";
+
+    tmp.push_back(Name.toStdString());
+    tmp.push_back(id.str());
+    tmp.push_back(NewClient);
+
+    AllClients.push_back(tmp);
     cout << "Server:\t\tSenden Case " << NewClient;
-    for(uint i = 0; i < AllClients.size(); i++){
-        if(this->uServer1->connected){
-            this->uServer1->senden(AllClients[i]);
+    clients += "200,";
+
+    for(int i = 0; i < AllClients.size(); i++){
+        clients += AllClients[i][2];
+    }
+    clients += "END__OF__LINE,";
+    if(this->uServer1->connected){
+        this->uServer1->senden(clients);
+    }
+    if(this->uServer2->connected){
+        this->uServer2->senden(clients);
+    }
+     if(this->players >= 3){
+        if(this->uServer3->connected){
+        this->uServer3->senden(clients);
         }
-        if(this->uServer2->connected){
-            this->uServer2->senden(AllClients[i]);
-        }
-        if(this->players >= 3){
-            if(this->uServer3->connected){
-                this->uServer3->senden(AllClients[i]);
-            }
-        }
-        if(this->players == 4){
-            if(this->uServer4->connected){
-                this->uServer4->senden(AllClients[i]);
-            }
+    }
+    if(this->players == 4){
+        if(this->uServer4->connected){
+        this->uServer4->senden(clients);
         }
     }
 }
 
 void Server::NetSendAllClientsSL(int del){
-    vector<string> nerv;
-    for(uint i = 0; i<AllClients.size();i++){
-        string bla = AllClients[i];
-        if(atoi(&bla[bla.length()-2]) != del){
-            nerv.push_back(AllClients[i]);
+    stringstream blid;
+    string id_string;
+    blid << del;
+    id_string = blid.str();
+
+    for(int i = 0; i < AllClients.size(); i++){
+        string tmo = AllClients[i][1];
+        if(strcmp(tmo.c_str(), id_string.c_str()) == 0){
+            AllClients.remove(i);
         }
     }
-for(uint i = 0; i < AllClients.size(); i++){
+
+    string string_to_send;
+    string_to_send = "200,";
+    for(int i = 0; i < AllClients.size(); i++){
+        string_to_send += AllClients[i][2];
+    }
+    string_to_send += "END__OF__LINE,";
 
     if(this->uServer1->connected){
-        this->uServer1->senden(AllClients[i]);
+        this->uServer1->senden(string_to_send);
     }
     if(this->uServer2->connected){
-        this->uServer2->senden(AllClients[i]);
+        this->uServer2->senden(string_to_send);
     }
     if(this->players >= 3){
         if(this->uServer3->connected){
-            this->uServer3->senden(AllClients[i]);
+            this->uServer3->senden(string_to_send);
         }
     }
     if(this->players == 4){
         if(this->uServer4->connected){
-            this->uServer4->senden(AllClients[i]);
+            this->uServer4->senden(string_to_send);
         }
     }
-}
 }
 
 void Server::NetSendSpielstandSL(){

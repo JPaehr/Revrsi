@@ -37,7 +37,7 @@ public slots:
     QString getPlayerName();
     string getIP();
     void setLockedSL();
-    void cclose();
+    //void cclose();
 
 private:
     Ui::client_gui *ui;
