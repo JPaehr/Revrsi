@@ -116,6 +116,7 @@ string Server::StringSpielstand(){
 
     //vor dem Spielstand muss die animation geladen werden
     if(this->logic->getAniStones(-1).size() > 0){
+        cout << "Anistones Groesse " << this->logic->getAniStones(-1).size() << endl;
         spielstand = "909,";
         for(int k = 0; k < this->logic->getAniStones(-1).size(); k++){
             anhang << this->logic->getAniStones(-1)[k];
@@ -151,8 +152,8 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
     cout << spalte << " " << hoehe << " " << id << endl;
     if(this->logic->getAktPlayer() == id){
         this->logic->setField(spalte, hoehe);
+        SpielStandaktSenden();
     }
-    SpielStandaktSenden();
 }
 
 void Server::NetSendNewClient(QString Name, int ID){
