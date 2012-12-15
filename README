@@ -1,4 +1,8 @@
 History:
+-15.12.12
+	$ sudo netstat -ap | grep :55312 kontrolle ob Port schon wieder freigegen
+
+
 -14.12.12
 	Methode zum ermitteln der zu animierenden Steine geschrieben
 	 
