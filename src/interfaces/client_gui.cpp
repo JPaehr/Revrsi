@@ -7,7 +7,7 @@ client_gui::client_gui(QWidget *parent) :
     ui->setupUi(this);
     this->playerCounter = 0;
     this->clientCounter = 0;
-    connect(ui->close_button,SIGNAL(clicked()),this,SLOT(cclose()));
+    connect(ui->close_button,SIGNAL(clicked()),this,SLOT(close()));
     //connect(this,SIGNAL(destroyed()),this,SLOT(cclose()));
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
     connect(this,SIGNAL(send_startClient()),this,SLOT(setLockedSL()));
@@ -35,10 +35,6 @@ string client_gui::getIP(){
 void client_gui::setLockedSL(){
     ui->serverIP_lineEdit->setDisabled(true);
     ui->spielername_lineEdit->setDisabled(true);
-}
-
-void client_gui::cclose(){
-    this->close();
 }
 
 void client_gui::closeEvent(QCloseEvent *event){

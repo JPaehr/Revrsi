@@ -39,7 +39,7 @@ private:
 
     vector<vector<int> > fields;
     string StringSpielstand();
-    vector<string> AllClients;
+    QVector<QVector<string> > AllClients;
 
 };
 
