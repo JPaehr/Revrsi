@@ -390,13 +390,23 @@ void Logic::setField(int x, int y){
                     }
                 }
             }
-
+            //cout << "letzter eintrag im Stern: " << this->aniStonesStern[this->aniStonesStern.size()-1] << endl;
+            if(this->aniStonesStern[this->aniStonesStern.size()-1] != -10){
+                this->aniStonesStern.push_back(-10);
+            }
         }
 
-        /*for(int i = 0; i < this->aniStonesStern.size()-1; i+=2){
-            //cout << "X: " << this->aniStonesStern[i] << " Y: " << this->aniStonesStern[i+1] << endl;
-        }*/
+        /*
+        for(int i = 0; i < this->aniStonesStern.size(); i++){
 
+            if(this->aniStonesStern[i] == -10){
+                cout << "-10" << endl;
+            }
+            else{
+                 cout << " " << this->aniStonesStern[i];
+            }
+        }
+        */
 
 
 
