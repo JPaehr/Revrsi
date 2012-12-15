@@ -11,7 +11,9 @@ using namespace std;
 Server::Server(int breite, int hoehe, int Spieler){
 
     this->uServer1 = new subServer(this,"55313", breite, hoehe, Spieler, 1);
+
     this->uServer2 = new subServer(this,"55314", breite, hoehe, Spieler, 2);
+
     if(Spieler >= 3){
         this->uServer3 = new subServer(this,"55315", breite, hoehe, Spieler, 3);
     }
@@ -111,7 +113,21 @@ string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;
     stringstream sstr;
-    spielstand = "500,";
+
+    //vor dem Spielstand muss die animation geladen werden
+    if(this->logic->getAniStones(-1).size() > 0){
+        spielstand = "909,";
+        for(int k = 0; k < this->logic->getAniStones(-1).size(); k++){
+            anhang << this->logic->getAniStones(-1)[k];
+            spielstand += anhang.str();
+            spielstand += ",";
+            anhang.str("");
+        }
+    }
+
+
+
+    spielstand += "500,";
     for(int i = 0; i < this->heigth; i++){
         for(int j = 0; j < this->width; j++){
             anhang << this->logic->getFields()[i][j];
@@ -126,7 +142,7 @@ string Server::StringSpielstand(){
     spielstand += sstr.str();
     spielstand += ",";
     sstr.str("");
-    //cout << "Spielstand Senden: " << spielstand << endl;
+    cout << "Spielstand Senden: " << spielstand << endl;
     return spielstand;
 }
 void Server::setStoneControl(int spalte, int hoehe, int id){
