@@ -25,34 +25,6 @@ subServer::subServer(QObject *parent, string port, int breite, int hoehe, int an
 subServer::~subServer(){
 }
 
-/*void subServer::initServer(){
-    //cout << "Hier war ich Server" << endl;
-    this->sock1.create();
-    cout << "Server:\t\tSocket 1 erstellt" << endl;
-    this->sock1.bind(55312);
-    cout << "Server:\t\tSocket 1 an Port 55312 gebunden" << endl;
-    this->sock1.listen();
-    cout << "Server:\t\tWarte auf Client" << endl;
-    this->sock1.accept(this->sock2);
-    cout << "Server:\t\tClient Akzeptiert. Verbindung wird aufgebaut..." << endl;
-    this->sock2.send(port);
-
-    this->sock2.close();
-    this->sock1.close();
-
-    this->sock1.create();
-
-    stringstream sstr(port);
-
-    int nport;
-    sstr >> nport;
-
-    this->sock1.bind(nport);
-    this->sock1.listen();
-    this->sock1.accept(this->sock2);
-    //this->connected = true;
-}*/
-
 void subServer::run(){
     //cout << "Hier war ich Server" << endl;
     this->sock1.create();
