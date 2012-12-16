@@ -3,6 +3,7 @@
 
 server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QThread(parent){
     this->serverInterface = serverInterface;
+    this->br = false;
 
 }
 
@@ -21,82 +22,85 @@ void server_thread::run(){
     this->loop = 1;
     while(1){
         if(this->loop == 1){
+            this->br = false;
             int temp_loop = this->loop;
+            bool rbreak = false;
             if(!this->meinServer->uServer1Connected){
                 this->meinServer->uServer1->start();
                 while(!this->meinServer->uServer1->connected){
                     QApplication::processEvents();
-                    if(this->loop != temp_loop){
-                        this->meinServer->uServer1->disconnect();
-                        this->meinServer->uServer1->terminate();
-                        this->meinServer->uServer1->wait();
-                        break;
-                    }
                 }
             }
-            if(this->loop == temp_loop){
+            if(this->loop == temp_loop && !rbreak){
                 this->loop = 2;
             }
         }
 
-        if(this->loop == 2){
+        if(this->loop == 2 && this->meinServer->uServer1Connected){
+            this->br = false;
             int temp_loop = this->loop;
+            bool rbreak = false;
             if(!this->meinServer->uServer2Connected){
                 this->meinServer->uServer2->start();
                 this->loop = 2;
                 while(!this->meinServer->uServer2->connected){
                     QApplication::processEvents();
-                    if(this->loop != temp_loop){
-                        this->meinServer->uServer2->disconnect();
-                        this->meinServer->uServer2->terminate();
-                        this->meinServer->uServer2->wait();
+                    if(!this->meinServer->uServer1Connected){
+                        rbreak = true;
+                        this->br = true;
+                        this->meinServer->NetDestroyServer(2);
+                        this->loop = 1;
                         break;
                     }
                 }
             }
-            if(this->loop == temp_loop){
+            if(this->loop == temp_loop && !rbreak){
                 this->loop = 3;
             }
         }
-        if(this->loop == 3){
+        if(this->loop == 3 && this->meinServer->uServer2Connected){
             int temp_loop = this->loop;
+            bool rbreak = false;
             if(Spieler > 2){
                 if(!this->meinServer->uServer3Connected){
                     this->meinServer->uServer3->start();
                     this->loop = 3;
                     while(!this->meinServer->uServer3->connected){
                         QApplication::processEvents();
-                        if(this->loop != temp_loop){
-                            this->meinServer->uServer3->disconnect();
-                            this->meinServer->uServer3->terminate();
-                            this->meinServer->uServer3->wait();
+                        if(!this->meinServer->uServer2Connected){
+                            rbreak = true;
+                            this->br = true;
+                            this->meinServer->NetDestroyServer(3);
+                            this->loop = 2;
                             break;
                         }
                     }
                 }
             }
-            if(this->loop == temp_loop){
+            if(this->loop == temp_loop && !rbreak){
                 this->loop = 4;
             }
         }
-        if(this->loop == 4){
+        if(this->loop == 4 && this->meinServer->uServer3Connected){
             int temp_loop = this->loop;
+            bool rbreak = false;
             if(Spieler >= 4){
                 if(!this->meinServer->uServer4Connected){
                     this->meinServer->uServer4->start();
                     this->loop = 4;
                     while(!this->meinServer->uServer4->connected){
                         QApplication::processEvents();
-                        if(this->loop != temp_loop){
-                            this->meinServer->uServer4->disconnect();
-                            this->meinServer->uServer4->terminate();
-                            this->meinServer->uServer4->wait();
+                        if(!this->meinServer->uServer3Connected){
+                            rbreak = true;
+                            this->br = true;
+                            this->meinServer->NetDestroyServer(4);
+                            this->loop = 3;
                             break;
                         }
                     }
                 }
             }
-            if(this->loop == temp_loop){
+            if(this->loop == temp_loop && !rbreak){
                 this->loop = 0;
             }
         }
@@ -109,5 +113,7 @@ void server_thread::NetServerStartGame(){
 }
 
 void server_thread::NetJumpToConnection(int loop){
-    this->loop = loop;
+    if(!br){
+        this->loop = loop;
+    }
 }

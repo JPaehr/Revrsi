@@ -30,6 +30,8 @@ public:
     explicit Revrsi(QWidget *parent = 0);
     ~Revrsi();
 
+    bool notify(QObject *rec, QEvent *ev);
+
 signals:
     void win(QVector<int>, QVector<QString>);
     void delayedStart();

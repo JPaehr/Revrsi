@@ -19,12 +19,13 @@ subServer::subServer(QObject *parent, string port, int breite, int hoehe, int an
     this->port = port;
     this->id = ID;
     this->connected = false;
+    this->clientListSend = false;
 }
 
 subServer::~subServer(){
 }
 
-void subServer::initServer(){
+/*void subServer::initServer(){
     //cout << "Hier war ich Server" << endl;
     this->sock1.create();
     cout << "Server:\t\tSocket 1 erstellt" << endl;
@@ -50,7 +51,7 @@ void subServer::initServer(){
     this->sock1.listen();
     this->sock1.accept(this->sock2);
     //this->connected = true;
-}
+}*/
 
 void subServer::run(){
     //cout << "Hier war ich Server" << endl;
@@ -133,8 +134,9 @@ void subServer::run(){
                         cout << "Case 201 bearbeiten. Player Disconnect." << endl;
                         cout << "Player mit ID: " << atoi(explode(s, ',')[abschnitt+1].c_str()) << " wurde getrennt" << endl;
                         this->connected = false;
-                        emit NetDisconnectServer(atoi(explode(s, ',')[abschnitt+1].c_str()));
                         emit NetSendAllClients(atoi(explode(s, ',')[abschnitt+1].c_str()));
+                        this->sleep(1);
+                        emit NetDisconnectServer(atoi(explode(s, ',')[abschnitt+1].c_str()));
                         abschnitt += 2;
                         cout << "Case 201 verarbeitet" << endl;
                         break;

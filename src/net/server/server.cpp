@@ -55,17 +55,6 @@ Server::Server(int breite, int hoehe, int Spieler){
     this->uServer3Connected = false;
     this->uServer4Connected = false;
 
-    /*stringstream String100;
-    String100 << "100,";
-    String100 << breite;
-    String100 << ",";
-    String100 << hoehe;
-    String100 << ",";
-    String100 << Spieler;
-    String100 << ",";
-    cout << String100.str() << endl;*/
-
-
     this->logic = new Logic(breite, hoehe, Spieler);
     this->logic->setInitStones();
     this->fields = this->logic->getFields();
@@ -116,7 +105,7 @@ string Server::StringSpielstand(){
     if(this->logic->getAniStones(-1).size() > 0){
         cout << "Anistones Groesse " << this->logic->getAniStones(-1).size() << endl;
         spielstand = "909,";
-        for(int k = 0; k < this->logic->getAniStones(-1).size(); k++){
+        for(uint k = 0; k < this->logic->getAniStones(-1).size(); k++){
             anhang << this->logic->getAniStones(-1)[k];
             spielstand += anhang.str();
             spielstand += ",";
@@ -194,6 +183,7 @@ void Server::NetSendNewClient(QString Name, int ID){
 }
 
 void Server::NetSendAllClientsSL(int del){
+    cout << "Server:\t\t" << "Net Send All ClientsSL" << endl;
     stringstream blid;
     string id_string;
     blid << del;
@@ -208,9 +198,12 @@ void Server::NetSendAllClientsSL(int del){
 
     string string_to_send;
     string_to_send = "200,";
+    cout << "Server:\t\tCase 200:";
     for(int i = 0; i < AllClients.size(); i++){
         string_to_send += AllClients[i][2];
+        cout << string_to_send;
     }
+    cout << endl;
     string_to_send += "END__OF__LINE,";
 
     if(this->uServer1->connected){
@@ -261,7 +254,7 @@ void Server::NetSetServerConnectedSL(int server){
     }
 }
 
-void Server::NetDestroyServer(int uServerNumber){
+int Server::NetDestroyServer(int uServerNumber){
     if(uServerNumber == 1){
         this->uServer1->disconnect();
         this->uServer1->terminate();
@@ -278,6 +271,7 @@ void Server::NetDestroyServer(int uServerNumber){
         QObject::connect(this->uServer1,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
         emit NetNewServer(1);
+        return 1;
     }
     else if(uServerNumber == 2){
         this->uServer2->disconnect();
@@ -295,6 +289,7 @@ void Server::NetDestroyServer(int uServerNumber){
         QObject::connect(this->uServer2,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
         emit NetNewServer(2);
+        return 2;
     }
     else if(uServerNumber == 3){
         this->uServer3->disconnect();
@@ -312,6 +307,7 @@ void Server::NetDestroyServer(int uServerNumber){
         QObject::connect(this->uServer3,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
         emit NetNewServer(3);
+        return 3;
     }
     else if(uServerNumber == 4){
         this->uServer4->disconnect();
@@ -329,6 +325,7 @@ void Server::NetDestroyServer(int uServerNumber){
         QObject::connect(this->uServer4,SIGNAL(NetSendAllClients(int)),this,SLOT(NetSendAllClientsSL(int)));
 
         emit NetNewServer(4);
+        return 4;
     }
 }
 

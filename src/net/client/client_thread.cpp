@@ -77,5 +77,5 @@ void client_thread::NetPlayerDisconnect(){
     sstrID << this->ID;
     cout << "ClientThread\t Case 201 senden" << endl;
     this->myClient->senden("201," + sstrID.str() + ",");
-    this->myClient->disconnect();
+    //this->myClient->disconnect();
 }

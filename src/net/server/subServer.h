@@ -30,7 +30,6 @@ public:
 
     vector<vector<int> > fields;
 
-    void initServer();
     bool connected;
     int id;
 
@@ -45,6 +44,7 @@ private:
     string name;
     string implode( const string &glue, const vector<string> &pieces );
     vector<vector<string> > players;
+    bool clientListSend;
 
 };
 

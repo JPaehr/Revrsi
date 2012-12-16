@@ -28,6 +28,7 @@ private:
     QString message;
     server_gui *serverInterface;
     int loop;
+    bool br;
 };
 
 #endif // SERVER_THREAD_H

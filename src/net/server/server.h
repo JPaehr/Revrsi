@@ -27,7 +27,7 @@ public slots:
     void NetSendAllClientsSL(int);
     void NetSendSpielstandSL();
     void NetSetServerConnectedSL(int);
-    void NetDestroyServer(int);
+    int NetDestroyServer(int);
 
 signals:
     void NetNewServer(int);
