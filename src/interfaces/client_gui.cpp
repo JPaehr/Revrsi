@@ -118,19 +118,19 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
         }
     }
     if(!p1){
-        ui->player1->setText("");
+        ui->player1->setText("Leer");
         ui->ID1_label->setText("ID: ");
     }
     if(!p2){
-        ui->player2->setText("");
+        ui->player2->setText("Leer");
         ui->ID2_label->setText("ID: ");
     }
     if(!p3){
-        ui->player3->setText("");
+        ui->player3->setText("Leer");
         ui->ID3_label->setText("ID: ");
     }
     if(!p4){
-        ui->player4->setText("");
+        ui->player4->setText("Leer");
         ui->ID4_label->setText("ID: ");
     }
     //emit addPlayerS(pl);

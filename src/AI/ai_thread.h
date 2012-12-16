@@ -2,6 +2,7 @@
 #define AI_THREAD_H
 
 #include <QtGui>
+#include "ai_code.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
     int aktPlayer;
     int KIversion;
     int player;
+    AI_CODE *AI;
 };
 
 #endif // AI_THREAD_H

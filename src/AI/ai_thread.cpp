@@ -3,24 +3,19 @@
 AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent){
     this->player = player;
     this->KIversion = version;
+
+    if(version == 1){
+        this->AI = new AI_CODE(this->KIversion);
+    }
 }
 
 void AI_Thread::run(){
     while(1){
         QApplication::processEvents();
         if(this->aktPlayer == player){
-            int x,y;
+            int x = -1,y = -1;
 
-            /*******************************
-             **        KI Code Here       **
-             **    -assign x and y        **
-             **/
-
-
-            x= 2;
-            y= 2;
-
-            /********  KI Code End  *********/
+            this->AI->CODE(this->field, &x, &y);
 
             emit AIClicked(x,y);
         }
