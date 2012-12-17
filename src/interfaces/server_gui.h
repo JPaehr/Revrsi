@@ -2,6 +2,7 @@
 #define SERVER_GUI_H
 
 #include <QDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class server_gui;
@@ -15,13 +16,20 @@ public:
     explicit server_gui(QWidget *parent = 0);
     ~server_gui();
     QVector<int> getGameValues();
+    int getWidth();
+    int getHeight();
+    int getPNum();
+    QString getName();
+    void setUILocked();
 signals:
     void startServer();
+    void stopServer();
     void NetStartGame();
 
 public slots:
     void setupServer();
     void NetSendStartGame();
+    void terminateServer();
 
 private:
     Ui::server_gui *ui;

@@ -62,6 +62,7 @@ public slots:
     void setNetModeEnabled();
     void setNetModeDisabled();
     void runServer();
+    void stopServerSL();
     void runClient();
 
     void NetNewFieldSL();

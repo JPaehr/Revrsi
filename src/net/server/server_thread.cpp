@@ -13,7 +13,14 @@ void server_thread::run(){
 
     //Server *meinServer = new Server("55313", this->serverInterface->getGameValues()[0], this->serverInterface->getGameValues()[1], this->serverInterface->getGameValues()[2]);
 
-    int breite = 8, hoehe = 8, Spieler = 2;
+    int breite = this->serverInterface->getWidth();
+    int hoehe  = this->serverInterface->getHeight();
+    int Spieler= this->serverInterface->getPNum();
+
+    QString PlayerName = this->serverInterface->getName();
+
+
+    //int breite = 8, hoehe = 8, Spieler = 2;
 
     this->meinServer = new Server(breite, hoehe, Spieler);
     connect(this->meinServer,SIGNAL(NetNewServer(int)),this,SLOT(NetJumpToConnection(int)));
