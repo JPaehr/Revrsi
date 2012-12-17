@@ -74,8 +74,6 @@ Revrsi::Revrsi(QWidget *parent) :
 
     connect(this->atest,SIGNAL(delayedStart()),this,SLOT(warpStart()));
 
-    connect(this->serverInterface,SIGNAL(stopServer()),this,SLOT(stopServerSL()));
-
     //Network MODE
     connect(this->serverInterface,SIGNAL(startServer()),this,SLOT(runServer()));
     connect(this->clientInterface,SIGNAL(send_startClient()),this,SLOT(runClient()));
@@ -143,6 +141,8 @@ void Revrsi::runServer(){
     this->ServerThread = new server_thread(this, this->serverInterface);
     this->ServerThread->start();
     connect(this->serverInterface,SIGNAL(NetStartGame()),this->ServerThread,SLOT(NetServerStartGame()));
+    //connect(this->serverInterface,SIGNAL(stopServer()),this,SLOT(stopServerSL()));
+
 }
 
 void Revrsi::stopServerSL(){

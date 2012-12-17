@@ -21,6 +21,7 @@ public:
     int getPNum();
     QString getName();
     void setUILocked();
+    void setUIUnLocked();
 signals:
     void startServer();
     void stopServer();

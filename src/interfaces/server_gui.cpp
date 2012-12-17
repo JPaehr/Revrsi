@@ -116,3 +116,14 @@ void server_gui::setUILocked(){
     ui->spielername_lineEdit->setDisabled(true);
 }
 
+void server_gui::setUIUnLocked(){
+    ui->breite_spinbox->setDisabled(false);
+    ui->hoehe_spinbox->setDisabled(false);
+    ui->two_player_btn->setDisabled(false);
+    ui->three_player_btn->setDisabled(false);
+    ui->four_player_btn->setDisabled(false);
+    ui->startServer_button->setDisabled(false);
+    ui->stopServer_button->setEnabled(false);
+    ui->spielername_lineEdit->setDisabled(false);
+}
+

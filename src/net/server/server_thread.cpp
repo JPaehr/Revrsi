@@ -4,6 +4,7 @@
 server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QThread(parent){
     this->serverInterface = serverInterface;
     this->br = false;
+    connect(this->serverInterface,SIGNAL(stopServer()),this,SLOT(NetStopServer()));
 
 }
 
@@ -13,9 +14,9 @@ void server_thread::run(){
 
     //Server *meinServer = new Server("55313", this->serverInterface->getGameValues()[0], this->serverInterface->getGameValues()[1], this->serverInterface->getGameValues()[2]);
 
-    int breite = this->serverInterface->getWidth();
-    int hoehe  = this->serverInterface->getHeight();
-    int Spieler= this->serverInterface->getPNum();
+    this->breite = this->serverInterface->getWidth();
+    this->hoehe  = this->serverInterface->getHeight();
+    this->Spieler= this->serverInterface->getPNum();
 
     QString PlayerName = this->serverInterface->getName();
 
@@ -115,6 +116,9 @@ void server_thread::run(){
     }
 }
 
+server_thread::~server_thread(){
+}
+
 void server_thread::NetServerStartGame(){
     this->meinServer->globalSend("400,");
 }
@@ -124,3 +128,46 @@ void server_thread::NetJumpToConnection(int loop){
         this->loop = loop;
     }
 }
+
+void server_thread::NetStopServer(){
+    this->serverInterface->setUIUnLocked();
+    cout << "ServerThread:\tstopping Server..." << endl;
+    if(this->meinServer->uServer1->isRunning()){
+        cout << "ServerThread:\tTerminate uServer1" << endl;
+        this->meinServer->uServer1->disconnect();
+        this->meinServer->uServer1->terminate();
+        this->meinServer->uServer1->wait();
+        this->meinServer->uServer1->~subServer();
+    }
+    if(this->meinServer->uServer2->isRunning()){
+        cout << "ServerThread:\tTerminate uServer2" << endl;
+        this->meinServer->uServer1->disconnect();
+        this->meinServer->uServer1->terminate();
+        this->meinServer->uServer1->wait();
+        this->meinServer->uServer1->~subServer();
+    }
+    if(this->Spieler >= 3){
+        if(this->meinServer->uServer3->isRunning()){
+            cout << "ServerThread:\tTerminate uServer3" << endl;
+            this->meinServer->uServer1->disconnect();
+            this->meinServer->uServer1->terminate();
+            this->meinServer->uServer1->wait();
+            this->meinServer->uServer1->~subServer();
+        }
+    }
+    if(this->Spieler >= 4){
+        if(this->meinServer->uServer4->isRunning()){
+            cout << "ServerThread:\tTerminate uServer4" << endl;
+            this->meinServer->uServer1->disconnect();
+            this->meinServer->uServer1->terminate();
+            this->meinServer->uServer1->wait();
+            this->meinServer->uServer1->~subServer();
+        }
+    }
+    cout << "ServerThread:\tTerminate MeSelf" << endl;
+    this->terminate();
+    this->wait();
+    this->~server_thread();
+}
+
+
