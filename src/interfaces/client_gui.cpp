@@ -2,6 +2,7 @@
 #include "ui_client_gui.h"
 #include <QApplication>
 #include <QDebug>
+#include <iostream>
 
 client_gui::client_gui(QWidget *parent) :
     QDialog(parent),
@@ -23,24 +24,29 @@ client_gui::~client_gui(){
 }
 
 QVector<QString> client_gui::getAllNames(){
+    cout << "ClientInterface\tgetAllNames()" << endl;
     return this->NetPlayerNames;
 }
 
 QString client_gui::getPlayerName(){
+    cout << "ClientInterface\tgetPlayerName()" << endl;
     this->ownName = ui->spielername_lineEdit->text();
     return this->ownName;
 }
 
 string client_gui::getIP(){
+    cout << "ClientInterface\tgetIP()" << endl;
     return ui->serverIP_lineEdit->text().toStdString();
 }
 
 void client_gui::setLockedSL(){
+    cout << "ClientInterface\tsetLockedSL()" << endl;
     ui->serverIP_lineEdit->setDisabled(true);
     ui->spielername_lineEdit->setDisabled(true);
 }
 
 void client_gui::setClientUnLocked(){
+    cout << "ClientInterface\tsetClientUnLocked()" << endl;
     ui->serverIP_lineEdit->setDisabled(false);
     ui->spielername_lineEdit->setDisabled(false);
 }
@@ -84,6 +90,7 @@ void client_gui::startClient(){
 }
 
 void client_gui::NetAddPlayer(QVector<QString> pl){
+    cout << "ClientInterface\tNetAddPlayer()" << endl;
     for(int i = 0; i<pl.size(); i+=2){
         if(pl[i+1] == "1"){
             ui->player1->setText(pl[i]);
@@ -101,14 +108,14 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
         }
         else if(pl[i+1] == "3"){
             ui->player3->setText(pl[i]);
-            ui->ID3_label->setText("ID: " + pl[i+2]);
+            ui->ID3_label->setText("ID: " + pl[i+1]);
             if(!this->NetPlayerNames.contains(pl[i])){
                 this->NetPlayerNames.push_back(pl[i]);
             }
         }
         else if(pl[i+1] == "4"){
             ui->player4->setText(pl[i]);
-            ui->ID4_label->setText("ID: " + pl[i+3]);
+            ui->ID4_label->setText("ID: " + pl[i+1]);
             if(!this->NetPlayerNames.contains(pl[i])){
                 this->NetPlayerNames.push_back(pl[i]);
             }
@@ -149,6 +156,7 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
 }
 
 void client_gui::addPlayer(std::vector<std::string> player){
+    cout << "ClientInterface\taddPlayer()" << endl;
     this->playerCounter += 1;
     if(this->playerCounter == 1){
         ui->player1->setText(QString::fromStdString(player[0]));

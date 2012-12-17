@@ -24,9 +24,6 @@ void client_thread::run(){
             emit this->NetClientSendName(this->ClientInterface->getPlayerName());
             break;
         }
-        if(this->ClientInterface->finClientInterface){
-            this->terminateClient();
-        }
         QApplication::processEvents();
     }
 
@@ -39,8 +36,13 @@ void client_thread::run(){
     //while(1){
         //this->myClient->senden("");
     //}
-
-    this->exec();
+    while(1){
+        if(this->ClientInterface->finClientInterface){
+            this->terminateClient();
+        }
+        QApplication::processEvents();
+    }
+    //this->exec();
 }
 
 void client_thread::setCreateConnectsState(bool value){

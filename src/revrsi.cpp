@@ -220,28 +220,30 @@ void Revrsi::NetNewGame(){
 }
 
 void Revrsi::NetUpdatePlayer(int NetAktPlayer){
-    cout << "Revrsi SLOT:\t" << "NetUpdatePlayer" << endl;
-    if(NetAktPlayer == 1){
-        ui->Akt_Spieler_Label->setText(QString("Schwarz"));
-    }
-    else if(NetAktPlayer == 2){
-        ui->Akt_Spieler_Label->setText("Orange");
-    }
-    else if(NetAktPlayer == 3){
-        ui->Akt_Spieler_Label->setText("Grün");
-    }
-    else if(NetAktPlayer == 4){
-        ui->Akt_Spieler_Label->setText("Blau");
-    }
-
-    for(int i = 1; i<=this->player_num; i++){
-        if(i == NetAktPlayer){
-            this->p_fields[i-1]->setActive(true);
-            this->p_fields[i-1]->setTokensVisible(false);
+    if(NetGameStart){
+        cout << "Revrsi SLOT:\t" << "NetUpdatePlayer" << endl;
+        if(NetAktPlayer == 1){
+            ui->Akt_Spieler_Label->setText(QString("Schwarz"));
         }
-        else{
-            this->p_fields[i-1]->setActive(false);
-            this->p_fields[i-1]->setTokensVisible(true);
+        else if(NetAktPlayer == 2){
+            ui->Akt_Spieler_Label->setText("Orange");
+        }
+        else if(NetAktPlayer == 3){
+            ui->Akt_Spieler_Label->setText("Grün");
+        }
+        else if(NetAktPlayer == 4){
+            ui->Akt_Spieler_Label->setText("Blau");
+        }
+
+        for(int i = 1; i<=this->player_num; i++){
+            if(i == NetAktPlayer){
+                this->p_fields[i-1]->setActive(true);
+                this->p_fields[i-1]->setTokensVisible(false);
+            }
+            else{
+                this->p_fields[i-1]->setActive(false);
+                this->p_fields[i-1]->setTokensVisible(true);
+            }
         }
     }
 }
