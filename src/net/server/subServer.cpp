@@ -59,9 +59,6 @@ void subServer::run(){
     this->senden(String800.str());
     this->senden("999,1,");
 
-
-
-
     stringstream String100;
     String100 << "100,";
     String100 << this->breite;
@@ -72,16 +69,9 @@ void subServer::run(){
     String100 << ",";
     cout << String100.str() << endl;
 
-
     this->senden(String100.str());
 
     emit this->NetSendSpielstand();
-
-
-
-
-
-
 
     string s;
 

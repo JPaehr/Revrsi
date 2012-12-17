@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QtGui>
+#include <QApplication>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ namespace Ui {
 class client_gui;
 }
 
-class client_gui : public QDialog
+class client_gui :public QDialog
 {
     Q_OBJECT
     
@@ -20,6 +21,8 @@ public:
     ~client_gui();
 
     QVector<QString> getAllNames();
+    bool finClientInterface;
+    void setClientUnLocked();
 
 signals:
     void send_startClient();
@@ -37,6 +40,7 @@ public slots:
     QString getPlayerName();
     string getIP();
     void setLockedSL();
+
     //void cclose();
 
 private:
@@ -45,6 +49,7 @@ private:
     int playerCounter;
     QString ownName;
     int clientCounter;
+protected:
     void closeEvent(QCloseEvent *event);
 };
 

@@ -2,6 +2,10 @@
 
 client_thread::client_thread(QObject *parent, client_gui *ClientInterface) : QThread(parent){
     this->ClientInterface = ClientInterface;
+    connect(this->ClientInterface,SIGNAL(disconnect()),this,SLOT(NetPlayerDisconnect()));
+}
+
+client_thread::~client_thread(){
 }
 
 vector<vector<int> > client_thread::getFields(){
@@ -19,6 +23,9 @@ void client_thread::run(){
         if(this->myClient->runtime >= 5){
             emit this->NetClientSendName(this->ClientInterface->getPlayerName());
             break;
+        }
+        if(this->ClientInterface->finClientInterface){
+            this->terminateClient();
         }
         QApplication::processEvents();
     }
@@ -38,6 +45,17 @@ void client_thread::run(){
 
 void client_thread::setCreateConnectsState(bool value){
     this->CreateConnectsSuccessful = value;
+}
+
+void client_thread::terminateClient(){
+    this->ClientInterface->setClientUnLocked();
+    this->ClientInterface->close();
+    this->myClient->terminate();
+    this->myClient->wait();
+    this->myClient->~Client();
+    this->terminate();
+    this->wait();
+    this->~client_thread();
 }
 
 void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
@@ -77,5 +95,11 @@ void client_thread::NetPlayerDisconnect(){
     sstrID << this->ID;
     cout << "ClientThread\t Case 201 senden" << endl;
     this->myClient->senden("201," + sstrID.str() + ",");
-    //this->myClient->disconnect();
+    this->myClient->disconnect();
+    this->myClient->terminate();
+    this->myClient->wait();
+    this->myClient->~Client();
+    this->terminate();
+    this->wait();
+    this->~client_thread();
 }

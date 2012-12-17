@@ -41,6 +41,10 @@ Client::Client(string host, bool debug_mode = false){
         cout << "Eine Exception wurde abgefangen: " << e.get_SockExcept() << endl;
     }
 }
+
+Client::~Client(){
+}
+
 void Client::run(){
     string s;
 
@@ -207,7 +211,7 @@ void Client::run(){
 
                         dazu = 1;
 
-                        while((atoi(explode(s, ',')[abschnitt+dazu].c_str())) < 100 && (((explode(s, ',')[abschnitt+dazu].c_str())) != "")){
+                        while((atoi(explode(s, ',')[abschnitt+dazu].c_str())) < 100 && strcmp(explode(s, ',')[abschnitt+dazu].c_str(), "") != 0){
                             this->VecAnimation.push_back(atoi(explode(s, ',')[abschnitt+dazu].c_str()));
                             dazu++;
                         }
@@ -228,9 +232,11 @@ void Client::run(){
 
     }
 }
+
 int Client::getAktPlayer(){
     return this->aktPlayer;
 }
+
 void Client::setStoneClient(int x, int y){
     if(this->debug_mode){
         cout << "x: "<< x << " Y: " << y  << endl;

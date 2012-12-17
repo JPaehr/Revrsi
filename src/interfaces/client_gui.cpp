@@ -1,5 +1,7 @@
 #include "client_gui.h"
 #include "ui_client_gui.h"
+#include <QApplication>
+#include <QDebug>
 
 client_gui::client_gui(QWidget *parent) :
     QDialog(parent),
@@ -7,6 +9,7 @@ client_gui::client_gui(QWidget *parent) :
     ui->setupUi(this);
     this->playerCounter = 0;
     this->clientCounter = 0;
+    this->finClientInterface = false;
     connect(ui->close_button,SIGNAL(clicked()),this,SLOT(close()));
     //connect(this,SIGNAL(destroyed()),this,SLOT(cclose()));
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
@@ -37,8 +40,17 @@ void client_gui::setLockedSL(){
     ui->spielername_lineEdit->setDisabled(true);
 }
 
+void client_gui::setClientUnLocked(){
+    ui->serverIP_lineEdit->setDisabled(false);
+    ui->spielername_lineEdit->setDisabled(false);
+}
+
 void client_gui::closeEvent(QCloseEvent *event){
-    emit disconnect();
+    //emit disconnect();
+    //QApplication->processEvents();
+    //event->accept();
+    this->finClientInterface = true;
+    qDebug() << "testestestestestestestestestestestesest";
     event->accept();
 }
 

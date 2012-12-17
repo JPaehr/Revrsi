@@ -111,6 +111,7 @@ private:
     bool                    FieldBackSet;
 
     bool    direction;
+    bool    clientInit,serverInit;
     int animatedPlayer;
 
     bool NetMode;

@@ -10,11 +10,11 @@ Revrsi::Revrsi(QWidget *parent) :
 
     // Initialisierungsvorgänge
     ui->setupUi(this);
-    ngs = new new_game_settings;
-    serverInterface = new server_gui;
-    clientInterface = new client_gui;
-    winInterface = new win_gui;
-    ais = new AI_settings;
+    ngs = new new_game_settings(this);
+    serverInterface = new server_gui(this);
+    clientInterface = new client_gui(this);
+    winInterface = new win_gui(this);
+    ais = new AI_settings(this);
     this->FieldBackSet = false;
     this->height = 8;
     this->width = 8;
@@ -25,6 +25,8 @@ Revrsi::Revrsi(QWidget *parent) :
     sceneOffset_scale = 1;
     sceneOffset_x = 0;
     sceneOffset_y = 0;
+    this->clientInit = false;
+    this->serverInit = false;
     frame_scene = new QGraphicsScene(this);
     scene = new QGraphicsScene(this);
     frame_scene->setSceneRect(0,0,1000,1000);
@@ -140,6 +142,7 @@ void Revrsi::setNetModeDisabled(){
 void Revrsi::runServer(){
     this->ServerThread = new server_thread(this, this->serverInterface);
     this->ServerThread->start();
+    this->serverInit = true;
     connect(this->serverInterface,SIGNAL(NetStartGame()),this->ServerThread,SLOT(NetServerStartGame()));
     //connect(this->serverInterface,SIGNAL(stopServer()),this,SLOT(stopServerSL()));
 
@@ -153,6 +156,7 @@ void Revrsi::stopServerSL(){
     this->ServerThread->terminate();
     this->ServerThread->wait();
     cout << "Revrsi\t\tServer Stopped";
+    this->serverInit = false;
 }
 
 void Revrsi::runClient(){
@@ -160,6 +164,7 @@ void Revrsi::runClient(){
     if(this->ClientThread->isRunning()){
         this->ClientThread->terminate();
     }
+    this->clientInit = true;
     this->ClientThread->start();
     connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
 }
@@ -199,7 +204,7 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
     connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
     //connect(this->ClientThread,SIGNAL(NetCloseClientInterface()),this->clientInterface,SLOT(cclose()));
-    connect(this->clientInterface,SIGNAL(disconnect()),this->ClientThread,SLOT(NetPlayerDisconnect()));
+    //connect(this->clientInterface,SIGNAL(disconnect()),this->ClientThread,SLOT(NetPlayerDisconnect()));
     //connect(this->clientInterface,SIGNAL(test_signal()),this,SLOT(TerminateCThread()));
     //connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(TerminateClientThread()));
     //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
@@ -788,16 +793,13 @@ void Revrsi::startThread(){
 void Revrsi::closeEvent(QCloseEvent *){
     atest->terminate();
     atest->wait();
-    if(this->ClientThread->isRunning()){
-        this->ClientThread->terminate();
-        this->ClientThread->wait();
+    if(this->clientInit){
+        this->ClientThread->terminateClient();
     }
-    if(this->ServerThread->isRunning()){
-        this->ServerThread->terminate();
-        this->ServerThread->wait();
+    if(this->serverInit){
+        this->ServerThread->NetStopServer();
     }
-    //this->close();
-    this->destroy();
+    this->close();
 }
 
 void Revrsi::set_scale(double scale){

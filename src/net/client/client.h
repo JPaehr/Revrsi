@@ -14,6 +14,7 @@ class Client: public QThread{
     Q_OBJECT
 public:
     Client(string host, bool debug_mode);
+    ~Client();
     void senden(string mes);
     void run();
     int width;

@@ -15,10 +15,12 @@ class client_thread : public QThread
     Q_OBJECT
 public:
     client_thread(QObject *parent, client_gui *ClientInterface);
+    ~client_thread();
     Client *myClient;
     vector<vector<int> > getFields();
     void run();
     void setCreateConnectsState(bool value);
+    void terminateClient();
 signals:
     void NetCreateConnects();
     void NetNewGame();
