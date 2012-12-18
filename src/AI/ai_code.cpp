@@ -7,7 +7,8 @@ AI_CODE::AI_CODE(int version){
 
 void AI_CODE::CODE(vector<vector<int> > field, int *x, int *y){
 
-    ki_logic ai_logic(field[0].size(), field.size(),3,field, 1);
+    ki_logic ai_logic(field[0].size(), field.size(),field, 1);
+
     vector<int> rueckgabe = ai_logic.KiXY();
     (*x) = rueckgabe[0];
     (*y) = rueckgabe[1];
