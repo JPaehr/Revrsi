@@ -11,7 +11,7 @@
 
 using namespace std;
 class Logic {
-private:
+protected:
 	int players;
 	int width;
 	int height;
