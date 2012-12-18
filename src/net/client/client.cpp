@@ -17,6 +17,7 @@ Client::Client(string host, bool debug_mode){
     this->disconnectSend = false;
     string s;
     qRegisterMetaType<QVector<QString> >("QVector<QString>");
+    qRegisterMetaType<QVector<int> >("QVector<int>");
 
     this->client.create();
     this->client.connect( host, 55312);
@@ -167,18 +168,19 @@ void Client::run(){
                     //winvector
                     case 900:
                         if(debug_mode){cout << "Client:\t\t" << "Case 900 bearbeiten" << endl;}
+                        this->winVector.clear();
                         winPlus = 0;
 
-                        this->winVector[0] = atoi(explode(s, ',')[abschnitt+1].c_str());
-                        this->winVector[1] = atoi(explode(s, ',')[abschnitt+2].c_str());
-                        this->winVector[2] = atoi(explode(s, ',')[abschnitt+3].c_str());
+                        this->winVector.push_back(atoi(explode(s, ',')[abschnitt+1].c_str()));
+                        this->winVector.push_back(atoi(explode(s, ',')[abschnitt+2].c_str()));
+                        this->winVector.push_back(atoi(explode(s, ',')[abschnitt+3].c_str()));
                         winPlus = 4;
                         if(this->players >= 3){
-                            this->winVector[3] = atoi(explode(s, ',')[abschnitt+4].c_str());
+                            this->winVector.push_back(atoi(explode(s, ',')[abschnitt+4].c_str()));
                             winPlus= 5;
                         }
                         if(this->players == 4){
-                            this->winVector[4] = atoi(explode(s, ',')[abschnitt+5].c_str());
+                            this->winVector.push_back(atoi(explode(s, ',')[abschnitt+5].c_str()));
                             winPlus= 6;
                         }
 
@@ -186,7 +188,7 @@ void Client::run(){
 
 
 
-                        emit NetWinVector(this->winVector);
+                        emit NetWinVector(winVector);
                         if(debug_mode){cout << "Client:\t\t" << "Case 900 verarbeitet\t" << "EMIT: NetWinVector" << endl;}
                         break;
 

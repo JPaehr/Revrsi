@@ -31,7 +31,7 @@ private:
 
 	vector<int> VecAnimation;
     bool debug_mode;
-    vector<int> winVector;
+    QVector<int> winVector;
     string name;
     int id, players;
     bool running;
@@ -45,7 +45,7 @@ private:
 
 signals:
     void NetNewField();
-    void NetWinVector(vector<int>);
+    void NetWinVector(QVector<int>);
     void NetServerWantGameStart();
     void NetPlayersNames(QVector<QString>);
     void NetAktPlayer(int);

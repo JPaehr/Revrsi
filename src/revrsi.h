@@ -71,7 +71,7 @@ public slots:
     void NetUpdatePlayer(int);
     void NetFieldClickedTransmithelper(int,int);
     void NetSetGameValues(int, int, int);
-    void NetUpdateWinVector(vector<int>);
+    void NetUpdateWinVector(QVector<int>);
 
 private:
     double                  scale;

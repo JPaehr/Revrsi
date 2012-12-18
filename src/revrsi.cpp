@@ -204,7 +204,7 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread,SIGNAL(NetNewFields()),this,SLOT(NetNewFieldSL()));
     connect(this->ClientThread->myClient,SIGNAL(NetNewField()),this->ClientThread,SLOT(NetGetNewField()));
     connect(this->ClientThread->myClient,SIGNAL(NetServerWantGameStart()),this,SLOT(NetNewGame()));
-    connect(this->ClientThread->myClient,SIGNAL(NetWinVector(vector<int>)),this,SLOT(NetUpdateWinVector(vector<int>)));
+    connect(this->ClientThread->myClient,SIGNAL(NetWinVector(QVector<int>)),this,SLOT(NetUpdateWinVector(QVector<int>)));
     connect(this,SIGNAL(NetFieldClickedTransmit(int,int)),this->ClientThread,SLOT(NetFieldClicked(int, int)));
     connect(this->ClientThread->myClient,SIGNAL(NetAktPlayer(int)),this,SLOT(NetUpdatePlayer(int)));
     connect(this->ClientThread,SIGNAL(NetClientSendName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
@@ -255,6 +255,13 @@ void Revrsi::NetUpdatePlayer(int NetAktPlayer){
                 this->p_fields[i-1]->setTokensVisible(true);
             }
         }
+        if(NetAktPlayer-1!=this->animatedPlayer){
+            this->anim->setLoopCount(0);
+            //this->anim->stop();
+            this->animatedPlayer=NetAktPlayer-1;
+            this->runPlayerFieldAnimation();
+            connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
+        }
     }
 }
 
@@ -269,34 +276,25 @@ void Revrsi::NetSetGameValues(int width, int height, int player_num){
     this->player_num = player_num;
 }
 
-void Revrsi::NetUpdateWinVector(vector<int> WinVector){
+void Revrsi::NetUpdateWinVector(QVector<int> WinVector){
     cout << "Revrsi SLOT:\t" << "NetUpdateWinVector" << endl;
-    for(uint i = 0; i < WinVector.size(); i++){
-        //std::string t;
-        //t = WinVector[i];
-        //QString qt;
-        //qt.fromStdString(t);
-        //int pb = qt.toInt();
+    /*for(uint i = 0; i < WinVector.size(); i++){
         this->win_vector.push_back(WinVector[i]);
-    }
+    }*/
     //this->win_vector = WinVector;
 
-    if(this->win_vector[0] != -1){
-        QVector<int> vector_to_convert;
-        for(int i = 0, size = this->win_vector.size(); i < size;i++){
-            vector_to_convert.push_back(this->win_vector[i]);
-        }
+    if(WinVector[0] != -1){
         this->winInterface->show();
-        emit this->win(vector_to_convert, this->playerNames);
+        emit this->win(WinVector, this->playerNames);
     }
     else{
-        p_fields[0]->setTokens(this->win_vector[1]);
-        p_fields[1]->setTokens(this->win_vector[2]);
+        p_fields[0]->setTokens(WinVector[1]);
+        p_fields[1]->setTokens(WinVector[2]);
         if(this->player_num == 3){
-            p_fields[2]->setTokens(this->win_vector[3]);
+            p_fields[2]->setTokens(WinVector[3]);
         }
         if(this->player_num == 4){
-            p_fields[3]->setTokens(this->win_vector[4]);
+            p_fields[3]->setTokens(WinVector[4]);
         }
     }
 }

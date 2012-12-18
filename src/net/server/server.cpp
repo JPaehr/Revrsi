@@ -67,7 +67,7 @@ Server::Server(int breite, int hoehe, int Spieler){
 
 
 void Server::globalSend(string msg){
-    cout << "Server Message To Send\t" << msg << endl;
+    cout << "Server Message To Send\t\t" << msg << endl;
     if(uServer1Connected){
         this->uServer1->senden(msg);
     }
@@ -142,6 +142,16 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
 		SpielStandaktSenden();
     }
     
+    cout << "Server:\t\t" << "Code 900 UpdateWinvector" << endl;
+    vector<int> winVector = this->logic->win();
+    string winVectorString = "900,";
+    for(uint i = 0; i < winVector.size(); i++){
+        stringstream winVecNum;
+        winVecNum << winVector[i];
+        winVectorString += winVecNum.str() += ",";
+    }
+    //winVectorString << winVecNum.str();
+    globalSend(winVectorString);
 }
 
 void Server::NetSendNewClient(QString Name, int ID){
