@@ -3,12 +3,12 @@
 
 using namespace std;
 
-ki_logic::ki_logic(int breite, int hoehe, int anzSpieler, vector<vector<int> > startVector, int spielerNr)
-    :Logic(breite, hoehe, anzSpieler){
+ki_logic::ki_logic(int breite, int hoehe, vector<vector<int> > startVector, int spielerNr)
+    :Logic(breite, hoehe, 3){
 
     this->setWidth(breite);
     this->setHeight(hoehe);
-    this->setPlayers(anzSpieler);
+    this->setPlayers(3);
     this->nr = spielerNr;
     this->fields = startVector;
 }
@@ -65,7 +65,7 @@ vector<int> ki_logic::KiXY(){
 
     int indexMeisteDrehungen;
 
-    for(int i = 0; i < gedrehteSteine.size(); i+=3){
+    for(unsigned i = 0; i < gedrehteSteine.size(); i+=3){
         if(i == 0){
             cout << "Index ist 0" << endl;
             indexMeisteDrehungen = 0;
