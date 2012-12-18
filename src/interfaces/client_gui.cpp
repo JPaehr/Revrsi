@@ -15,7 +15,6 @@ client_gui::client_gui(QWidget *parent) :
     //connect(this,SIGNAL(destroyed()),this,SLOT(cclose()));
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
     connect(this,SIGNAL(send_startClient()),this,SLOT(setLockedSL()));
-    connect(this,SIGNAL(addPlayerS(std::vector<std::string>)),this,SLOT(addPlayer(std::vector<std::string>)));
     connect(ui->spielername_lineEdit,SIGNAL(textChanged(QString)),this,SLOT(getPlayerNameOnChange(QString)));
 }
 
@@ -152,27 +151,4 @@ void client_gui::NetAddPlayer(QVector<QString> pl){
         ui->player4->setText("Leer");
         ui->ID4_label->setText("ID: ");
     }
-    //emit addPlayerS(pl);
 }
-
-void client_gui::addPlayer(std::vector<std::string> player){
-    cout << "ClientInterface\taddPlayer()" << endl;
-    this->playerCounter += 1;
-    if(this->playerCounter == 1){
-        ui->player1->setText(QString::fromStdString(player[0]));
-        ui->ID1_label->setText("ID: " + QString::fromStdString(player [1]));
-    }
-    else if(this->playerCounter == 2){
-        ui->player2->setText(QString::fromStdString(player[0]));
-        ui->ID2_label->setText("ID: " + QString::fromStdString(player [1]));
-    }
-    else if(this->playerCounter == 3){
-        ui->player3->setText(QString::fromStdString(player[0]));
-        ui->ID3_label->setText("ID: " + QString::fromStdString(player [1]));
-    }
-    else if(this->playerCounter == 4){
-        ui->player4->setText(QString::fromStdString(player[0]));
-        ui->ID4_label->setText("ID: " + QString::fromStdString(player [1]));
-    }
-}
-

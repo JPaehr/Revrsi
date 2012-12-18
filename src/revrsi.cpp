@@ -22,6 +22,7 @@ Revrsi::Revrsi(QWidget *parent) :
     this->player_act = 1;
     this->direction = 1;
     this->firstRun = true;
+    this->serverMode = false;
     sceneOffset_scale = 1;
     sceneOffset_x = 0;
     sceneOffset_y = 0;
@@ -140,7 +141,10 @@ void Revrsi::setNetModeDisabled(){
 }
 
 void Revrsi::runServer(){
+    this->NetMode = true;
+    this->serverMode = true;
     this->ServerThread = new server_thread(this, this->serverInterface);
+    connect(this->ServerThread,SIGNAL(NetStartServersClient(QString,QString)),this,SLOT(runClient(QString,QString)));
     this->ServerThread->start();
     this->serverInit = true;
     connect(this->serverInterface,SIGNAL(NetStartGame()),this->ServerThread,SLOT(NetServerStartGame()));
@@ -149,24 +153,29 @@ void Revrsi::runServer(){
 }
 
 void Revrsi::stopServerSL(){
-    //this->ServerThread->meinServer->uServer1->terminate();
-    //this->ServerThread->meinServer->uServer2->terminate();
-    //this->ServerThread->meinServer->uServer3->terminate();
-    //this->ServerThread->meinServer->uServer4->terminate();
     this->ServerThread->terminate();
     this->ServerThread->wait();
     cout << "Revrsi\t\tServer Stopped";
     this->serverInit = false;
 }
 
-void Revrsi::runClient(){
-    this->ClientThread = new client_thread(this, this->clientInterface);
-    if(this->ClientThread->isRunning()){
-        this->ClientThread->terminate();
+void Revrsi::runClient(QString ip, QString Name){
+    this->NetMode = true;
+    if(!serverMode){
+        if(this->clientInit){
+            this->ClientThread->terminate();
+        }
+        this->ClientThread = new client_thread(this, this->clientInterface);
+    }
+    else{
+        if(this->clientInit){
+            this->ClientThread->terminate();
+        }
+        this->ClientThread = new client_thread(this, this->serverInterface, ip.toStdString(), Name);
     }
     this->clientInit = true;
-    this->ClientThread->start();
     connect(this->ClientThread,SIGNAL(NetCreateConnects()),this,SLOT(NetCreateConnectsSL()));
+    this->ClientThread->start();
 }
 
 //Funktion die nach einem Click ausgeführt wird. Um neue Felder zu setzen
@@ -192,7 +201,6 @@ void Revrsi::NetNewFieldSL(){
 
 void Revrsi::NetCreateConnectsSL(){
     cout << "Revrsi SLOT:\t" << "NetCreateConnects" << endl;
-    //connect(this->ClientThread->myClient,SIGNAL(NetNewField(vector<int>)),this,SLOT(NetNewFieldSL(vector<int>)));
     connect(this->ClientThread,SIGNAL(NetNewFields()),this,SLOT(NetNewFieldSL()));
     connect(this->ClientThread->myClient,SIGNAL(NetNewField()),this->ClientThread,SLOT(NetGetNewField()));
     connect(this->ClientThread->myClient,SIGNAL(NetServerWantGameStart()),this,SLOT(NetNewGame()));
@@ -202,12 +210,12 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread,SIGNAL(NetClientSendName(QString)),this->ClientThread,SLOT(NetSendName(QString)));
     connect(this->ClientThread->myClient,SIGNAL(NetGotID(int)),this->ClientThread,SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,SIGNAL(NetGameValues(int,int,int)),this,SLOT(NetSetGameValues(int,int,int)));
-    connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
-    //connect(this->ClientThread,SIGNAL(NetCloseClientInterface()),this->clientInterface,SLOT(cclose()));
-    //connect(this->clientInterface,SIGNAL(disconnect()),this->ClientThread,SLOT(NetPlayerDisconnect()));
-    //connect(this->clientInterface,SIGNAL(test_signal()),this,SLOT(TerminateCThread()));
-    //connect(this->clientInterface,SIGNAL(destroyed()),this,SLOT(TerminateClientThread()));
-    //connect(this->ClientThread->myClient,SIGNAL(fieldChange(vector<vector<int> >)),this,SLOT(NetFieldClicked(vector<vector<int> >)));
+    if(!serverMode){
+        connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->clientInterface,SLOT(NetAddPlayer(QVector<QString>)));
+    }
+    else{
+        connect(this->ClientThread->myClient,SIGNAL(NetPlayersNames(QVector<QString>)),this->serverInterface,SLOT(NetAddPlayerServer(QVector<QString>)));
+    }
     cout << "Revrsi SLOT:\t" << "All Connects Created" << endl;
     this->ClientThread->setCreateConnectsState(true);
 }
@@ -215,7 +223,9 @@ void Revrsi::NetCreateConnectsSL(){
 void Revrsi::NetNewGame(){
     cout << "Revrsi SLOT:\t" << "NetNewGame" << endl;
     this->NetGameStart = true;
-    this->clientInterface->hide();
+    if(!serverMode){
+        this->clientInterface->hide();
+    }
     this->new_game();
 }
 
@@ -455,6 +465,9 @@ void Revrsi::change_token(int x, int y, int player){
 }
 
 void Revrsi::new_game(){
+    if(NetMode){
+        cout << "NetMode";
+    }
     this->playerCounter = 0;
     //Beende Animation
     if(!this->firstRun){
@@ -512,13 +525,19 @@ void Revrsi::new_game(){
         this->createAIs();
     }
     else{
-        this->playerNames = this->clientInterface->getAllNames();
+        if(!serverMode){
+            this->playerNames = this->clientInterface->getAllNames();
+        }
+        else{
+            this->playerNames = this->serverInterface->getAllNames();
+        }
     }
 
     //Transmit Field to AI
-    emit this->emitField(this->logic->getFields());
-    emit this->emitAktPlayer(this->logic->getAktPlayer());
-
+    if(!NetMode){
+        emit this->emitField(this->logic->getFields());
+        emit this->emitAktPlayer(this->logic->getAktPlayer());
+    }
     this->addPlayersToList();
 
     //Run Animation

@@ -26,7 +26,6 @@ public:
 
 signals:
     void send_startClient();
-    void addPlayerS(std::vector<std::string>);
     void setLocked();
     void NetTerminateClient();
     void test_signal();
@@ -35,7 +34,6 @@ signals:
 public slots:
     void startClient();
     void NetAddPlayer(QVector<QString>);
-    void addPlayer(std::vector<std::string>);
     void getPlayerNameOnChange(QString);
     QString getPlayerName();
     string getIP();

@@ -1,8 +1,16 @@
 #include "client_thread.h"
 
-client_thread::client_thread(QObject *parent, client_gui *ClientInterface) : QThread(parent){
-    this->ClientInterface = ClientInterface;
-    connect(this->ClientInterface,SIGNAL(disconnect()),this,SLOT(NetPlayerDisconnect()));
+client_thread::client_thread(QObject *parent, client_gui *ClientInterface ) : QThread(parent){
+        this->serverMode = false;
+        this->ClientInterface = ClientInterface;
+        connect(this->ClientInterface,SIGNAL(disconnect()),this,SLOT(NetPlayerDisconnect()));
+}
+
+client_thread::client_thread(QObject *parent, server_gui *ServerInterface, string ip, QString Name) : QThread(parent){
+    this->ip = ip;
+    this->Name = Name;
+    this->serverMode = true;
+    this->ServerInterface = ServerInterface;
 }
 
 client_thread::~client_thread(){
@@ -13,7 +21,12 @@ vector<vector<int> > client_thread::getFields(){
 }
 
 void client_thread::run(){
-    this->myClient = new Client(this->ClientInterface->getIP(), false);
+    if(!serverMode){
+        this->myClient = new Client(this->ClientInterface->getIP());
+    }
+    else{
+        this->myClient = new Client(this->ip);
+    }
     this->CreateConnectsSuccessful = false;
     emit NetCreateConnects();
     while(!this->CreateConnectsSuccessful){QApplication::processEvents();}
@@ -21,8 +34,14 @@ void client_thread::run(){
 
     while(1){
         if(this->myClient->runtime >= 5){
-            emit this->NetClientSendName(this->ClientInterface->getPlayerName());
-            break;
+            if(!serverMode){
+                emit this->NetClientSendName(this->ClientInterface->getPlayerName());
+                break;
+            }
+            else{
+                emit this->NetClientSendName(this->Name);
+                break;
+            }
         }
         QApplication::processEvents();
     }
@@ -37,8 +56,10 @@ void client_thread::run(){
         //this->myClient->senden("");
     //}
     while(1){
-        if(this->ClientInterface->finClientInterface){
-            this->terminateClient();
+        if(!serverMode){
+            if(this->ClientInterface->finClientInterface){
+                this->terminateClient();
+            }
         }
         QApplication::processEvents();
     }
@@ -66,8 +87,14 @@ void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
 
 void client_thread::NetGameStart(){
     cout << "ClientThread SLOT:" << "NetGameStart" << endl;
-    this->playerNames = this->ClientInterface->getAllNames();
-    emit NetCloseClientInterface();
+    if(!serverMode){
+        this->playerNames = this->ClientInterface->getAllNames();
+        emit NetCloseClientInterface();
+    }
+    else{
+        this->ServerInterface->getAllNames();
+        this->ServerInterface->hide();
+    }
     emit NetNewGame();
 }
 

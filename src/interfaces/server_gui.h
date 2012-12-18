@@ -22,6 +22,7 @@ public:
     QString getName();
     void setUILocked();
     void setUIUnLocked();
+    QVector<QString> getAllNames();
 signals:
     void startServer();
     void stopServer();
@@ -31,13 +32,15 @@ public slots:
     void setupServer();
     void NetSendStartGame();
     void terminateServer();
+    void NetAddPlayerServer(QVector<QString>);
 
 private:
     Ui::server_gui *ui;
     int player_num;
     int width;
     int height;
-    QVector<QString> player_names;
+    //QVector<QString> player_names;
+    QVector<QString> NetPlayerNames;
     bool serverIsRunning;
 };
 

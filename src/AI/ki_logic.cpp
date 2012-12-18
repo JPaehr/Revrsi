@@ -4,35 +4,35 @@
 ki_logic::ki_logic(int breite, int hoehe, int anzSpieler, vector<vector<int> > startVector, int spielerNr)
     :Logic(breite, hoehe, anzSpieler){
 
-    this->width = breite;
-    this->height = hoehe;
-    this->players = anzSpieler;
+    this->setWidth(breite);
+    this->setHeight(hoehe);
+    this->setPlayers(anzSpieler);
     this->nr = spielerNr;
 }
 
 void ki_logic::vectorUpdate(vector<vector<int> > aktVector){
-    this->fields = aktVector;
+    this->setFields(aktVector);
 }
 vector<int> ki_logic::KiXY(){
     vector<int> gedrehteSteine;
     vector<vector<int> > altesFeld = this->getFields();
 
     int steineAktuell = 0;
-    for(int i = 0; i < this->height; i++){
-        for(int j = 0; j < this->width; j++){
-            if(getFields()[i][j] == aktPlayer){
+    for(int i = 0; i < this->getHeight(); i++){
+        for(int j = 0; j < this->getWidth(); j++){
+            if(getFields()[i][j] == this->getAktPlayer()){
                 steineAktuell++;
             }
         }
     }
 
-    for(int i = 0; i < this->height; i++){
-        for(int j = 0; j < this->height; j++){
+    for(int i = 0; i < this->getHeight(); i++){
+        for(int j = 0; j < this->getHeight(); j++){
             setField(j, i);
 
 
-            for(int k = 0; k < this->height; k++){
-                for(int l = 0; l < this->width; l++){
+            for(int k = 0; k < this->getHeight(); k++){
+                for(int l = 0; l < this->getWidth(); l++){
                     if(this->nr == getFields()[k][l]){
                         steineAktuell--;
                     }
@@ -53,7 +53,7 @@ vector<int> ki_logic::KiXY(){
 
     int indexMeisteDrehungen;
 
-    for(int i = 0; i < gedrehteSteine.size(); i+=3){
+    for(unsigned int i = 0; i < gedrehteSteine.size(); i+=3){
         if(i == 0){
             indexMeisteDrehungen = gedrehteSteine[i];
         }

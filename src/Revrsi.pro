@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     net/server/subServer.cpp \
     AI/ai_thread.cpp \
     interfaces/ai_settings.cpp \
-    AI/ai_code.cpp
+    AI/ai_code.cpp \
+    AI/ki_logic.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -53,7 +54,8 @@ HEADERS  += revrsi.h \
     net/server/subServer.h \
     AI/ai_thread.h \
     interfaces/ai_settings.h \
-    AI/ai_code.h
+    AI/ai_code.h \
+    AI/ki_logic.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \

@@ -13,7 +13,7 @@ using namespace std;
 class Client: public QThread{
     Q_OBJECT
 public:
-    Client(string host, bool debug_mode);
+    Client(string host, bool debug_mode = false);
     ~Client();
     void senden(string mes);
     void run();

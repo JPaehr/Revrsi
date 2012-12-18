@@ -20,6 +20,8 @@ public:
     server_thread(QObject *parent, server_gui *serverInterface);
     void run();
     ~server_thread();
+signals:
+    void NetStartServersClient(QString,QString);
 public slots:
     void NetServerStartGame();
     void NetJumpToConnection(int);
@@ -32,6 +34,7 @@ private:
     int loop;
     bool br;
     int breite,hoehe,Spieler;
+    bool startClient;
 };
 
 #endif // SERVER_THREAD_H

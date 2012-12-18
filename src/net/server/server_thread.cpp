@@ -4,6 +4,7 @@
 server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QThread(parent){
     this->serverInterface = serverInterface;
     this->br = false;
+    this->startClient = false;
     connect(this->serverInterface,SIGNAL(stopServer()),this,SLOT(NetStopServer()));
 
 }
@@ -37,6 +38,10 @@ void server_thread::run(){
                 this->meinServer->uServer1->start();
                 while(!this->meinServer->uServer1->connected){
                     QApplication::processEvents();
+                    if(!startClient){
+                        this->startClient = true;
+                        emit NetStartServersClient(QString("127.0.0.1"), PlayerName);
+                    }
                 }
             }
             if(this->loop == temp_loop && !rbreak){

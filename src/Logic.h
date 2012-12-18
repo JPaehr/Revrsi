@@ -38,6 +38,14 @@ public:
 	void setField(int x, int y);
 	int getAktPlayer();
 
+    void setWidth(int i);
+    void setHeight(int i);
+    void setPlayers(int i);
+    void setFields(vector<vector<int> > v);
+    int getWidth();
+    int getHeight();
+
+
 
 	virtual ~Logic();
 };

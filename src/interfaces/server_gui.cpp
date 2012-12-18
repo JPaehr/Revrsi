@@ -64,7 +64,7 @@ int server_gui::getPNum(){
 }
 
 QString server_gui::getName(){
-    return ui->spielername_label->text();
+    return ui->spielername_lineEdit->text();
 }
 
 void server_gui::setupServer(){
@@ -125,5 +125,75 @@ void server_gui::setUIUnLocked(){
     ui->startServer_button->setDisabled(false);
     ui->stopServer_button->setEnabled(false);
     ui->spielername_lineEdit->setDisabled(false);
+}
+
+QVector<QString> server_gui::getAllNames(){
+    //cout << "ClientInterface\tgetAllNames()" << endl;
+    return this->NetPlayerNames;
+}
+
+void server_gui::NetAddPlayerServer(QVector<QString> pl){
+    //cout << "ClientInterface\tNetAddPlayer()" << endl;
+    for(int i = 0; i<pl.size(); i+=2){
+        if(pl[i+1] == "1"){
+            ui->player1->setText(pl[i]);
+            ui->ID1_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
+        }
+        else if(pl[i+1] == "2"){
+            ui->player2->setText(pl[i]);
+            ui->ID2_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
+        }
+        else if(pl[i+1] == "3"){
+            ui->player3->setText(pl[i]);
+            ui->ID3_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
+        }
+        else if(pl[i+1] == "4"){
+            ui->player4->setText(pl[i]);
+            ui->ID4_label->setText("ID: " + pl[i+1]);
+            if(!this->NetPlayerNames.contains(pl[i])){
+                this->NetPlayerNames.push_back(pl[i]);
+            }
+        }
+    }
+    bool p1 = false ,p2 = false,p3 = false,p4 = false;
+    for(int i = 1;i < pl.size(); i+=2 ){
+        if(pl[i] == "1"){
+            p1 = true;
+        }
+        if(pl[i] == "2"){
+            p2 = true;
+        }
+        if(pl[i] == "3"){
+            p3 = true;
+        }
+        if(pl[i] == "4"){
+            p4 = true;
+        }
+    }
+    if(!p1){
+        ui->player1->setText("Leer");
+        ui->ID1_label->setText("ID: ");
+    }
+    if(!p2){
+        ui->player2->setText("Leer");
+        ui->ID2_label->setText("ID: ");
+    }
+    if(!p3){
+        ui->player3->setText("Leer");
+        ui->ID3_label->setText("ID: ");
+    }
+    if(!p4){
+        ui->player4->setText("Leer");
+        ui->ID4_label->setText("ID: ");
+    }
 }
 

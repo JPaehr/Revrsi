@@ -588,7 +588,31 @@ void Logic::setAktPlayer(int player){
 	this->aktPlayer = player;
 }
 int Logic::getAktPlayer(){
-	return this->aktPlayer;
+    return this->aktPlayer;
+}
+
+void Logic::setWidth(int i){
+    this->width = i;
+}
+
+void Logic::setHeight(int i){
+    this->height = i;
+}
+
+void Logic::setPlayers(int i){
+    this->players = i;
+}
+
+void Logic::setFields(vector<vector<int> > v){
+    this->fields = v;
+}
+
+int Logic::getWidth(){
+    return this->width;
+}
+
+int Logic::getHeight(){
+    return this->height;
 }
 
 Logic::~Logic() {

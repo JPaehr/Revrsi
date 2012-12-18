@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Client::Client(string host, bool debug_mode = false){
+Client::Client(string host, bool debug_mode){
     this->debug_mode = debug_mode;
     this->running = false;
     this->runtime = 0;

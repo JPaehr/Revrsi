@@ -63,7 +63,7 @@ public slots:
     void setNetModeDisabled();
     void runServer();
     void stopServerSL();
-    void runClient();
+    void runClient(QString ip = "", QString Name = "");
 
     void NetNewFieldSL();
     void NetCreateConnectsSL();
@@ -116,6 +116,7 @@ private:
 
     bool NetMode;
     bool NetGameStart;
+    bool serverMode;
 
     bool firstRun;
 
