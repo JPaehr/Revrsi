@@ -1,4 +1,4 @@
-#include "../src/AI/ki_logic.h"
+#include "../../Dokumente/Revrsi/src/AI/ki_logic.h"
 
 #include <iostream>
 
@@ -9,9 +9,9 @@ int main(){
     Logic dieLogic(8,8,2);
     dieLogic.setInitStones();
 
-    ki_logic KI(8,8,2,dieLogic.getFields(),1);
+    ki_logic KI(8,8,dieLogic.getFields(),1);
 
-    int x, y, a;
+    int x, y;//, a;
     while(1){
         cout << "Aktuelle Spieler ist: " << dieLogic.getAktPlayer() << endl;
         //cin >> a;
@@ -24,16 +24,16 @@ int main(){
 
 
         if(dieLogic.getAktPlayer() == 1){
-           KI.vectorUpdate(dieLogic.getFields());
-           vector<int> koordinaten = KI.KiXY();
-           x = koordinaten[0];
-           y = koordinaten[1];
-           cout << "KI x setzt auf: " << x << endl;
-           cout << "KI y setzt auf: " << y << endl;
+            KI.vectorUpdate(dieLogic.getFields());
+            vector<int> koordinaten = KI.KiXY();
+            x = koordinaten[0];
+            y = koordinaten[1];
+            cout << "KI x setzt auf: " << x << endl;
+            cout << "KI y setzt auf: " << y << endl;
 
 
-           dieLogic.setField(x,y);
-           //dieLogic.setAktPlayer(2);
+            dieLogic.setField(x,y);
+            //dieLogic.setAktPlayer(2);
         }
         else{
             cout << "x";
