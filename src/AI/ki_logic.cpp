@@ -3,20 +3,35 @@
 
 using namespace std;
 
-ki_logic::ki_logic(int breite, int hoehe, vector<vector<int> > startVector, int spielerNr)
-    :Logic(breite, hoehe, 3){
+ki_logic::ki_logic()
+    :Logic(3,3,3){
 
-    this->setWidth(breite);
-    this->setHeight(hoehe);
+    this->setWidth(3);
+    this->setHeight(3);
     this->setPlayers(3);
-    this->nr = spielerNr;
-    this->fields = startVector;
+    //cout << "Breite: " << breite << endl;
+    //cout << "Hoehe: " << hoehe << endl;
 }
 
 void ki_logic::vectorUpdate(vector<vector<int> > aktVector){
+    this->width = aktVector[0].size();
+    this->height = aktVector.size();
     this->setFields(aktVector);
 }
+void ki_logic::setNr(int nr){
+    this->nr = nr;
+}
+
 vector<int> ki_logic::KiXY(){
+
+    cout << "SpielerKi " << this->nr << endl;
+    for(int i = 0; i < this->getHeight(); i++){
+        for(int j = 0; j < this->getWidth(); j++){
+            cout << this->fields[i][j] << " ";
+        }
+        cout << endl;
+    }
+
     vector<int> gedrehteSteine;
     vector<vector<int> > altesFeld = this->getFields();
 
@@ -76,11 +91,17 @@ vector<int> ki_logic::KiXY(){
         }
     }
 
+    cout << "Index Meiste drehungen: " << indexMeisteDrehungen << endl;
+
     cout << "Hier kurz vor rueckgabe" << endl;
     vector<int> rueckgabe;
+
+
+
     rueckgabe.push_back(gedrehteSteine[indexMeisteDrehungen+1]);
     rueckgabe.push_back(gedrehteSteine[indexMeisteDrehungen+2]);
-
+    cout << "Ki x " << rueckgabe[0] << endl;
+    cout << "Ki y " << rueckgabe[1] << endl;
 
     return rueckgabe;
 }

@@ -5,10 +5,14 @@
 class ki_logic : public Logic
 {
 public:
-    ki_logic(int breite, int hoehe, vector<vector<int> > startvector, int spielerNr);
+    ki_logic();
     void vectorUpdate(vector<vector<int> > aktVector);
     vector<int> KiXY();
+    void setNr(int nr);
+
+private:
     int nr;
+
 
 };
 

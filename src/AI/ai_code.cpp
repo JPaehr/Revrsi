@@ -1,15 +1,15 @@
 #include "ai_code.h"
-#include "ki_logic.h"
+
 
 AI_CODE::AI_CODE(int version){
     this->version = version;
+    this->ai_logic = new ki_logic();
 }
 
-void AI_CODE::CODE(vector<vector<int> > field, int *x, int *y){
-
-    ki_logic ai_logic(field[0].size(), field.size(),field, 1);
-
-    vector<int> rueckgabe = ai_logic.KiXY();
+void AI_CODE::CODE(vector<vector<int> > field, int *x, int *y, int player){
+    ai_logic->setNr(player);
+    ai_logic->vectorUpdate(field);
+    vector<int> rueckgabe = ai_logic->KiXY();
     (*x) = rueckgabe[0];
     (*y) = rueckgabe[1];
 

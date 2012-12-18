@@ -15,7 +15,8 @@ void AI_Thread::run(){
         if(this->aktPlayer == player){
             int x = -1,y = -1;
 
-            this->AI->CODE(this->field, &x, &y);
+
+            this->AI->CODE(this->field, &x, &y, player);
 
             emit AIClicked(x,y);
         }

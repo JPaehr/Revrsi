@@ -10,6 +10,7 @@ class AI_Thread : public QThread
 {
     Q_OBJECT
 public:
+    int id;
     AI_Thread(QObject *parent, int version, int player);
     void run();
 signals:
