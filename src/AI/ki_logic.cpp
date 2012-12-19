@@ -41,7 +41,7 @@ vector<int> ki_logic::KiXY(){
 
     for(int i = 0; i < this->getHeight(); i++){
         for(int j = 0; j < this->getWidth(); j++){
-            if(getFields()[i][j] == this->getAktPlayer()){
+            if(getFields()[i][j] == this->nr){
                 steineAktuell++;
             }
         }
@@ -78,7 +78,7 @@ vector<int> ki_logic::KiXY(){
     }
     cout << "eigentlich alles vorbei" << endl;
 
-    int indexMeisteDrehungen;
+    int indexMeisteDrehungen = 0;
 
     for(unsigned i = 0; i < gedrehteSteine.size(); i+=3){
         if(i == 0){
