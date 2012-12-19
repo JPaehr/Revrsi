@@ -129,8 +129,8 @@ void Revrsi::warpStart(){
 }
 
 void Revrsi::AIClickSlot(int x, int y){
-    cout << "in aiClickslot" << endl;
-    this->logic->setField(x,y);
+    field_clicked_slot(x,y);
+
 }
 
 void Revrsi::setNetModeEnabled(){
