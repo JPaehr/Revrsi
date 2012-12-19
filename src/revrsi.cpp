@@ -390,6 +390,7 @@ void Revrsi::field_clicked_slot(int x, int y){
         connect(this->anim,SIGNAL(finished()),this,SLOT(switchOpacityWay()));
     }
     emit emitAktPlayer(this->logic->getAktPlayer());
+    emit emitField(this->logic->getFields());
 }
 
 void Revrsi::client_gui_slot(){
