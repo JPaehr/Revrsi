@@ -30,6 +30,7 @@ Client::Client(string host, bool debug_mode){
 
     this->client.close();
 
+    sleep(1);
 
     try {
         this->client.create();
