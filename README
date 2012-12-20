@@ -1,0 +1,50 @@
+History:
+-15.12.12
+	$ sudo netstat -ap | grep :55312 kontrolle ob Port schon wieder freigegen
+
+
+-14.12.12
+	Methode zum ermitteln der zu animierenden Steine geschrieben
+	 
+-01.12.12 
+	Erster Server- und Clientcode hochgeladen
+		-weder Client noch Server blockiert
+		-"sehr schnelle" statusupdates des Servers werden vom Client nun auch erkannt 
+		
+	TODO
+		-Protokoll vollständig (Teile sind schon drin) in Client und Server implementieren
+		-Logic in Server integrieren 
+-20.11.12
+	"Neues Spiel"-Menü überarbeitet
+		-Feldgröße einstellbar
+		-Standart Feldgrößen für Spieleranzahlen
+	TokenItem besitzt seie eigene FeldPosition
+
+	Einstellungen Reiter entfernt, da überflüssig.
+
+	Tokens wurden bei Spielzügen immer von neuen überdeckt.
+		-Tokens werden nicht mehr überdeckt
+		-Auf leeren Feldern werden neue Tokens erstellt.
+		-Wenn Tokens den Spieler wechseln, werden die alten gelöscht und die dann leeren Felder durch neue Tokens des Spielers gefüllt.
+-18.11.12
+	New Game Funktion funktioniert vollständig.  "Spiel -> Neu"
+
+	Logik "vollständig" eingebaut. Funktioniert allerdings nicht.
+		-Theoretisch ist alles richtig jedoch werden die Stein nicht/falsch platziert.
+		-Betreffende Funktion ist "field_clicked_slot" in der Revrsi.cpp
+		-x und y coordinate des geklickten feldes werden an Logic.setField(x,y) übergeben. aber falsch verarbeitet.
+
+
+	BITTE SCHAUT DA MAL MIT DRÜBER
+
+-15.11.12
+	Settings Fenster hinzugefügt
+		-Höhe und Breite einstellbar. Werden allerdings noch nicht umgesetzt
+	New Game Fkt. hinzugefügt
+		-Kann bisher das alte Spielfeld und die alte Logicfunktion löschen.
+
+
+Probleme/Bugs/Fehler:
+
+-Die Position der ausgangs Steine stimmt nicht für verschiedene höhe und breite.
+-Bei  >2 Spielern (int spieler_number) kommt es zu Fehlen bei der Init Stein Positionierung

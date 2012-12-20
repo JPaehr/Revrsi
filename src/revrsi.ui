@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Revrsi</class>
+ <widget class="QMainWindow" name="Revrsi">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>808</width>
+    <height>655</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Revrsi</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QGraphicsView" name="graphicsView"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="spieler_farbe">
+          <property name="text">
+           <string>Aktueller Spieler</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Akt_Spieler_Label">
+          <property name="text">
+           <string>Schwarz</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftToolBarArea</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLeft"/>
+   <addaction name="actionRight"/>
+   <addaction name="actionTop"/>
+   <addaction name="actionDown"/>
+   <addaction name="actionZoom"/>
+   <addaction name="actionShrink"/>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>808</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuSpiel">
+    <property name="title">
+     <string>Spiel</string>
+    </property>
+    <addaction name="actionNeu"/>
+    <addaction name="actionBeenden"/>
+   </widget>
+   <widget class="QMenu" name="menuNetzwerk">
+    <property name="title">
+     <string>Netzwerk</string>
+    </property>
+    <addaction name="actionServer"/>
+    <addaction name="actionClient"/>
+   </widget>
+   <widget class="QMenu" name="menuHilfe">
+    <property name="title">
+     <string>Hilfe</string>
+    </property>
+    <addaction name="actionHilfe"/>
+    <addaction name="action_ber"/>
+   </widget>
+   <widget class="QMenu" name="menuEinstellungen">
+    <property name="title">
+     <string>Einstellungen</string>
+    </property>
+    <addaction name="actionKI_Einstellungen"/>
+   </widget>
+   <addaction name="menuSpiel"/>
+   <addaction name="menuNetzwerk"/>
+   <addaction name="menuEinstellungen"/>
+   <addaction name="menuHilfe"/>
+  </widget>
+  <action name="actionNeu">
+   <property name="text">
+    <string>Neu</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N, F2</string>
+   </property>
+  </action>
+  <action name="actionBeenden">
+   <property name="text">
+    <string>Beenden</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X, Alt+X</string>
+   </property>
+  </action>
+  <action name="actionOptionen">
+   <property name="text">
+    <string>Optionen</string>
+   </property>
+  </action>
+  <action name="actionServer">
+   <property name="text">
+    <string>Server</string>
+   </property>
+  </action>
+  <action name="actionClient">
+   <property name="text">
+    <string>Client</string>
+   </property>
+  </action>
+  <action name="action_ber">
+   <property name="text">
+    <string>Über</string>
+   </property>
+  </action>
+  <action name="actionHilfe">
+   <property name="text">
+    <string>Hilfe</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="actionLeft">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/arrow_left.png</normaloff>:/Positioning/arrow_left.png</iconset>
+   </property>
+   <property name="text">
+    <string>Links</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld nach Links verschieben</string>
+   </property>
+  </action>
+  <action name="actionRight">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/arrow_right.png</normaloff>:/Positioning/arrow_right.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rechts</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld nach rechts verschieben</string>
+   </property>
+  </action>
+  <action name="actionTop">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/arrow_top.png</normaloff>:/Positioning/arrow_top.png</iconset>
+   </property>
+   <property name="text">
+    <string>Oben</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld nach oben verschieben</string>
+   </property>
+  </action>
+  <action name="actionDown">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/arrow_down.png</normaloff>:/Positioning/arrow_down.png</iconset>
+   </property>
+   <property name="text">
+    <string>Unten</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld nach unten verschieben</string>
+   </property>
+  </action>
+  <action name="actionZoom">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/plus.png</normaloff>:/Positioning/plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vergößern</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld heranzoomen</string>
+   </property>
+  </action>
+  <action name="actionShrink">
+   <property name="icon">
+    <iconset resource="res/resources.qrc">
+     <normaloff>:/Positioning/minus.png</normaloff>:/Positioning/minus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Verkleinern</string>
+   </property>
+   <property name="toolTip">
+    <string>Spielfeld herauszoomen</string>
+   </property>
+  </action>
+  <action name="actionKI_Einstellungen">
+   <property name="text">
+    <string>KI Einstellungen</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="res/resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
