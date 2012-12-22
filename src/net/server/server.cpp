@@ -337,5 +337,6 @@ int Server::NetDestroyServer(int uServerNumber){
         emit NetNewServer(4);
         return 4;
     }
+    return 0;
 }
 

@@ -36,6 +36,12 @@ void player::setName(QString name){
 
 void player::setActive(bool act){
     this->activ_text.setVisible(act);
+    if( act ){
+        this->tokens.setScale( qreal(0.8) );
+        this->tokens.setPos( qreal( 20 ), qreal( 37 ));
+        this->tokens.setVisible(true);
+    }
+
 }
 
 void player::setTokens(int tokens){
@@ -47,6 +53,8 @@ void player::setTokens(int tokens){
 
 void player::setTokensVisible(bool vis){
     this->tokens.setVisible(vis);
+    this->tokens.setScale( 1 );
+    this->tokens.setPos( 16, 23 );
 }
 
 void player::setKindText(QString text){

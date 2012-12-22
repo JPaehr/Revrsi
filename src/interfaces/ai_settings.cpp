@@ -34,4 +34,5 @@ bool AI_settings::aiActivated(int ki_number){
             return true;
         }
     }
+    return false;
 }

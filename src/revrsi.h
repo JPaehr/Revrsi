@@ -30,117 +30,111 @@ public:
     explicit Revrsi(QWidget *parent = 0);
     ~Revrsi();
 
-    bool notify(QObject *rec, QEvent *ev);
-
 signals:
-    void win(QVector<int>, QVector<QString>);
     void delayedStart();
+    void win(QVector<int>, QVector<QString>);
 
     //Network
-    void NetFieldClickedTransmit(int, int);
-    void emitField(vector<vector<int> >);
     void emitAktPlayer(int);
+    void emitField(vector<vector<int> >);
+    void NetFieldClickedTransmit(int, int);
 
 public slots:
-    void test_slot();
+    //Window show slots
+    void new_game_slot();
     void server_gui_slot();
     void field_clicked_slot(int, int);
     void client_gui_slot();
 
+    //Toolbar item slots
     void step_left();
     void step_right();
     void step_top();
     void step_down();
     void zoom_in();
     void zoom_out();
+
     void switchOpacityWay();
 
     void warpStart();
     void AIClickSlot(int,int);
 
     //Netzwerk
+    void NetCreateConnectsSL();
+    void NetNewFieldSL();
+    void NetNewGame();
+    void NetSetGameValues(int, int, int);
+    void NetUpdatePlayer(int);
+    void NetUpdateWinVector(QVector<int>);
+    void runClient(QString ip = "", QString Name = "");
+    void runServer();
     void setNetModeEnabled();
     void setNetModeDisabled();
-    void runServer();
     void stopServerSL();
-    void runClient(QString ip = "", QString Name = "");
-
-    void NetNewFieldSL();
-    void NetCreateConnectsSL();
-    void NetNewGame();
-    void NetUpdatePlayer(int);
-    void NetFieldClickedTransmithelper(int,int);
-    void NetSetGameValues(int, int, int);
-    void NetUpdateWinVector(QVector<int>);
 
 private:
-    double                  scale;
-    int                     width;
-    int                     height;
-    int                     player_num;
-    int                     player_act;
-    new_game_settings       *ngs;
+    bool    FieldBackSet;
+    bool    firstRun;
+    bool    direction;
+
+    bool    clientInit,serverInit;
+    bool    NetMode;
+    bool    NetGameStart;
+    bool    serverMode;
+
+
+    double  scale;
+    double  sceneOffset_scale;
+
+    int     animatedPlayer;
+    int     height;
+    int     width;
+    int     player_act;
+    int     player_num;
+    int     sceneOffset_x;
+    int     sceneOffset_y;
+
     AI_settings             *ais;
+    anim_test               *atest;
+    client_gui              *clientInterface;
+    client_thread           *ClientThread;
+    new_game_settings       *ngs;
     Logic                   *logic;
     Ui::Revrsi              *ui;
-    //QAnimationGroup         Anim;
     QGraphicsScene          *scene;
     QGraphicsScene          *frame_scene;
-    QVector<QString>        playerNames;
+    QPropertyAnimation      *anim;
     QTimer                  *timer;
+
+    QVector<QString>        playerNames;
+    QVector<AI_Thread *>    ai_list;
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
     QVector<player *>       p_fields;
-    TokenItem               *TokenContainer;
-    QVector<AI_Thread *>      ai_list;
-    client_gui              *clientInterface;
+
     server_gui              *serverInterface;
-    win_gui                 *winInterface;
+    server_thread           *ServerThread;
+    TokenItem               *TokenContainer;
+
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
 
-    QPropertyAnimation *anim;
+    win_gui                 *winInterface;
 
-    int                     sceneOffset_x;
-    int                     sceneOffset_y;
-    double                  sceneOffset_scale;
-
-    int                     playerCounter;
-
-    bool                    FieldBackSet;
-
-    bool    direction;
-    bool    clientInit,serverInit;
-    int animatedPlayer;
-
-    bool NetMode;
-    bool NetGameStart;
-    bool serverMode;
-
-    bool firstRun;
-
+    void addPlayersToList();
     void change_token(int x, int y,  int player);
+    void createAIs();
+    void DelayedAnimationThread();
     void init_placeTokens();
     void new_game();
-    //void placeTokens();
+    void runPlayerFieldAnimation();
     void set_scale(double scale = 50);
     void setupBackground(int x, int y);
-    void setupToken(int x, int y,  int player);
-    void addPlayersToList();
     void setupBackgroundTheme();
     void setupFieldBack();
-    void createAIs();
+    void setupToken(int x, int y,  int player);
 
-    void runPlayerFieldAnimation();
-
-    anim_test *atest;
-    void startThread();
-
-
-    server_thread *ServerThread;
-    client_thread *ClientThread;
-//    void resizeEvent(QResizeEvent *);
     void closeEvent(QCloseEvent *);
 };
 
