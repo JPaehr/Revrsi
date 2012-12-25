@@ -1,5 +1,8 @@
 #include "revrsi.h"
 #include "ui_revrsi.h"
+#include <math.h>
+
+#define _USE_MATH_DEFINES
 
 using namespace std;
 
@@ -77,7 +80,7 @@ Revrsi::Revrsi( QWidget *parent ) :
     connect( ui->actionShrink,   SIGNAL( triggered(  ) ), this, SLOT( zoom_out(  ) ) );
 
     // Connect Delayed Animation Start
-    connect( this->atest, SIGNAL( delayedStart(  ) ), this, SLOT( warpStart(  ) ) );
+    //connect( this->atest, SIGNAL( delayedStart(  ) ), this, SLOT( warpStart(  ) ) );
 
     // Connect Win Vector
     connect( this, SIGNAL( win( QVector<int>, QVector<QString> ) ),this->winInterface, SLOT( win_slot( QVector<int>, QVector<QString> ) ) );
@@ -86,6 +89,8 @@ Revrsi::Revrsi( QWidget *parent ) :
     connect( this->serverInterface, SIGNAL( startServer(  ) ),      this, SLOT( runServer(  ) ) );
     connect( this->clientInterface, SIGNAL( send_startClient(  ) ), this, SLOT( runClient(  ) ) );
     connect( this->clientInterface, SIGNAL( destroyed(  ) ),        this, SLOT( setNetModeDisabled(  ) ) ); //###Check
+
+    this->new_game();
 }
 
 Revrsi::~Revrsi(  ){
@@ -618,6 +623,9 @@ void Revrsi::setupBackground( int x, int y ){
     int field_counter = 0;
 
     QSequentialAnimationGroup *group = new QSequentialAnimationGroup;
+    QVector<QGraphicsItemAnimation *> an_group;
+    //QVector<QTimeLine *> t_group;
+
 
     for( int i_y = 0; i_y <= y-1; i_y++ ){
         for( int i_x=0; i_x <= x-1; i_x++ ){
@@ -654,7 +662,8 @@ void Revrsi::setupBackground( int x, int y ){
 
             item->set_nr( field_counter++ );
             item->set_coords( i_x, i_y );
-            item->set_realcoords( val_x, val_y, smaller_value/x, smaller_value/x );
+            item->set_realcoords( val_x, val_y, smaller_value/x, smaller_value/x );//###fix
+            //item->set_realcoords(0,0,0,0);
             item->set_scale( smaller_value/x );
             this->set_scale( smaller_value/x );
 
@@ -667,14 +676,28 @@ void Revrsi::setupBackground( int x, int y ){
             }
             this->scene->addItem( item );
 
-            QPropertyAnimation *an = new QPropertyAnimation( item, "pos" );
-            an->setDuration( 50 );
-            an->setStartValue( QPointF( 0, 0 ) );
-            an->setEndValue( QPointF( val_x, val_y ) );
-            group->addAnimation( an );
+
+            QGraphicsItemAnimation *an = new QGraphicsItemAnimation;
+            QTimeLine *timer = new QTimeLine(1000);
+            timer->setFrameRange(0, 100);
+            an->setItem(item);
+            an->setTimeLine(timer);
+
+            /*for(float i = 26; i >= 1; i--){
+                an->setPosAt((250-i*10.f) / 250.f, QPointF(val_x*(1/i), val_y*cos(2*M_PI*(0.01*i-1))));
+                //cout << "1/i: " << 1/i << endl;
+                //cout << "val x: "  << val_x << " val y: " << val_y << " x: " << val_x*(1/i)<< " y: " << val_y*cos(2*M_PI*(0.01*i-1)) << endl;
+            }*/
+
+            an->setPosAt(0.f / 250.f, QPointF(val_x*0, 0.00001*val_y));
+            an->setPosAt(249.f / 250.f, QPointF(val_x, val_y));
+            an_group.push_back(an);
+            t_group.push_back(timer);
         }
     }
     group->start(  );
+    this->atest->setTimerGroup(t_group);
+    this->atest->start();
 }
 
 void Revrsi::setupBackgroundTheme(  ){

@@ -12,6 +12,7 @@ public:
     anim_test(QObject *parent);
     void run();
     int akt_player;
+    void setTimerGroup( QVector<QTimeLine *> t_group );
 
 signals:
     void animChange();
@@ -19,6 +20,8 @@ signals:
 
 private:
     QVector<player *> pp;
+    QVector<QTimeLine *> t_group;
+
 };
 
 #endif // ANIM_TEST_H

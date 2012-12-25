@@ -111,6 +111,7 @@ private:
     QVector<FieldItem *>    fields;
     QVector<TokenItem *>    tokens;
     QVector<player *>       p_fields;
+    QVector<QTimeLine *>    t_group;
 
     server_gui              *serverInterface;
     server_thread           *ServerThread;
