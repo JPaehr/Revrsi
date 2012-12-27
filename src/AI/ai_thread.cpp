@@ -3,6 +3,7 @@
 AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent){
     this->player = player;
     this->KIversion = version;
+    this->stop = false;
 
     if(version == 1){
         this->AI = new AI_CODE(this->KIversion);
@@ -11,17 +12,26 @@ AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent)
 
 void AI_Thread::run(){
     while(1){
+        while(this->stop){QApplication::processEvents();}
         QApplication::processEvents();
         if(this->aktPlayer == player){
             int x = -1,y = -1;
 
 
             this->AI->CODE(this->field, &x, &y, player);
-
+            if(x == -1 && y == -1){
+                qDebug() << "Terminate AI" << endl;
+                this->terminate();
+                this->wait();
+                this->~AI_Thread();
+            }
             emit AIClicked(x,y);
         }
         this->msleep(100);
     }
+}
+
+AI_Thread::~AI_Thread(){
 }
 
 void AI_Thread::setField(vector<vector<int> > rfield){

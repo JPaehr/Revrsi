@@ -13,6 +13,8 @@ public:
     int id;
     AI_Thread(QObject *parent, int version, int player);
     void run();
+    virtual ~AI_Thread();
+    bool stop;
 signals:
     void AIClicked(int,int);
 public slots:

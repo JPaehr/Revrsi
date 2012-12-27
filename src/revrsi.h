@@ -81,7 +81,7 @@ private:
     bool    NetMode;
     bool    NetGameStart;
     bool    serverMode;
-
+    bool    skipTurn;
 
     double  scale;
     double  sceneOffset_scale;

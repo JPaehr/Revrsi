@@ -47,6 +47,7 @@ Revrsi::Revrsi( QWidget *parent ) :
     this->clientInit    = false;
     this->serverInit    = false;
     this->serverMode    = false;
+    this->skipTurn      = false;
 
     //Do the Rest
     this->setupBackgroundTheme(  );
@@ -161,7 +162,7 @@ void Revrsi::addPlayersToList(  ){
         spieler->tokens.setPos( 16, 23 );
         if( this->ais->aiActivated( i ) ){
             spieler->setKindText( "<<KI>>" );
-            spieler->kind_text.setPos( 23, 35 );
+            spieler->kind_text.setPos( 23, 15 );
             spieler->kind_text.setScale( qreal(0.8) );
         }
 
@@ -277,7 +278,6 @@ void Revrsi::field_clicked_slot( int x, int y ){
         return;
     }
     this->logic->setField( x, y );
-
     this->old_array = this->new_array;
     this->new_array = this->logic->getFields(  );
     for( uint i = 0; i<this->new_array.size(  ); i++ ){
@@ -315,24 +315,25 @@ void Revrsi::field_clicked_slot( int x, int y ){
     }
 
     this->win_vector = logic->win(  );
-
+    p_fields[0]->setTokens( this->win_vector[1] );
+    p_fields[1]->setTokens( this->win_vector[2] );
+    if( this->player_num == 3 ){
+        p_fields[2]->setTokens( this->win_vector[3] );
+    }
+    if( this->player_num == 4 ){
+        p_fields[3]->setTokens( this->win_vector[4] );
+    }
     if( this->win_vector[0] != -1 ){
+        if(this->skipTurn){
+            return;
+        }
         QVector<int> vector_to_convert;
         for( int i = 0, size = this->win_vector.size(  ); i < size; i++ ){ //###uint fix
             vector_to_convert.push_back( this->win_vector[i] );
         }
         this->winInterface->show(  );
         emit this->win( vector_to_convert, this->playerNames );
-    }
-    else{
-        p_fields[0]->setTokens( this->win_vector[1] );
-        p_fields[1]->setTokens( this->win_vector[2] );
-        if( this->player_num == 3 ){
-            p_fields[2]->setTokens( this->win_vector[3] );
-        }
-        if( this->player_num == 4 ){
-            p_fields[3]->setTokens( this->win_vector[4] );
-        }
+        this->skipTurn = true;
     }
 
     if( logic->getAktPlayer(  )-1 != this->animatedPlayer ){
@@ -385,9 +386,21 @@ void Revrsi::new_game(  ){
     }
     this->p_fields.clear(  );
 
+    //Leere das KIArray ohne den Vector zu löschen
+    for( int i = 0; i < this->ai_list.size(  ); i++ ){
+        if(this->ai_list[i]->isRunning()){
+            this->ai_list[i]->terminate();
+            //this->ai_list[i]->wait();
+            this->ai_list[i]->~AI_Thread();
+        }
+        else{this->ai_list[i]->~AI_Thread();}
+    }
+    this->ai_list.clear(  );
+
     if( !this->firstRun ){
         this->TokenContainer->~TokenItem(  );
     }
+    this->skipTurn = false;
 
     // Lese neue Spieldaten
     if( !this->firstRun && !this->NetMode ){
@@ -403,10 +416,6 @@ void Revrsi::new_game(  ){
         this->new_array = logic->getFields(  );
     }
 
-    // Setup Background und InitStones
-    this->setupBackground( this->width,this->height );
-    this->init_placeTokens(  );
-
     //Setup Players
     if( !this->NetMode ){
         this->playerNames = ngs->get_player_names(  );
@@ -421,6 +430,10 @@ void Revrsi::new_game(  ){
             this->playerNames = this->serverInterface->getAllNames(  );
         }
     }
+
+    // Setup Background und InitStones
+    this->setupBackground( this->width,this->height );
+    this->init_placeTokens(  );
 
     //Transmit Field to AI
     if( !NetMode ){
@@ -625,7 +638,10 @@ void Revrsi::setupBackground( int x, int y ){
     QSequentialAnimationGroup *group = new QSequentialAnimationGroup;
     QVector<QGraphicsItemAnimation *> an_group;
     //QVector<QTimeLine *> t_group;
-
+    for(int i = 0; i< this->t_group.size(); i++){
+        this->t_group[i]->~QTimeLine();
+    }
+    this->t_group.clear();
 
     for( int i_y = 0; i_y <= y-1; i_y++ ){
         for( int i_x=0; i_x <= x-1; i_x++ ){

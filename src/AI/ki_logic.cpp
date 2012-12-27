@@ -96,7 +96,9 @@ vector<int> ki_logic::KiXY(){
     cout << "Hier kurz vor rueckgabe" << endl;
     vector<int> rueckgabe;
 
-
+    if(gedrehteSteine.size() == 0){
+        return rueckgabe;
+    }
 
     rueckgabe.push_back(gedrehteSteine[indexMeisteDrehungen+1]);
     rueckgabe.push_back(gedrehteSteine[indexMeisteDrehungen+2]);
