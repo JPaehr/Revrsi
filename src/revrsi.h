@@ -73,6 +73,9 @@ public slots:
     void stopServerSL();
 
 private:
+
+    bool    kiWaited;
+
     bool    FieldBackSet;
     bool    firstRun;
     bool    direction;

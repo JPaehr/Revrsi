@@ -12,6 +12,7 @@ class AI_Thread : public QThread
 public:
     int id;
     AI_Thread(QObject *parent, int version, int player);
+    void kiPause(bool *kiPause);
     void run();
     virtual ~AI_Thread();
     bool stop;
@@ -21,6 +22,7 @@ public slots:
     void setField(vector<vector<int> >);
     void setAktPlayer(int);
 private:
+    bool *pause;
     vector<vector<int> > field;
     int aktPlayer;
     int KIversion;

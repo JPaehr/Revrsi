@@ -11,6 +11,8 @@ Revrsi::Revrsi(QWidget *parent):
     ui(new Ui::Revrsi){
     ui->setupUi(this);
 
+    this->kiWaited = false;
+
     // Init Windows
     this->ais             = new AI_settings(this);
     this->ngs             = new new_game_settings(this);
@@ -258,6 +260,7 @@ void Revrsi::createAIs(){
     for(int i = 1; i <= this->player_num; i++){
         if(this->ais->aiActivated(i)){
             AI_Thread *ai = new AI_Thread(this, 1 ,i);
+            ai->kiPause(&this->kiWaited);
             connect(this,  SIGNAL(emitField(vector<vector<int> >)), ai,     SLOT(setField(vector<vector<int> >)));
             connect(ai,    SIGNAL(AIClicked(int, int)),             this,   SLOT(AIClickSlot(int,int)));
             connect(this,  SIGNAL(emitAktPlayer(int)),              ai,     SLOT(setAktPlayer(int)));
@@ -273,6 +276,7 @@ void Revrsi::DelayedAnimationThread(){
 }
 
 void Revrsi::field_clicked_slot(int x, int y){
+
     if(NetMode){
         emit this->NetFieldClickedTransmit(x, y);
         return;
@@ -360,6 +364,9 @@ void Revrsi::init_placeTokens(){
 }
 
 void Revrsi::new_game(){
+
+    this->kiWaited = false;
+
     //Beende Animation
     if(!this->firstRun){
         this->anim->setLoopCount(0);

@@ -9,8 +9,16 @@ AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent)
         this->AI = new AI_CODE(this->KIversion);
     }
 }
+void AI_Thread::kiPause(bool *kiPause){
+    this->pause = kiPause;
+}
 
 void AI_Thread::run(){
+    if(*this->pause == false){
+        msleep(1500);
+        *this->pause = true;
+    }
+
     while(1){
         while(this->stop){QApplication::processEvents();}
         QApplication::processEvents();
