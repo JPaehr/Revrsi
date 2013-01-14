@@ -365,6 +365,14 @@ void Revrsi::init_placeTokens(){
 
 void Revrsi::new_game(){
 
+    //this->setupBackground();
+    //this->setupBackgroundTheme();
+
+
+
+    this->FieldBackSet = false;
+
+
     this->kiWaited = false;
 
     //Beende Animation
@@ -421,6 +429,23 @@ void Revrsi::new_game(){
         this->logic = new Logic(this->width,this->width,this->player_num);
         logic->setInitStones();
         this->new_array = logic->getFields();
+        cout << "Hoehe " << this->height << endl;
+        cout << "Breite " << this->width << endl;
+        for(int zeilen1 = 0; zeilen1 < this->height; zeilen1++){
+            for(int spalten1 = 0; spalten1 < this->width; spalten1++){
+                cout << logic->getFields()[spalten1][zeilen1];
+                cout << " Spalte " << spalten1;
+                cout << " Hoehe " << zeilen1 << endl;
+            }
+            cout << endl;
+        }
+        for(int zeilen1 = 0; zeilen1 < this->height; zeilen1++){
+            for(int spalten1 = 0; spalten1 < this->width; spalten1++){
+                cout << logic->getFields()[spalten1][zeilen1];
+
+            }
+            cout << endl;
+        }
     }
 
     //Setup Players
@@ -439,6 +464,9 @@ void Revrsi::new_game(){
     }
 
     // Setup Background und InitStones
+    this->scene->clear();
+
+    this->setupBackgroundTheme();
     this->setupBackground(this->width,this->height);
     this->init_placeTokens();
 
@@ -630,6 +658,9 @@ void Revrsi::set_scale(double scale){
 }
 
 void Revrsi::setupBackground(int x, int y){
+
+    cout << "setupBackground " << endl;
+
     QPixmap back_pic1;
     QPixmap back_pic2;
 
@@ -693,6 +724,7 @@ void Revrsi::setupBackground(int x, int y){
             connect(item, SIGNAL(FieldClicked(int, int)), this, SLOT(field_clicked_slot(int, int)));
 
             this->fields.push_back(item);
+
             if(!this->FieldBackSet){
                 this->setupFieldBack();
                 this->FieldBackSet = true;
@@ -736,10 +768,16 @@ void Revrsi::setupBackgroundTheme(){
 }
 
 void Revrsi::setupFieldBack(){
+
+    cout << "setupFieldBack aufgerufen" << endl;
+
     QPixmap field_back;
     if(!field_back.load(":/Field/FieldBackgroundShadow.png")){
         qWarning("Failed to load image");
     }
+
+
+
     TokenItem *fback = new TokenItem;
     field_back = field_back.scaled(this->scale * this->width + 10, this->scale * this->height + 10);
     fback->setPos(this->fields[0]->x_real(), this->fields[0]->y_real());
