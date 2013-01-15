@@ -1,4 +1,7 @@
 #include "ai_thread.h"
+#include <iostream>
+
+using namespace std;
 
 AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent){
     this->player = player;
@@ -12,10 +15,15 @@ AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent)
 void AI_Thread::kiPause(bool *kiPause){
     this->pause = kiPause;
 }
+void AI_Thread::delaytime(int height){
+    this->height = height;
+}
 
 void AI_Thread::run(){
     if(*this->pause == false){
-        msleep(1500);
+        cout << "HoeheKI " << this->field.size() << endl;
+
+        msleep((this->height*100)+1000);
         *this->pause = true;
     }
 

@@ -13,6 +13,7 @@ public:
     int id;
     AI_Thread(QObject *parent, int version, int player);
     void kiPause(bool *kiPause);
+    void delaytime(int height);
     void run();
     virtual ~AI_Thread();
     bool stop;
@@ -22,6 +23,7 @@ public slots:
     void setField(vector<vector<int> >);
     void setAktPlayer(int);
 private:
+    int height;
     bool *pause;
     vector<vector<int> > field;
     int aktPlayer;

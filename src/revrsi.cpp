@@ -265,6 +265,7 @@ void Revrsi::createAIs(){
             connect(ai,    SIGNAL(AIClicked(int, int)),             this,   SLOT(AIClickSlot(int,int)));
             connect(this,  SIGNAL(emitAktPlayer(int)),              ai,     SLOT(setAktPlayer(int)));
             this->ai_list.push_back(ai);
+            ai->delaytime(this->height);
             ai->start();
         }
     }
