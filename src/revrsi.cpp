@@ -426,26 +426,10 @@ void Revrsi::new_game(){
 
     // Erstelle neue Logicklasse
     if(!this->NetMode){
-        this->logic = new Logic(this->width,this->width,this->player_num);
+        this->logic = new Logic(this->width,this->height,this->player_num);
         logic->setInitStones();
         this->new_array = logic->getFields();
-        cout << "Hoehe " << this->height << endl;
-        cout << "Breite " << this->width << endl;
-        for(int zeilen1 = 0; zeilen1 < this->height; zeilen1++){
-            for(int spalten1 = 0; spalten1 < this->width; spalten1++){
-                cout << logic->getFields()[spalten1][zeilen1];
-                cout << " Spalte " << spalten1;
-                cout << " Hoehe " << zeilen1 << endl;
-            }
-            cout << endl;
-        }
-        for(int zeilen1 = 0; zeilen1 < this->height; zeilen1++){
-            for(int spalten1 = 0; spalten1 < this->width; spalten1++){
-                cout << logic->getFields()[spalten1][zeilen1];
 
-            }
-            cout << endl;
-        }
     }
 
     //Setup Players
@@ -659,8 +643,6 @@ void Revrsi::set_scale(double scale){
 
 void Revrsi::setupBackground(int x, int y){
 
-    cout << "setupBackground " << endl;
-
     QPixmap back_pic1;
     QPixmap back_pic2;
 
@@ -768,8 +750,6 @@ void Revrsi::setupBackgroundTheme(){
 }
 
 void Revrsi::setupFieldBack(){
-
-    cout << "setupFieldBack aufgerufen" << endl;
 
     QPixmap field_back;
     if(!field_back.load(":/Field/FieldBackgroundShadow.png")){
