@@ -59,8 +59,6 @@ Revrsi::Revrsi(QWidget *parent):
     this->logic->setInitStones();
     this->new_array = logic->getFields();
 
-    this->DelayedAnimationThread();
-
     // Zentriere Fenster
     QRect frect = frameGeometry();
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
@@ -81,9 +79,6 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionDown,     SIGNAL(triggered()), this, SLOT(step_down()));
     connect(ui->actionZoom,     SIGNAL(triggered()), this, SLOT(zoom_in()));
     connect(ui->actionShrink,   SIGNAL(triggered()), this, SLOT(zoom_out()));
-
-    // Connect Delayed Animation Start
-    //connect(this->atest, SIGNAL(delayedStart()), this, SLOT(warpStart()));
 
     // Connect Win Vector
     connect(this, SIGNAL(win(QVector<int>, QVector<QString>)),this->winInterface, SLOT(win_slot(QVector<int>, QVector<QString>)));
@@ -194,17 +189,17 @@ void Revrsi::change_token(int x, int y, int player){
             qWarning("Failed to load image");
         }
     }
-    if(player == 2){
+    else if(player == 2){
         if(!token_pic.load(":/Tokens/Token1.png")){
             qWarning("Failed to load image");
         }
     }
-    if(player == 3){
+    else if(player == 3){
         if(!token_pic.load(":/Tokens/Token2.png")){
             qWarning("Failed to load image");
         }
     }
-    if(player == 4){
+    else if(player == 4){
         if(!token_pic.load(":/Tokens/Token3.png")){
             qWarning("Failed to load image");
         }
@@ -240,13 +235,94 @@ void Revrsi::change_token(int x, int y, int player){
     this->scene->addItem(token_item);
 }
 
+void Revrsi::change_tokenII(){
+    vector<int> aniVec = this->logic->getAniStones(-1);
+    QSequentialAnimationGroup *seqGroup = new QSequentialAnimationGroup;
+    for(int i = 0; i < aniVec.size(); i+=2){
+        if(i == aniVec.size()-1){
+            break;
+        }
+        int k = 0;
+        if(i==0){
+            for(k = 0; k < this->tokens.size(); k++){
+                if(this->tokens[k]->get_coords() == QPoint(aniVec[i],aniVec[i+1])){
+                    this->tokens[k]->setVisible(true);
+                    this->change_token_pixmap(this->tokens[k]);
+                    break;
+                }
+            }
+        }
+        else if(aniVec[i] == -10){
+            for(k = 0; k < this->tokens.size(); k++){
+                if(this->tokens[k]->get_coords() == QPoint(aniVec[i+1],aniVec[i+2])){
+                    this->tokens[k]->setVisible(true);
+                    this->change_token_pixmap(this->tokens[k]);
+                    break;
+                }
+            }
+            i++;
+        }
+        else{
+            for(k = 0; k < this->tokens.size(); k++){
+                if(this->tokens[k]->get_coords() == QPoint(aniVec[i],aniVec[i+1])){
+                    this->tokens[k]->setVisible(true);
+                    this->change_token_pixmap(this->tokens[k]);
+                    break;
+                }
+            }
+        }
+        QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
+        this->tokens[k]->setGraphicsEffect(effect);
+        effect->setOpacity(0.0);
+        QPropertyAnimation *anim = new QPropertyAnimation(effect, "opacity");
+        anim->setStartValue(0.0);
+        anim->setEndValue(1.0);
+        anim->setDuration(100);
+        anim->setEasingCurve(QEasingCurve::InOutQuad);
+        seqGroup->addAnimation(anim);
+    }
+    seqGroup->start();
+}
+
+void Revrsi::change_token_pixmap(TokenItem *token){
+    QPixmap token_pic;
+
+    if(this->player_act == 1){
+        if(!token_pic.load(":/Tokens/Token4.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    else if(this->player_act == 2){
+        if(!token_pic.load(":/Tokens/Token1.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    else if(this->player_act == 3){
+        if(!token_pic.load(":/Tokens/Token2.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    else if(this->player_act == 4){
+        if(!token_pic.load(":/Tokens/Token3.png")){
+            qWarning("Failed to load image");
+        }
+    }
+
+    token_pic = token_pic.scaled(this->scale-10, this->scale-10, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    token->setPixmap(token_pic);
+    //token_item->setOffset(this->fields[i]->x_real()+ 10 / 2, this->fields[i]->y_real()+ 10 / 2);
+    //token_item->set_coords(x, y);
+    //this->tokens.push_back(token_item);
+    //this->scene->addItem(token_item);
+    //token_item->setVisible(false);
+}
+
 void Revrsi::client_gui_slot(){
     this->clientInterface->show();
 }
 
 void Revrsi::closeEvent(QCloseEvent *){
-    atest->terminate();
-    atest->wait();
     if(this->clientInit){
         this->ClientThread->terminateClient();
     }
@@ -271,21 +347,31 @@ void Revrsi::createAIs(){
     }
 }
 
-void Revrsi::DelayedAnimationThread(){
-    this->atest = new anim_test(this);
-    atest->start();
-}
-
 void Revrsi::field_clicked_slot(int x, int y){
 
     if(NetMode){
         emit this->NetFieldClickedTransmit(x, y);
         return;
     }
+    this->player_act = this->logic->getAktPlayer();
     this->logic->setField(x, y);
     this->old_array = this->new_array;
     this->new_array = this->logic->getFields();
+
+    bool newArray = false;
     for(uint i = 0; i<this->new_array.size(); i++){
+            for(uint ii = 0; ii<this->new_array[i].size(); ii++){
+                if(this->new_array[i][ii] != this->old_array[i][ii]){
+                    newArray = true;
+                    break;
+                }
+            }
+    }
+    if(!newArray){
+        return;
+    }
+
+    /*for(uint i = 0; i<this->new_array.size(); i++){
         for(uint ii = 0; ii<this->new_array[i].size(); ii++){
             if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
                 this->setupToken(ii, i, this->new_array[i][ii]);
@@ -294,7 +380,10 @@ void Revrsi::field_clicked_slot(int x, int y){
                 this->change_token(ii ,i, this->new_array[i][ii]);
             }
         }
-    }
+    }*/
+
+    this->change_tokenII();
+
     if(this->logic->getAktPlayer()== 1){
         ui->Akt_Spieler_Label->setText("Schwarz");
     }
@@ -355,24 +444,35 @@ void Revrsi::init_placeTokens(){
     if(!this->NetMode){
         this->new_array = this->logic->getFields();
     }
+
+    QSequentialAnimationGroup *initanigroup = new QSequentialAnimationGroup;
+
     for(uint i = 0; i < this->new_array.size(); i++){
         for(uint ii = 0; ii < this->new_array[i].size(); ii++){
             if(this->new_array[i][ii]){
                 this->setupToken(ii, i, this->new_array[i][ii]);
+                this->tokens.last()->setVisible(true);
+                QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
+                this->tokens.last()->setGraphicsEffect(effect);
+                effect->setOpacity(0.0);
+                QPropertyAnimation *anim = new QPropertyAnimation(effect, "opacity");
+                anim->setStartValue(0.0);
+                anim->setEndValue(1.0);
+                anim->setDuration(100);
+                anim->setEasingCurve(QEasingCurve::InOutQuad);
+                initanigroup->addAnimation(anim);
+            }
+            else{
+                this->setupToken(ii, i, this->new_array[i][ii]);
             }
         }
     }
+    initanigroup->start();
 }
 
 void Revrsi::new_game(){
 
-    //this->setupBackground();
-    //this->setupBackgroundTheme();
-
-
-
     this->FieldBackSet = false;
-
 
     this->kiWaited = false;
 
@@ -453,7 +553,23 @@ void Revrsi::new_game(){
 
     this->setupBackgroundTheme();
     this->setupBackground(this->width,this->height);
+
+    this->show();
+    for(int i = 0; i< this->t_group.size(); i++){
+        this->t_group[i]->start();
+        usleep(10000);
+        QApplication::processEvents();
+    }
+
+    while(this->fields.last()->x_real() != this->fields.last()->pos().x()){
+        QApplication::processEvents();
+    }
+
     this->init_placeTokens();
+
+    while(this->tokens.last()->opacity() != 1 && !this->tokens.last()->isVisible()){
+        QApplication::processEvents();
+    }
 
     //Transmit Field to AI
     if(!NetMode){
@@ -656,7 +772,6 @@ void Revrsi::setupBackground(int x, int y){
 
     int field_counter = 0;
 
-    QSequentialAnimationGroup *group = new QSequentialAnimationGroup;
     QVector<QGraphicsItemAnimation *> an_group;
     //QVector<QTimeLine *> t_group;
     for(int i = 0; i< this->t_group.size(); i++){
@@ -733,9 +848,6 @@ void Revrsi::setupBackground(int x, int y){
             t_group.push_back(timer);
         }
     }
-    group->start();
-    this->atest->setTimerGroup(t_group);
-    this->atest->start();
 }
 
 void Revrsi::setupBackgroundTheme(){
@@ -771,22 +883,27 @@ void Revrsi::setupToken(int x, int y, int player){
     int i = 0;
     QPixmap token_pic;
 
-    if(player == 1){
+    if(player == 0){
         if(!token_pic.load(":/Tokens/Token4.png")){
             qWarning("Failed to load image");
         }
     }
-    if(player == 2){
+    else if(player == 1){
+        if(!token_pic.load(":/Tokens/Token4.png")){
+            qWarning("Failed to load image");
+        }
+    }
+    else if(player == 2){
         if(!token_pic.load(":/Tokens/Token1.png")){
             qWarning("Failed to load image");
         }
     }
-    if(player == 3){
+    else if(player == 3){
         if(!token_pic.load(":/Tokens/Token2.png")){
             qWarning("Failed to load image");
         }
     }
-    if(player == 4){
+    else if(player == 4){
         if(!token_pic.load(":/Tokens/Token3.png")){
             qWarning("Failed to load image");
         }
@@ -807,6 +924,7 @@ void Revrsi::setupToken(int x, int y, int player){
     token_item->set_coords(x, y);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
+    token_item->setVisible(false);
 }
 
 void Revrsi::step_left(){

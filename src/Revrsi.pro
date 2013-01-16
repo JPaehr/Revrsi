@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Revrsi
 TEMPLATE = app
 
-CONFIG += console
+#CONFIG += console
 
 SOURCES += main.cpp\
         revrsi.cpp \
@@ -23,7 +23,6 @@ SOURCES += main.cpp\
     interfaces/new_game_settings.cpp \
     interfaces/client_gui.cpp \
     player.cpp \
-    animation/anim_test.cpp \
     net/server/server_thread.cpp \
     net/server/server.cpp \
     net/socket.cpp \
@@ -44,7 +43,6 @@ HEADERS  += revrsi.h \
     interfaces/new_game_settings.h \
     interfaces/client_gui.h \
     player.h \
-    animation/anim_test.h \
     net/server/server_thread.h \
     net/server/server.h \
     net/socket.h \

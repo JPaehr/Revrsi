@@ -12,7 +12,6 @@
 #include "interfaces/client_gui.h"
 #include "interfaces/win_gui.h"
 #include "player.h"
-#include "animation/anim_test.h"
 #include "net/server/server_thread.h"
 #include "net/client/client_thread.h"
 #include "AI/ai_thread.h"
@@ -98,7 +97,6 @@ private:
     int     sceneOffset_y;
 
     AI_settings             *ais;
-    anim_test               *atest;
     client_gui              *clientInterface;
     client_thread           *ClientThread;
     new_game_settings       *ngs;
@@ -128,8 +126,9 @@ private:
 
     void addPlayersToList();
     void change_token(int x, int y,  int player);
+    void change_tokenII();
+    void change_token_pixmap(TokenItem *token);
     void createAIs();
-    void DelayedAnimationThread();
     void init_placeTokens();
     void new_game();
     void runPlayerFieldAnimation();
