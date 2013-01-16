@@ -469,8 +469,13 @@ void Revrsi::init_placeTokens(){
 
 void Revrsi::new_game(){
 
+    //Spieleranzeige zurueck setzen
+    //this->animatedPlayer = 0;
+    //this->player_act = 0;
+
     this->FieldBackSet = false;
 
+    //ki wieder auf Warten setzten
     this->kiWaited = false;
 
     //Beende Animation
@@ -527,8 +532,13 @@ void Revrsi::new_game(){
         this->logic = new Logic(this->width,this->height,this->player_num);
         logic->setInitStones();
         this->new_array = logic->getFields();
-
+        this->animatedPlayer = logic->getAktPlayer()-1;
     }
+
+    ui->Akt_Spieler_Label->setText("Schwarz");
+
+    // Setup Background und InitStones
+    this->scene->clear();
 
     //Setup Players
     if(!this->NetMode){
@@ -545,8 +555,7 @@ void Revrsi::new_game(){
         }
     }
 
-    // Setup Background und InitStones
-    this->scene->clear();
+
 
     this->setupBackgroundTheme();
     this->setupBackground(this->width,this->height);
@@ -578,6 +587,7 @@ void Revrsi::new_game(){
     //Run Animation
     this->runPlayerFieldAnimation();
     connect(this->anim, SIGNAL(finished()), this, SLOT(switchOpacityWay()));
+
 
     //Set First Run
     this->firstRun = false;
@@ -725,6 +735,7 @@ void Revrsi::runClient(QString ip, QString Name){
 }
 
 void Revrsi::runPlayerFieldAnimation(){
+
     QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect;
     this->p_fields[this->animatedPlayer]->player_field.setGraphicsEffect(effect);
     this->anim = new QPropertyAnimation(effect, "opacity");
@@ -735,6 +746,7 @@ void Revrsi::runPlayerFieldAnimation(){
     anim->setDuration(1200);
     anim->setEasingCurve(QEasingCurve::InOutQuad);
     anim->start(QAbstractAnimation::KeepWhenStopped);
+
 }
 
 void Revrsi::runServer(){

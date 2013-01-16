@@ -21,8 +21,6 @@ void AI_Thread::delaytime(int height){
 
 void AI_Thread::run(){
     if(*this->pause == false){
-        cout << "HoeheKI " << this->field.size() << endl;
-
         msleep((this->height*100)+1000);
         *this->pause = true;
     }
@@ -43,7 +41,7 @@ void AI_Thread::run(){
             }
             emit AIClicked(x,y);
         }
-        this->msleep(100);
+        this->msleep(200);
     }
 }
 
