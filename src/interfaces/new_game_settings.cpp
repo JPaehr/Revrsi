@@ -36,6 +36,30 @@ new_game_settings::~new_game_settings(){
     delete ui;
 }
 
+void new_game_settings::closeEvent(QCloseEvent *){
+    if(ui->two_player_btn->isChecked()){
+        this->player_number = 2;
+        this->x_size = ui->breite_spinbox->value();
+        this->y_size = ui->hoehe_spinbox->value();
+    }
+    else if(ui->three_player_btn->isChecked()){
+        this->player_number = 3;
+        this->x_size = ui->breite_spinbox->value();
+        this->y_size = ui->hoehe_spinbox->value();
+    }
+    else if(ui->four_player_btn->isChecked()){
+        this->player_number = 4;
+        this->x_size = ui->breite_spinbox->value();
+        this->y_size = ui->hoehe_spinbox->value();
+    }
+    else{
+        this->player_number = 2;
+        this->x_size = ui->breite_spinbox->value();
+        this->y_size = ui->hoehe_spinbox->value();
+    }
+    this->rejected();
+}
+
 void new_game_settings::set_settings(){
     if(ui->two_player_btn->isChecked()){
         this->player_number = 2;
@@ -57,6 +81,7 @@ void new_game_settings::set_settings(){
         this->x_size = ui->breite_spinbox->value();
         this->y_size = ui->hoehe_spinbox->value();
     }
+    this->accepted();
 }
 
 void new_game_settings::change_field_size(){

@@ -31,6 +31,7 @@ private:
     int player_number;
     int x_size;
     int y_size;
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // NEW_GAME_SETTINGS_H

@@ -69,6 +69,7 @@ public slots:
     void runServer();
     void setNetModeEnabled();
     void setNetModeDisabled();
+    void set_proceed_newGame_true();
     void stopServerSL();
 
 private:
@@ -82,6 +83,7 @@ private:
     bool    clientInit,serverInit;
     bool    NetMode;
     bool    NetGameStart;
+    bool    NewGame;
     bool    serverMode;
     bool    skipTurn;
 

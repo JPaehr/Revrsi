@@ -46,6 +46,7 @@ Revrsi::Revrsi(QWidget *parent):
     this->firstRun      = true;
     this->NetGameStart  = false;
     this->NetMode       = false;
+    this->NewGame       = false;
     this->clientInit    = false;
     this->serverInit    = false;
     this->serverMode    = false;
@@ -71,6 +72,8 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(client_gui_slot()));
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(setNetModeEnabled()));
     connect(ui->actionKI_Einstellungen, SIGNAL(triggered()), this->ais, SLOT(show()));
+
+    connect(this->ngs, SIGNAL(accepted()), this, SLOT(set_proceed_newGame_true()));
 
     // Connect Toolbar Items
     connect(ui->actionLeft,     SIGNAL(triggered()), this, SLOT(step_left()));
@@ -587,9 +590,12 @@ void Revrsi::new_game(){
 }
 
 void Revrsi::new_game_slot(){
-    this->ngs->exec();
-    this->player_num = ngs->get_choosen_number();
-    this->new_game();
+    cout << this->ngs->exec();
+    if(this->NewGame){
+        this->NewGame = false;
+        this->player_num = ngs->get_choosen_number();
+        this->new_game();
+    }
 }
 
 void Revrsi::NetCreateConnectsSL(){
@@ -752,6 +758,10 @@ void Revrsi::setNetModeEnabled(){
 
 void Revrsi::setNetModeDisabled(){
     this->NetMode = false;
+}
+
+void Revrsi::set_proceed_newGame_true(){
+    this->NewGame = true;
 }
 
 void Revrsi::set_scale(double scale){
