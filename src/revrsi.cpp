@@ -27,7 +27,7 @@ Revrsi::Revrsi(QWidget *parent):
     this->frame_scene->setSceneRect(0,0,1000,1000);
     this->scene->setSceneRect(00,000,700,500);
     ui->graphicsView->setScene(scene);
-
+    ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     this->sceneOffset_scale   = 1;
     this->sceneOffset_x       = 0;
     this->sceneOffset_y       = 0;
@@ -374,17 +374,6 @@ void Revrsi::field_clicked_slot(int x, int y){
         return;
     }
 
-    /*for(uint i = 0; i<this->new_array.size(); i++){
-        for(uint ii = 0; ii<this->new_array[i].size(); ii++){
-            if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
-                this->setupToken(ii, i, this->new_array[i][ii]);
-            }
-            else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
-                this->change_token(ii ,i, this->new_array[i][ii]);
-            }
-        }
-    }*/
-
     this->change_tokenII();
 
     if(this->logic->getAktPlayer()== 1){
@@ -394,7 +383,7 @@ void Revrsi::field_clicked_slot(int x, int y){
         ui->Akt_Spieler_Label->setText("Orange");
     }
     else if(this->logic->getAktPlayer()== 3){
-        ui->Akt_Spieler_Label->setText("Grün");  //###Check
+        ui->Akt_Spieler_Label->setText(QString::fromUtf8("Grün"));
     }
     else if(this->logic->getAktPlayer()== 4){
         ui->Akt_Spieler_Label->setText("Blau");
@@ -920,7 +909,6 @@ void Revrsi::setupToken(int x, int y, int player){
     }
 
     token_pic = token_pic.scaled(this->scale-10, this->scale-10, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
     TokenItem *token_item = new TokenItem;
 
     for(i = 0; i < this->fields.size(); i++){
@@ -928,7 +916,6 @@ void Revrsi::setupToken(int x, int y, int player){
             break;
         }
     }
-
     token_item->setPixmap(token_pic);
     token_item->setOffset(this->fields[i]->x_real()+ 10 / 2, this->fields[i]->y_real()+ 10 / 2);
     token_item->set_coords(x, y);
