@@ -210,7 +210,7 @@ void Client::run(){
 					//Animationscode x, y, x, y, -10
                     case 909:
                         if(debug_mode){cout << "Client:\t\t" << "Case 909 bearbeiten" << endl;}
-
+                        this->VecAnimation.clear();
 
                         dazu = 1;
 

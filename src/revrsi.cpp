@@ -38,7 +38,6 @@ Revrsi::Revrsi(QWidget *parent):
     this->player_num    = 2;
     this->player_act    = 1;
 
-
     //Init Booleans
     this->animatedPlayer= 0;
     this->direction     = 1;
@@ -73,7 +72,7 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(setNetModeEnabled()));
     connect(ui->actionKI_Einstellungen, SIGNAL(triggered()), this->ais, SLOT(show()));
 
-    connect(this->ngs, SIGNAL(accepted()), this, SLOT(set_proceed_newGame_true()));
+    connect(this->ngs,  SIGNAL(accepted()),     this,   SLOT(set_proceed_newGame_true()));
 
     // Connect Toolbar Items
     connect(ui->actionLeft,     SIGNAL(triggered()), this, SLOT(step_left()));
@@ -595,6 +594,7 @@ void Revrsi::new_game_slot(){
 
 void Revrsi::NetCreateConnectsSL(){
     connect(this,                          SIGNAL(NetFieldClickedTransmit(int, int)),  this->ClientThread, SLOT(NetFieldClicked(int, int)));
+    connect(this->ClientThread,            SIGNAL(NetNewAniVec(vector<int>)),          this,               SLOT(NetNewAniVecSL(vector<int>)));
     connect(this->ClientThread,            SIGNAL(NetNewFields()),                     this,               SLOT(NetNewFieldSL()));
     connect(this->ClientThread,            SIGNAL(NetClientSendName(QString)),         this->ClientThread, SLOT(NetSendName(QString)));
     connect(this->ClientThread->myClient,  SIGNAL(NetNewField()),                      this->ClientThread, SLOT(NetGetNewField()));
@@ -629,7 +629,7 @@ void Revrsi::NetNewFieldSL(){
             }
         }
     }*/
-    this->change_tokenII();
+    //this->change_tokenII();
 }
 
 void Revrsi::NetNewAniVecSL(vector<int> AniVec){
@@ -647,6 +647,7 @@ void Revrsi::NetNewGame(){
 
 void Revrsi::NetUpdatePlayer(int NetAktPlayer){
     if(NetGameStart){
+        this->player_act = NetAktPlayer;
         if(NetAktPlayer == 1){
             ui->Akt_Spieler_Label->setText("Schwarz");
         }
