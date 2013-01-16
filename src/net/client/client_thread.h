@@ -27,6 +27,7 @@ signals:
     void NetCreateConnects();
     void NetNewGame();
     void NetNewFields();
+    void NetNewAniVec(vector<int>);
     void NetClientSendName(QString);
     void NetCloseClientInterface();
 
@@ -50,6 +51,7 @@ private:
     string ip;
     QString Name;
     bool serverMode;
+    bool firstfielddrawn;
 };
 
 #endif // CLIENT_THREAD_H

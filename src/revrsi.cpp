@@ -239,7 +239,13 @@ void Revrsi::change_token(int x, int y, int player){
 }
 
 void Revrsi::change_tokenII(){
-    vector<int> aniVec = this->logic->getAniStones(-1);
+    vector<int> aniVec;
+    if(!NetMode){
+        aniVec = this->logic->getAniStones(-1);
+    }
+    else{
+        aniVec = this->aninnn;
+    }
     QSequentialAnimationGroup *seqGroup = new QSequentialAnimationGroup;
     for(int i = 0; i < aniVec.size(); i+=2){
         if(i == aniVec.size()-1){
@@ -611,7 +617,7 @@ void Revrsi::NetNewFieldSL(){
     this->old_array = this->new_array;
     this->new_array = this->ClientThread->getFields();
 
-    if(this->NetGameStart){
+    /*if(this->NetGameStart){
         for(uint i = 0; i < this->new_array.size(); i++){
             for(uint ii = 0; ii < this->new_array[i].size(); ii++){
                 if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
@@ -622,7 +628,13 @@ void Revrsi::NetNewFieldSL(){
                 }
             }
         }
-    }
+    }*/
+    this->change_tokenII();
+}
+
+void Revrsi::NetNewAniVecSL(vector<int> AniVec){
+    this->aninnn = AniVec;
+    this->change_tokenII();
 }
 
 void Revrsi::NetNewGame(){

@@ -2,6 +2,7 @@
 
 client_thread::client_thread(QObject *parent, client_gui *ClientInterface ) : QThread(parent){
         this->serverMode = false;
+        this->firstfielddrawn = false;
         this->ClientInterface = ClientInterface;
         connect(this->ClientInterface,SIGNAL(disconnect()),this,SLOT(NetPlayerDisconnect()));
 }
@@ -115,8 +116,14 @@ void client_thread::NetGetID(int id){
 
 void client_thread::NetGetNewField(){
     cout << "ClientThread SLOT:\t" << "NetGetNewField" << endl;
-    this->fields = this->myClient->getFields();
-    emit NetNewFields();
+    if(!this->firstfielddrawn){
+        this->fields = this->myClient->getFields();
+        this->firstfielddrawn = true;
+        emit NetNewFields();
+    }
+    else{
+        emit NetNewAniVec(this->myClient->VecAnimation);
+    }
 }
 
 void client_thread::NetPlayerDisconnect(){

@@ -25,11 +25,11 @@ public:
     vector<vector<int> > getFields();
     int runtime;
     bool disconnectSend;
+    vector<int> VecAnimation;
 
 
 private:
 
-	vector<int> VecAnimation;
     bool debug_mode;
     QVector<int> winVector;
     string name;

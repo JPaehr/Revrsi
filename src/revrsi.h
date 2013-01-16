@@ -61,6 +61,7 @@ public slots:
     //Netzwerk
     void NetCreateConnectsSL();
     void NetNewFieldSL();
+    void NetNewAniVecSL(vector<int>);
     void NetNewGame();
     void NetSetGameValues(int, int, int);
     void NetUpdatePlayer(int);
@@ -120,6 +121,7 @@ private:
     server_thread           *ServerThread;
     TokenItem               *TokenContainer;
 
+    vector<int>             aninnn;
     vector<vector<int> >    old_array;
     vector<vector<int> >    new_array;
     vector<int>             win_vector;
