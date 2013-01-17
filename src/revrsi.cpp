@@ -412,7 +412,7 @@ void Revrsi::field_clicked_slot(int x, int y){
     this->win_vector = logic->win();
     p_fields[0]->setTokens(this->win_vector[1]);
     p_fields[1]->setTokens(this->win_vector[2]);
-    if(this->player_num == 3){
+    if(this->player_num >= 3){
         p_fields[2]->setTokens(this->win_vector[3]);
     }
     if(this->player_num == 4){
@@ -667,7 +667,7 @@ void Revrsi::NetUpdatePlayer(int NetAktPlayer){
             ui->Akt_Spieler_Label->setText("Orange");
         }
         else if(NetAktPlayer == 3){
-            ui->Akt_Spieler_Label->setText("Grün"); //###Check
+            ui->Akt_Spieler_Label->setText(QString::fromUtf8("Grün")); //###Check
         }
         else if(NetAktPlayer == 4){
             ui->Akt_Spieler_Label->setText("Blau");
