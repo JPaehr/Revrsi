@@ -75,8 +75,6 @@ public slots:
 
 private:
 
-    bool    kiWaited;
-
     bool    FieldBackSet;
     bool    firstRun;
     bool    direction;
@@ -108,6 +106,7 @@ private:
     QGraphicsScene          *scene;
     QGraphicsScene          *frame_scene;
     QPropertyAnimation      *anim;
+    QSequentialAnimationGroup *initSanim;
     QTimer                  *timer;
 
     QVector<QString>        playerNames;

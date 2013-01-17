@@ -11,8 +11,6 @@ Revrsi::Revrsi(QWidget *parent):
     ui(new Ui::Revrsi){
     ui->setupUi(this);
 
-    this->kiWaited = false;
-
     // Init Windows
     this->ais             = new AI_settings(this);
     this->ngs             = new new_game_settings(this);
@@ -345,7 +343,6 @@ void Revrsi::createAIs(){
     for(int i = 1; i <= this->player_num; i++){
         if(this->ais->aiActivated(i)){
             AI_Thread *ai = new AI_Thread(this, 1 ,i);
-            ai->kiPause(&this->kiWaited);
             connect(this,  SIGNAL(emitField(vector<vector<int> >)), ai,     SLOT(setField(vector<vector<int> >)));
             connect(ai,    SIGNAL(AIClicked(int, int)),             this,   SLOT(AIClickSlot(int,int)));
             connect(this,  SIGNAL(emitAktPlayer(int)),              ai,     SLOT(setAktPlayer(int)));
@@ -444,6 +441,7 @@ void Revrsi::init_placeTokens(){
     }
 
     QSequentialAnimationGroup *initanigroup = new QSequentialAnimationGroup;
+    this->initSanim = initanigroup;
 
     for(uint i = 0; i < this->new_array.size(); i++){
         for(uint ii = 0; ii < this->new_array[i].size(); ii++){
@@ -470,14 +468,7 @@ void Revrsi::init_placeTokens(){
 
 void Revrsi::new_game(){
 
-    //Spieleranzeige zurueck setzen
-    //this->animatedPlayer = 0;
-    //this->player_act = 0;
-
     this->FieldBackSet = false;
-
-    //ki wieder auf Warten setzten
-    this->kiWaited = false;
 
     //Beende Animation
     if(!this->firstRun){
@@ -545,7 +536,7 @@ void Revrsi::new_game(){
     if(!this->NetMode){
         this->playerNames = ngs->get_player_names();
         this->logic->getAktPlayer();
-        this->createAIs();
+        //this->createAIs();
     }
     else{
         if(!serverMode){
@@ -574,8 +565,12 @@ void Revrsi::new_game(){
 
     this->init_placeTokens();
 
-    while(this->tokens.last()->opacity() != 1 && !this->tokens.last()->isVisible()){
+    while(this->initSanim->currentLoopTime() != this->initSanim->duration()){
         QApplication::processEvents();
+    }
+
+    if(!this->NetMode){
+        this->createAIs();
     }
 
     //Transmit Field to AI
