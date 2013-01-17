@@ -111,7 +111,7 @@
     <string>Neu</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N, F2</string>
+    <string>F2</string>
    </property>
   </action>
   <action name="actionBeenden">
@@ -119,7 +119,7 @@
     <string>Beenden</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+X, Alt+X</string>
+    <string>Ctrl+X</string>
    </property>
   </action>
   <action name="actionOptionen">

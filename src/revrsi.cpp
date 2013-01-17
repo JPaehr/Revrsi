@@ -62,6 +62,12 @@ Revrsi::Revrsi(QWidget *parent):
     frect.moveCenter(QDesktopWidget().availableGeometry().center());
     move(frect.topLeft());
 
+    ui->actionBeenden->setShortcut( QKeySequence("Ctrl+X") );
+    ui->actionNeu->setShortcut(QKeySequence("F2"));
+    ui->actionServer->setShortcut(QKeySequence("Ctrl+S"));
+    ui->actionClient->setShortcut(QKeySequence("Ctrl+C"));
+    ui->actionKI_Einstellungen->setShortcut(QKeySequence("Ctrl+A"));
+
     // Connections
     // Connect Menu Items
     connect(ui->actionNeu,              SIGNAL(triggered()), this,      SLOT(new_game_slot()));
