@@ -119,6 +119,7 @@ private:
     server_gui              *serverInterface;
     server_thread           *ServerThread;
     TokenItem               *TokenContainer;
+    TokenItem               *BackTheme;
 
     vector<int>             aninnn;
     vector<vector<int> >    old_array;
@@ -142,6 +143,7 @@ private:
     void setupToken(int x, int y,  int player);
 
     void closeEvent(QCloseEvent *);
+    void resizeEvent(QResizeEvent *event);
 };
 
 #endif // REVRSI_H

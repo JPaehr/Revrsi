@@ -345,6 +345,23 @@ void Revrsi::closeEvent(QCloseEvent *){
     this->close();
 }
 
+void Revrsi::resizeEvent(QResizeEvent *event){
+    this->BackTheme->setPos((ui->graphicsView->width() - this->scene->width()) / 2 * -1, (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
+    //this->BackTheme->pixmap() = this->BackTheme->pixmap().scaled(this->ui->graphicsView->width(),this->ui->graphicsView->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    //this->BackTheme->setPixmap(this->BackTheme->pixmap().scaled(this->ui->graphicsView->width(),this->ui->graphicsView->height()));
+    QSize os = event->oldSize();
+    QSize ns = event->size();
+    double w,h;
+    if(os.height() > -1){
+        h = (double) ns.height()/os.height();
+        w = (double) ns.width()/os.width();
+        this->BackTheme->scale(w,h);
+    }
+
+    this->ui->graphicsView->update();
+    this->scene->update();
+}
+
 void Revrsi::createAIs(){
     for(int i = 1; i <= this->player_num; i++){
         if(this->ais->aiActivated(i)){
@@ -559,6 +576,8 @@ void Revrsi::new_game(){
     this->setupBackground(this->width,this->height);
 
     this->show();
+    this->BackTheme->setPos((ui->graphicsView->width() - this->scene->width()) / 2 * -1, (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
+
     for(int i = 0; i< this->t_group.size(); i++){
         this->t_group[i]->start();
         usleep(10000);
@@ -881,11 +900,12 @@ void Revrsi::setupBackgroundTheme(){
     if(!back_pic_theme.load(":/Field/WoodenBackground.png")){
         qWarning("Failed to load image");
     }
-    TokenItem *back = new TokenItem;
+    this->BackTheme = new TokenItem;
     back_pic_theme = back_pic_theme.scaled(1000, 800, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    back->setPos(-100, -26);
-    back->setPixmap(back_pic_theme);
-    this->scene->addItem(back);
+    //this->BackTheme->setPos(1000, 260);
+    //this->BackTheme->setPos((ui->graphicsView->width() - this->scene->width()) / 2 * -1, (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
+    this->BackTheme->setPixmap(back_pic_theme);
+    this->scene->addItem(this->BackTheme);
 }
 
 void Revrsi::setupFieldBack(){
