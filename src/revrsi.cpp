@@ -71,6 +71,7 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(client_gui_slot()));
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(setNetModeEnabled()));
     connect(ui->actionKI_Einstellungen, SIGNAL(triggered()), this->ais, SLOT(show()));
+    connect(ui->actionBeenden,          SIGNAL(triggered()), this,      SLOT(close()));
 
     connect(this->ngs,  SIGNAL(accepted()),     this,   SLOT(set_proceed_newGame_true()));
 
