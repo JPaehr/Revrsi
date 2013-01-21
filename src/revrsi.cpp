@@ -576,7 +576,7 @@ void Revrsi::new_game(){
     this->setupBackground(this->width,this->height);
 
     this->show();
-    this->BackTheme->setPos((ui->graphicsView->width() - this->scene->width()) / 2 * -1, (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
+    this->BackTheme->setPos(((ui->graphicsView->width() - this->scene->width()) / 2 * -1), (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
 
     for(int i = 0; i< this->t_group.size(); i++){
         this->t_group[i]->start();
@@ -824,11 +824,11 @@ void Revrsi::setupBackground(int x, int y){
     }
     this->t_group.clear();
 
+    int offset;
+    int smaller_value;
     for(int i_y = 0; i_y <= y-1; i_y++){
         for(int i_x=0; i_x <= x-1; i_x++){
             FieldItem *item = new FieldItem;
-            int offset;
-            int smaller_value;
 
             if(scene->sceneRect().bottomRight().x()>= scene->sceneRect().bottomLeft().y()){
                 offset = (scene->sceneRect().bottomRight().x()- scene->sceneRect().bottomLeft().y()) /2;
@@ -838,11 +838,28 @@ void Revrsi::setupBackground(int x, int y){
                 offset = (scene->sceneRect().bottomRight().y()- scene->sceneRect().bottomRight().x()) /2;
                 smaller_value = scene->sceneRect().bottomLeft().x();
             }
-            int val_x = smaller_value/x*i_x+offset;
-            int val_y = smaller_value/x*i_y;
 
-            back_pic1 = back_pic1.scaled(QSize(smaller_value/x,smaller_value/x));
-            back_pic2 = back_pic2.scaled(QSize(smaller_value/x,smaller_value/x));
+            int val_x, val_y;
+
+            if(x > y){
+                val_x = smaller_value/x*i_x+offset;
+                val_y = smaller_value/x*i_y;
+
+            }
+            else{
+                val_x = smaller_value/y*i_x+offset;
+                val_y = smaller_value/y*i_y;
+            }
+
+
+            if(y <= x){
+                back_pic1 = back_pic1.scaled(QSize(smaller_value/x,smaller_value/x));
+                back_pic2 = back_pic2.scaled(QSize(smaller_value/x,smaller_value/x));
+            }
+            else{
+                back_pic1 = back_pic1.scaled(QSize(smaller_value/y,smaller_value/y));
+                back_pic2 = back_pic2.scaled(QSize(smaller_value/y,smaller_value/y));
+            }
 
             if(i_x % 2 == 0 && i_y % 2 == 0){
                 item->setPixmap(back_pic1);
@@ -859,10 +876,23 @@ void Revrsi::setupBackground(int x, int y){
 
             item->set_nr(field_counter++);
             item->set_coords(i_x, i_y);
-            item->set_realcoords(val_x, val_y, smaller_value/x, smaller_value/x);//###fix
+            item->set_realcoords(val_x, val_y, smaller_value/x, smaller_value/y);
+
+
+            //###fix
             //item->set_realcoords(0,0,0,0);
-            item->set_scale(smaller_value/x);
-            this->set_scale(smaller_value/x);
+            //if(y>=x){
+
+            //}
+            if(y>=x){
+                item->set_scale(smaller_value/y);
+                this->set_scale(smaller_value/y);
+
+            }
+            else{
+                item->set_scale(smaller_value/x);
+                this->set_scale(smaller_value/x);
+            }
 
             connect(item, SIGNAL(FieldClicked(int, int)), this, SLOT(field_clicked_slot(int, int)));
 
