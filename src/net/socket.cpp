@@ -26,7 +26,7 @@ bool Socket::create() {
 
 // Erzeugt das Socket - UDP
 bool Socket::UDP_create() {
-	m_sock = ::socket(AF_INET,SOCK_DGRAM,0);
+    m_sock = ::socket(AF_INET,SOCK_DGRAM,0);
 	if (m_sock < 0) {
 		cout << "Fehler beim Anlegen eines Socket" << endl;
 		exit(1);

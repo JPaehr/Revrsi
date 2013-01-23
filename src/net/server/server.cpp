@@ -158,7 +158,6 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
         winVecNum << winVector[i];
         winVectorString += winVecNum.str() += ",";
     }
-    //winVectorString << winVecNum.str();
     globalSend(winVectorString);
 }
 

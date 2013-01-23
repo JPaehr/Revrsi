@@ -17,6 +17,7 @@ public:
     void run();
     virtual ~AI_Thread();
     bool stop;
+    bool animation_finished;
 signals:
     void AIClicked(int,int);
 public slots:

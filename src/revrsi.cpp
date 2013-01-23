@@ -39,6 +39,7 @@ Revrsi::Revrsi(QWidget *parent):
     //Init Booleans
     this->animatedPlayer= 0;
     this->direction     = 1;
+    this->animationPlaying = false;
     this->FieldBackSet  = false;
     this->firstRun      = true;
     this->NetGameStart  = false;
@@ -51,6 +52,7 @@ Revrsi::Revrsi(QWidget *parent):
 
     //Do the Rest
     this->setupBackgroundTheme();
+    this->seqGroup = new QSequentialAnimationGroup;
 
     //Init Logic here is mandatory
     this->logic = new Logic(this->width,this->width,this->player_num);
@@ -78,6 +80,7 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionBeenden,          SIGNAL(triggered()), this,      SLOT(close()));
 
     connect(this->ngs,  SIGNAL(accepted()),     this,   SLOT(set_proceed_newGame_true()));
+    //connect(this->seqGroup)
 
     // Connect Toolbar Items
     connect(ui->actionLeft,     SIGNAL(triggered()), this, SLOT(step_left()));
@@ -187,6 +190,12 @@ void Revrsi::AIClickSlot(int x, int y){
     field_clicked_slot(x, y);
 }
 
+void Revrsi::setAnimationFinished(){
+    for(int i = 0; i < this->ai_list.size(); i++){
+        this->ai_list[i]->animation_finished = true;
+    }
+}
+
 void Revrsi::change_token(int x, int y, int player){
     int i = 0;
     QPixmap token_pic;
@@ -250,7 +259,8 @@ void Revrsi::change_tokenII(){
     else{
         aniVec = this->aninnn;
     }
-    QSequentialAnimationGroup *seqGroup = new QSequentialAnimationGroup;
+    this->seqGroup = new QSequentialAnimationGroup;
+    connect(this->seqGroup, SIGNAL(finished()), this, SLOT(setAnimationFinished()));
     for(int i = 0; i < aniVec.size(); i+=2){
         if(i == aniVec.size()-1){
             break;
@@ -294,7 +304,10 @@ void Revrsi::change_tokenII(){
         anim->setEasingCurve(QEasingCurve::InOutQuad);
         seqGroup->addAnimation(anim);
     }
-    seqGroup->start();
+    seqGroup->start(QAbstractAnimation::DeleteWhenStopped);
+    for(int i=0; i < this->ai_list.size(); i++){
+        this->ai_list[i]->animation_finished = false;
+    }
 }
 
 void Revrsi::change_token_pixmap(TokenItem *token){
@@ -366,9 +379,10 @@ void Revrsi::createAIs(){
     for(int i = 1; i <= this->player_num; i++){
         if(this->ais->aiActivated(i)){
             AI_Thread *ai = new AI_Thread(this, 1 ,i);
-            connect(this,  SIGNAL(emitField(vector<vector<int> >)), ai,     SLOT(setField(vector<vector<int> >)));
-            connect(ai,    SIGNAL(AIClicked(int, int)),             this,   SLOT(AIClickSlot(int,int)));
-            connect(this,  SIGNAL(emitAktPlayer(int)),              ai,     SLOT(setAktPlayer(int)));
+            connect(this,           SIGNAL(emitField(vector<vector<int> >)), ai,     SLOT(setField(vector<vector<int> >)));
+            connect(ai,             SIGNAL(AIClicked(int, int)),             this,   SLOT(AIClickSlot(int,int)));
+            connect(this,           SIGNAL(emitAktPlayer(int)),              ai,     SLOT(setAktPlayer(int)));
+            connect(this->seqGroup, SIGNAL(finished()),                      ai,     SLOT(setAnimationFinished()));
             this->ai_list.push_back(ai);
             ai->delaytime(this->height);
             ai->start();
@@ -569,8 +583,6 @@ void Revrsi::new_game(){
             this->playerNames = this->serverInterface->getAllNames();
         }
     }
-
-
 
     this->setupBackgroundTheme();
     this->setupBackground(this->width,this->height);

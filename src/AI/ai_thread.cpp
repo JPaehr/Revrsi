@@ -7,6 +7,7 @@ AI_Thread::AI_Thread(QObject *parent, int version, int player) : QThread(parent)
     this->player = player;
     this->KIversion = version;
     this->stop = false;
+    this->animation_finished = true;
 
     if(version == 1){
         this->AI = new AI_CODE(this->KIversion);
@@ -19,11 +20,13 @@ void AI_Thread::delaytime(int height){
 
 void AI_Thread::run(){
     while(1){
+        while(!this->animation_finished){
+            QApplication::processEvents();
+        }
         while(this->stop){QApplication::processEvents();}
         QApplication::processEvents();
         if(this->aktPlayer == player){
             int x = -1,y = -1;
-
 
             this->AI->CODE(this->field, &x, &y, player);
             if(x == -1 && y == -1){
@@ -33,8 +36,9 @@ void AI_Thread::run(){
                 this->~AI_Thread();
             }
             emit AIClicked(x,y);
+            this->animation_finished = false;
         }
-        this->msleep(200);
+        //this->msleep(200);
     }
 }
 

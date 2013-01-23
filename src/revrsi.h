@@ -57,6 +57,7 @@ public slots:
 
     void warpStart();
     void AIClickSlot(int,int);
+    void setAnimationFinished();
 
     //Netzwerk
     void NetCreateConnectsSL();
@@ -75,6 +76,7 @@ public slots:
 
 private:
 
+    bool    animationPlaying;
     bool    FieldBackSet;
     bool    firstRun;
     bool    direction;
@@ -107,6 +109,7 @@ private:
     QGraphicsScene          *frame_scene;
     QPropertyAnimation      *anim;
     QSequentialAnimationGroup *initSanim;
+    QSequentialAnimationGroup *seqGroup;
     QTimer                  *timer;
 
     QVector<QString>        playerNames;
