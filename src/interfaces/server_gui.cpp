@@ -99,6 +99,7 @@ void server_gui::setupServer(){
 
 void server_gui::NetSendStartGame(){
     emit NetStartGame();
+    this->close();
 }
 
 void server_gui::terminateServer(){
