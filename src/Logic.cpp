@@ -313,7 +313,7 @@ bool Logic::validation(int x, int y){
 
 	return false;
 }
-void Logic::setField(int x, int y){
+bool Logic::setField(int x, int y){
     this->oldFields = this->fields;
 
 	if(this->validation(x, y)){
@@ -409,9 +409,9 @@ void Logic::setField(int x, int y){
         */
 
 
-
+        return true;
     }//validation Ende
-
+    return false;
 }
 int Logic::getDistance(int xSource, int ySource, int xdest, int ydest){
     int xdiff = xSource - xdest;

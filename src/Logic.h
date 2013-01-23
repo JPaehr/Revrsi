@@ -35,7 +35,7 @@ public:
 	Logic(int width, int height, int players);
     void setInitStones();
 	vector<vector<int> > getFields();
-	void setField(int x, int y);
+    bool setField(int x, int y);
 	int getAktPlayer();
 
     void setWidth(int i);

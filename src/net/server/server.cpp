@@ -100,7 +100,7 @@ string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;
     stringstream sstr;
-
+    cout << "##################################################################" << endl;
     //vor dem Spielstand muss die animation geladen werden
     if(this->logic->getAniStones(-1).size() > 0){
         cout << "Anistones Groesse " << this->logic->getAniStones(-1).size() << endl;
@@ -137,11 +137,19 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
 
     cout << "Server:\t\t" << "StoneControl ausgefuehrt" << endl;
     cout << spalte << " " << hoehe << " " << id << endl;
+
+    cout << "-------------\n" << "empfangene id  "<<id<< "\nlid  "<< this->logic->getAktPlayer() <<"----------\n";
+
     if(this->logic->getAktPlayer() == id){
-        this->logic->setField(spalte, hoehe);
-		SpielStandaktSenden();
+        if(!this->logic->setField(spalte, hoehe)){
+            return;
+        }
     }
-    
+    else{
+        return;
+    }
+
+    SpielStandaktSenden();
     cout << "Server:\t\t" << "Code 900 UpdateWinvector" << endl;
     vector<int> winVector = this->logic->win();
     string winVectorString = "900,";

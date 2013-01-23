@@ -136,14 +136,14 @@ void subServer::run(){
                     case 600:
                         cout << "Server hat empfangen CODE 600\nGeklicktes Feld";
                         //cout << "in600spalte" << endl;
-                        int zeile, spalte,id;
+                        int zeile, spalte,ida;
 
                         spalte = atoi(explode(s, ',')[abschnitt+1].c_str());
                         zeile = atoi(explode(s, ',')[abschnitt+2].c_str());
-                        id = atoi(explode(s, ',')[abschnitt+3].c_str());
+                        ida = atoi(explode(s, ',')[abschnitt+3].c_str());
 
 
-                        cout << "Client " << id << " will setzen auf: x = "<<spalte << " y = "<< zeile << endl;
+                        cout << "Client " << ida << " will setzen auf: x = "<<spalte << " y = "<< zeile << endl;
                         abschnitt+=4;
                         /*if(id == this->aktPlayer){
 
@@ -152,7 +152,7 @@ void subServer::run(){
                             //senden(StringSpielstand());
                         }*/
                         cout << "emit ab hier" << endl;
-                        emit this->setStone(spalte, zeile, id);
+                        emit this->setStone(spalte, zeile, ida);
 
                         break;
                     default:
