@@ -96,7 +96,7 @@ Revrsi::Revrsi(QWidget *parent):
     // Connect Network
     connect(this->serverInterface, SIGNAL(startServer()),      this, SLOT(runServer()));
     connect(this->clientInterface, SIGNAL(send_startClient()), this, SLOT(runClient()));
-    connect(this->clientInterface, SIGNAL(destroyed()),        this, SLOT(setNetModeDisabled())); //###Check
+    connect(this->clientInterface, SIGNAL(destroyed()),        this, SLOT(setNetModeDisabled()));
 
     this->new_game();
 }
@@ -698,7 +698,7 @@ void Revrsi::NetUpdatePlayer(int NetAktPlayer){
             ui->Akt_Spieler_Label->setText("Orange");
         }
         else if(NetAktPlayer == 3){
-            ui->Akt_Spieler_Label->setText(QString::fromUtf8("Grün")); //###Check
+            ui->Akt_Spieler_Label->setText(QString::fromUtf8("Grün"));
         }
         else if(NetAktPlayer == 4){
             ui->Akt_Spieler_Label->setText("Blau");
@@ -737,7 +737,7 @@ void Revrsi::NetUpdateWinVector(QVector<int> WinVector){
     else{
         p_fields[0]->setTokens(WinVector[1]);
         p_fields[1]->setTokens(WinVector[2]);
-        if(this->player_num == 3){
+        if(this->player_num >= 3){
             p_fields[2]->setTokens(WinVector[3]);
         }
         if(this->player_num == 4){
@@ -1031,12 +1031,6 @@ void Revrsi::step_top(){
 void Revrsi::step_down(){
     sceneOffset_y = sceneOffset_y - 10;
     scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
-}
-
-void Revrsi::stopServerSL(){ //###Check
-    this->ServerThread->terminate();
-    this->ServerThread->wait();
-    this->serverInit = false;
 }
 
 void Revrsi::switchOpacityWay(){
