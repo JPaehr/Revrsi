@@ -147,10 +147,17 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
         ui->crown->hide();
     }
     int platz = 1;
+    QString wortPunkt;
     for(uint i = 0; i < platzierung.size(); i++){
         cout << "platz " << platz << endl;
         if(platz == 4){
-            ui->vierter->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]]) +" Punkte");
+            if(in_vector[platzierung[i][0]] == 1){
+                wortPunkt = "Punkt";
+            }
+            else{
+                wortPunkt = "Punkte";
+            }
+            ui->vierter->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]]) +" "+wortPunkt);
             ui->vierter->move(130, 255);
             ui->platz4->move(130, 240);
             platz++;
@@ -158,11 +165,23 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
         if(platz == 3){
             if(platzierung[i].size() > 1){
                 cout << "platz 3 ist doppelt" << endl;
-                ui->dritter->setText(in_names[platzierung[i][0]-1] + "\n"+QString::number(in_vector[platzierung[i][0]]) +" Punkte");
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->dritter->setText(in_names[platzierung[i][0]-1] + "\n"+QString::number(in_vector[platzierung[i][0]]) +" "+wortPunkt);
                 ui->dritter->move(195, 175);
                 ui->platz3->move(195, 160);
 
-                ui->vierter->setText(in_names[platzierung[i][1]-1] +"\n"+QString::number(in_vector[platzierung[i][1]]) +" Punkte");
+                if(in_vector[platzierung[i][1]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->vierter->setText(in_names[platzierung[i][1]-1] +"\n"+QString::number(in_vector[platzierung[i][1]]) +" "+wortPunkt);
                 ui->vierter->move(260, 175);
                 ui->platz4->setText("2");
                 ui->platz4->move(260, 160);
@@ -170,7 +189,13 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
             }
             else{
                 cout << "Platz 3 einzel" << endl;
-                ui->dritter->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]]) +" Punkte");
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->dritter->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]]) +" "+wortPunkt);
                 ui->dritter->move(230, 175);
                 ui->platz3->move(230, 160);
                 platz++;
@@ -182,11 +207,24 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
 
             if(platzierung[1].size() > 1){
                 cout << "platz 2 ist doppelt" << endl;
-                ui->zweiter->setText(in_names[platzierung[i][0]-1] + "\n"+QString::number(in_vector[platzierung[i][0]]) +" Punkte");
+
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->zweiter->setText(in_names[platzierung[i][0]-1] + "\n"+QString::number(in_vector[platzierung[i][0]]) +" "+wortPunkt);
                 ui->zweiter->move(65, 175);
                 ui->platz2->move(65, 160);
 
-                ui->dritter->setText(in_names[platzierung[i][1]-1] +"\n"+QString::number(in_vector[platzierung[i][1]]) +" Punkte");
+                if(in_vector[platzierung[i][1]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->dritter->setText(in_names[platzierung[i][1]-1] +"\n"+QString::number(in_vector[platzierung[i][1]]) +" "+wortPunkt);
                 ui->dritter->move(200, 175);
                 ui->platz3->setText("2");
                 ui->platz3->move(200, 160);
@@ -196,7 +234,13 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
                 cout << "Platz 2 einzel" << endl;
                 //cout << "winvec " << in_vector[platzierung[1][0]];
                 //cout << platzierung[1][0] << endl;
-                ui->zweiter->setText(in_names[platzierung[i][0]-1] + "\n" + QString::number(in_vector[platzierung[i][0]]) +" Punkte");
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->zweiter->setText(in_names[platzierung[i][0]-1] + "\n" + QString::number(in_vector[platzierung[i][0]]) +" "+wortPunkt);
                 ui->zweiter->move(65, 175);
                 ui->platz2->move(65, 160);
                 platz++;
@@ -205,21 +249,38 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
         if(platz == 1){
             if(platzierung[0].size() > 1){
                 cout << "platz 1 ist doppelt" << endl;
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
                 ui->erster->move(65, 105);
-                ui->erster->setText(in_names[platzierung[i][0]-1] +"\n"+ QString::number(in_vector[platzierung[i][0]])+" Punkte");
+                ui->erster->setText(in_names[platzierung[i][0]-1] +"\n"+ QString::number(in_vector[platzierung[i][0]])+" "+wortPunkt);
                 ui->platz1->move(65, 90);
                 ui->crown->hide();
 
+                if(in_vector[platzierung[i][1]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
                 ui->zweiter->move(230, 105);
-                ui->zweiter->setText(in_names[platzierung[i][1]-1] + "\n" + QString::number(in_vector[platzierung[i][1]])+" Punkte");
+                ui->zweiter->setText(in_names[platzierung[i][1]-1] + "\n" + QString::number(in_vector[platzierung[i][1]])+" "+wortPunkt);
                 ui->platz2->setText("1");
                 ui->platz2->move(230, 90);
                 platz+=2;
             }
             else{
                 //cout << "winvec" << in_vector[platzierung[0][0]] << endl;
-
-                ui->erster->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]])+ " Punkte");
+                if(in_vector[platzierung[i][0]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->erster->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]])+ " " + wortPunkt);
                 //ui->platz1pkt->setText(QString::number(in_vector[platzierung[0][0]])+ " Punkte");
                 //ui->platz1pkt->move(130, 80);
                 ui->erster->move(130, 105);
