@@ -261,7 +261,7 @@ void Revrsi::change_tokenII(){
     }
     this->seqGroup = new QSequentialAnimationGroup;
     connect(this->seqGroup, SIGNAL(finished()), this, SLOT(setAnimationFinished()));
-    for(int i = 0; i < aniVec.size(); i+=2){
+    for(uint i = 0; i < aniVec.size(); i+=2){
         if(i == aniVec.size()-1){
             break;
         }

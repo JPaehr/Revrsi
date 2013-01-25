@@ -39,16 +39,17 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
     for(int i = 1; i < this->win_vector.size(); i++){
         punkte.push_back(this->win_vector[i]);
     }
-    int punktegleichstand = 0, anzPlaetze, anzSpieler;
-    for(int i = 0; i < punkte.size(); i++){
-        for(int j = 0; j < punkte.size(); j++){
+    int punktegleichstand = 0;
+    //int anzPlaetze, anzSpieler;
+    for(uint i = 0; i < punkte.size(); i++){
+        for(uint j = 0; j < punkte.size(); j++){
             if(punkte[i] == punkte[j] && i != j){
                 punktegleichstand++;
             }
         }
     }
-    anzSpieler = this->win_vector.size()-1;
-    anzPlaetze = anzSpieler-punktegleichstand;
+    //anzSpieler = this->win_vector.size()-1;
+    //anzPlaetze = anzSpieler-punktegleichstand;
 
 
     //zuordnung Platz mit punktzahl
@@ -104,7 +105,7 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
     }
     if(platzDrei.size() > 0){
         cout << "platz 3 reingepusht " << endl;
-        for(int i = 0; i <platzDrei.size(); i++){
+        for(uint i = 0; i <platzDrei.size(); i++){
             cout << "eintraege " << platzDrei[i] << endl;
         }
         platzierung.push_back(platzDrei);
@@ -123,8 +124,8 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
 
     //zu versteckende Teile finden
     int zaehler = 0;
-    for(int i = 0; i < platzierung.size(); i++){
-        for(int j = 0; j < platzierung[i].size(); j++){
+    for(uint i = 0; i < platzierung.size(); i++){
+        for(uint j = 0; j < platzierung[i].size(); j++){
             zaehler++;
             cout << "I " << i;
             cout << "j " << j;
@@ -146,7 +147,7 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
         ui->crown->hide();
     }
     int platz = 1;
-    for(int i = 0; i < platzierung.size(); i++){
+    for(uint i = 0; i < platzierung.size(); i++){
         cout << "platz " << platz << endl;
         if(platz == 4){
             ui->vierter->setText(in_names[platzierung[i][0]-1]+"\n"+QString::number(in_vector[platzierung[i][0]]) +" Punkte");
