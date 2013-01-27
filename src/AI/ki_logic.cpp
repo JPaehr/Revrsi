@@ -75,6 +75,23 @@ vector<int> ki_logic::KiXY(){
         }
     }
 
+    //seiten kontrollieren
+    for(unsigned i = 0;i < gedrehteSteine.size(); i+=3){
+        if((gedrehteSteine[i+1] == 0 || gedrehteSteine[i+1] == this->width-1) && (gedrehteSteine[i+2] == 0 || gedrehteSteine[i+2] == this->height-1) &&
+                gedrehteSteine[i] >= (gedrehteSteine[indexMeisteDrehungen])-2){
+            indexMeisteDrehungen = i;
+        }
+    }
+    //Ecken
+    for(unsigned i = 0;i < gedrehteSteine.size(); i+=3){
+        if(((gedrehteSteine[i+1] == 0 && gedrehteSteine[i+2] == 0)
+           || (gedrehteSteine[i+1] == this->width-1 && gedrehteSteine[i+2] == this->height-1)
+           || (gedrehteSteine[i+1] == this->width-1 || gedrehteSteine[i+2] == 0)
+           || (gedrehteSteine[i+1] == 0|| gedrehteSteine[i+2] == this->height-1))
+             && (gedrehteSteine[i] >= (gedrehteSteine[indexMeisteDrehungen])-1)){
+            indexMeisteDrehungen = i;
+        }
+    }
     vector<int> rueckgabe;
 
     if(gedrehteSteine.size() == 0){
