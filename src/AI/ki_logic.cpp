@@ -75,23 +75,45 @@ vector<int> ki_logic::KiXY(){
         }
     }
 
+    vector<int> seiten;
     //seiten kontrollieren
     for(unsigned i = 0;i < gedrehteSteine.size(); i+=3){
         if((gedrehteSteine[i+1] == 0 || gedrehteSteine[i+1] == this->width-1) && (gedrehteSteine[i+2] == 0 || gedrehteSteine[i+2] == this->height-1) &&
                 gedrehteSteine[i] >= (gedrehteSteine[indexMeisteDrehungen])-2){
-            indexMeisteDrehungen = i;
+            seiten.push_back(i);
         }
     }
+    int seitendreh = 0;
+    for(unsigned i = 0; i < seiten.size(); i++){
+        if(gedrehteSteine[seiten[i]] > seitendreh){
+            seitendreh = seiten[i];
+        }
+    }
+    if(seitendreh > 0){
+        indexMeisteDrehungen = seitendreh;
+    }
+
     //Ecken
+    vector<int> ecken;
     for(unsigned i = 0;i < gedrehteSteine.size(); i+=3){
         if(((gedrehteSteine[i+1] == 0 && gedrehteSteine[i+2] == 0)
            || (gedrehteSteine[i+1] == this->width-1 && gedrehteSteine[i+2] == this->height-1)
            || (gedrehteSteine[i+1] == this->width-1 || gedrehteSteine[i+2] == 0)
            || (gedrehteSteine[i+1] == 0|| gedrehteSteine[i+2] == this->height-1))
              && (gedrehteSteine[i] >= (gedrehteSteine[indexMeisteDrehungen])-1)){
-            indexMeisteDrehungen = i;
+            ecken.push_back(i);
         }
     }
+    int eckendreh = 0;
+    for(unsigned i = 0; i < ecken.size(); i++){
+        if(gedrehteSteine[ecken[i]] > eckendreh){
+            eckendreh = ecken[i];
+        }
+    }
+    if(ecken.size() > 0){
+        indexMeisteDrehungen = eckendreh;
+    }
+
     vector<int> rueckgabe;
 
     if(gedrehteSteine.size() == 0){
