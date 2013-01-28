@@ -566,6 +566,9 @@ void Revrsi::new_game(){
 
     ui->Akt_Spieler_Label->setText("Schwarz");
 
+    // Erstelle neue Animation Group für die Token Animation
+    this->seqGroup = new QSequentialAnimationGroup;
+
     // Setup Background und InitStones
     this->scene->clear();
 
