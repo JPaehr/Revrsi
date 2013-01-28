@@ -122,13 +122,140 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
         platzierung.push_back(platzvier);
     }
 
+    vector<int> reihenfolge;
+    vector<int> platznr;
+    for(uint i = 0; i < platzierung.size(); i++){
+        for(uint j = 0; j < platzierung[i].size(); j++){
+            reihenfolge.push_back(platzierung[i][j]);
+            platznr.push_back(i+1);
+        }
+    }
+
+    QString wortPunkt;
+    if(reihenfolge.size() == 2){
+        ui->dritter->hide();
+        ui->platz3->hide();
+        ui->vierter->hide();
+        ui->platz4->hide();
+    }
+    if(reihenfolge.size() == 3){
+        ui->vierter->hide();
+        ui->platz4->hide();
+    }
+    QFont f( "Arial", 30, QFont::Bold);
+    for(uint i = 0; i < reihenfolge.size(); i++){
+        if(reihenfolge.size() == 2){
+            if(i == 0){
+                if(platznr[i] != platznr[i+1]){
+                    ui->crown->move(15,20);
+                }
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->platz1->setText(QString::number(platznr[i]));
+                ui->platz1->setFont(f);
+                ui->erster->move(25, 150);
+                ui->erster->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz1->move(75, 100);
+            }
+            if(i == 1){
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->zweiter->move(230, 150);
+                ui->platz2->setFont(f);
+                ui->zweiter->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz2->move(280, 100);
+                ui->platz2->setText(QString::number(platznr[i]));
+
+
+            }
+        }
+        else{
+            if(i == 0){
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->platz1->setText(QString::number(platznr[i]));
+                ui->platz1->setFont(f);
+                ui->erster->move(130, 120);
+                ui->erster->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz1->move(180, 70);
+            }
+            if(i == 1){
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->zweiter->move(15, 190);
+                ui->platz2->setFont(f);
+                ui->zweiter->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz2->move(65, 140);
+                ui->platz2->setText(QString::number(platznr[i]));
+            }
+            if(i == 2){
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->dritter->move(245, 190);
+                ui->platz3->setFont(f);
+                ui->dritter->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz3->setText(QString::number(platznr[i]));
+                ui->platz3->move(295, 140);
+            }
+            if(i == 3){
+                if(in_vector[reihenfolge[i]] == 1){
+                    wortPunkt = "Punkt";
+                }
+                else{
+                    wortPunkt = "Punkte";
+                }
+                ui->vierter->move(130, 250);
+                ui->platz4->setFont(f);
+                ui->vierter->setText(in_names[reihenfolge[i]-1] +"\n"+ QString::number(in_vector[reihenfolge[i]])+" "+wortPunkt);
+                ui->platz4->move(180, 200);
+                ui->platz4->setText(QString::number(platznr[i]));
+            }
+        }
+    }
+
+    /*
+    for(uint i = 0; i < platzierung.size(); i++){
+        if(i == 0){
+            if(in_vector[platzierung[i][0]] == 1){
+                wortPunkt = "Punkt";
+            }
+            else{
+                wortPunkt = "Punkte";
+            }
+            ui->erster->move(65, 105);
+            ui->erster->setText(in_names[platzierung[i][0]-1] +"\n"+ QString::number(in_vector[platzierung[i][0]])+" "+wortPunkt);
+            ui->platz1->move(115, 55);
+            //ui->crown->hide();
+        }
+    }
+    */
+
+    /*
     //zu versteckende Teile finden
     int zaehler = 0;
     for(uint i = 0; i < platzierung.size(); i++){
         for(uint j = 0; j < platzierung[i].size(); j++){
             zaehler++;
-            cout << "I " << i;
-            cout << "j " << j;
         }
     }
     if(zaehler == 2){
@@ -289,11 +416,8 @@ void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
                 cout << "schleife1 hat einen nach oben gezaehlt" << endl;
             }
         }
-
-
-
     }
-
+    */
     /*RückgabeCodes für gleiche Punkzahlen zwischen Spielern:
      *1u2 = -2
      *1u3 = -3
