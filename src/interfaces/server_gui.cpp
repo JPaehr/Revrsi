@@ -113,7 +113,6 @@ void server_gui::setUILocked(){
     ui->three_player_btn->setDisabled(true);
     ui->four_player_btn->setDisabled(true);
     ui->startServer_button->setDisabled(true);
-    ui->stopServer_button->setEnabled(true);
     ui->spielername_lineEdit->setDisabled(true);
 }
 
@@ -124,7 +123,6 @@ void server_gui::setUIUnLocked(){
     ui->three_player_btn->setDisabled(false);
     ui->four_player_btn->setDisabled(false);
     ui->startServer_button->setDisabled(false);
-    ui->stopServer_button->setEnabled(false);
     ui->spielername_lineEdit->setDisabled(false);
 }
 
@@ -197,6 +195,7 @@ void server_gui::NetAddPlayerServer(QVector<QString> pl){
 }
 
 void server_gui::fin(){
+    emit disableNetMode();
     this->terminateServer();
     this->close();
 }

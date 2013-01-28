@@ -27,6 +27,7 @@ signals:
     void startServer();
     void stopServer();
     void NetStartGame();
+    void disableNetMode();
 
 public slots:
     void setupServer();

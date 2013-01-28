@@ -629,7 +629,8 @@ void Revrsi::new_game(){
 }
 
 void Revrsi::new_game_slot(){
-    cout << this->ngs->exec();
+    //cout << this->ngs->exec();
+    this->ngs->exec();
     if(this->NewGame){
         this->NewGame = false;
         this->player_num = ngs->get_choosen_number();
@@ -648,8 +649,10 @@ void Revrsi::NetCreateConnectsSL(){
     connect(this->ClientThread->myClient,  SIGNAL(NetAktPlayer(int)),                  this,               SLOT(NetUpdatePlayer(int)));
     connect(this->ClientThread->myClient,  SIGNAL(NetGotID(int)),                      this->ClientThread, SLOT(NetGetID(int)));
     connect(this->ClientThread->myClient,  SIGNAL(NetGameValues(int, int, int)),       this,               SLOT(NetSetGameValues(int, int, int)));
+    connect(this->serverInterface,         SIGNAL(disableNetMode()),                   this,               SLOT(setNetModeDisabled()));
     if(!serverMode){
         connect(this->ClientThread->myClient, SIGNAL(NetPlayersNames(QVector<QString>)), this->clientInterface, SLOT(NetAddPlayer(QVector<QString>)));
+        connect(this->clientInterface, SIGNAL(disableNetMode()), this, SLOT(setNetModeDisabled()));
     }
     else{
         connect(this->ClientThread->myClient, SIGNAL(NetPlayersNames(QVector<QString>)), this->serverInterface, SLOT(NetAddPlayerServer(QVector<QString>)));

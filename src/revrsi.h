@@ -72,7 +72,6 @@ public slots:
     void setNetModeEnabled();
     void setNetModeDisabled();
     void set_proceed_newGame_true();
-    //void stopServerSL();
 
 private:
 

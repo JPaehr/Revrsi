@@ -11,8 +11,7 @@ client_gui::client_gui(QWidget *parent) :
     this->playerCounter = 0;
     this->clientCounter = 0;
     this->finClientInterface = false;
-    connect(ui->close_button,SIGNAL(clicked()),this,SLOT(close()));
-    //connect(this,SIGNAL(destroyed()),this,SLOT(cclose()));
+    connect(ui->close_button,SIGNAL(clicked()),this,SLOT(fin()));
     connect(ui->connect_button,SIGNAL(clicked()),this,SLOT(startClient()));
     connect(this,SIGNAL(send_startClient()),this,SLOT(setLockedSL()));
     connect(ui->spielername_lineEdit,SIGNAL(textChanged(QString)),this,SLOT(getPlayerNameOnChange(QString)));
@@ -44,6 +43,11 @@ void client_gui::setLockedSL(){
     ui->spielername_lineEdit->setDisabled(true);
 }
 
+void client_gui::fin(){
+    emit disableNetMode();
+    this->close();
+}
+
 void client_gui::setClientUnLocked(){
     cout << "ClientInterface\tsetClientUnLocked()" << endl;
     ui->serverIP_lineEdit->setDisabled(false);
@@ -51,21 +55,12 @@ void client_gui::setClientUnLocked(){
 }
 
 void client_gui::closeEvent(QCloseEvent *event){
-    //emit disconnect();
-    //QApplication->processEvents();
-    //event->accept();
     this->finClientInterface = true;
-    qDebug() << "testestestestestestestestestestestesest";
     event->accept();
 }
 
-//void client_gui::closeEvent(QCloseEvent *){
-
-//}
-
 void client_gui::getPlayerNameOnChange(QString ownName){
     this->ownName = ownName;
-    //emit sendOwnName(this->ownName);
 }
 
 void client_gui::startClient(){

@@ -30,6 +30,7 @@ signals:
     void NetTerminateClient();
     void test_signal();
     void disconnect();
+    void disableNetMode();
 
 public slots:
     void startClient();
@@ -38,8 +39,7 @@ public slots:
     QString getPlayerName();
     string getIP();
     void setLockedSL();
-
-    //void cclose();
+    void fin();
 
 private:
     Ui::client_gui *ui;
