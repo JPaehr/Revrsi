@@ -576,7 +576,6 @@ void Revrsi::new_game(){
     if(!this->NetMode){
         this->playerNames = ngs->get_player_names();
         this->logic->getAktPlayer();
-        //this->createAIs();
     }
     else{
         if(!serverMode){

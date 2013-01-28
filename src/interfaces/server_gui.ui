@@ -472,6 +472,22 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>startServer_button</tabstop>
+  <tabstop>spielername_lineEdit</tabstop>
+  <tabstop>two_player_btn</tabstop>
+  <tabstop>three_player_btn</tabstop>
+  <tabstop>four_player_btn</tabstop>
+  <tabstop>hoehe_spinbox</tabstop>
+  <tabstop>breite_spinbox</tabstop>
+  <tabstop>starGame_button</tabstop>
+  <tabstop>stopServer_button</tabstop>
+  <tabstop>abbrechen</tabstop>
+  <tabstop>p1_kill_button</tabstop>
+  <tabstop>p2_kill_button</tabstop>
+  <tabstop>p3_kill_button</tabstop>
+  <tabstop>p4_kill_button</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -326,6 +326,12 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>connect_button</tabstop>
+  <tabstop>spielername_lineEdit</tabstop>
+  <tabstop>serverIP_lineEdit</tabstop>
+  <tabstop>close_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

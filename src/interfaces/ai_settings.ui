@@ -111,6 +111,13 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>ki1_cb</tabstop>
+  <tabstop>ki2_cb</tabstop>
+  <tabstop>ki3_cb</tabstop>
+  <tabstop>ki4_cb</tabstop>
+  <tabstop>ok_button</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
