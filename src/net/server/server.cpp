@@ -96,6 +96,9 @@ void Server::SpielStandaktSenden(){
     }
 }
 
+Server::~Server(){
+}
+
 string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;

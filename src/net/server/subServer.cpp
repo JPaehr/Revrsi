@@ -207,6 +207,14 @@ string subServer::StringSpielstand(){
     return spielstand;
 }
 
+void subServer::DestroyMe()
+{
+    this->sock1.close();
+    this->sock2.close();
+    this->sock1.~Socket();
+    this->sock2.~Socket();
+}
+
 vector<string> subServer::explode(const string& str, char delimiter){
     vector<string> tokens;
     stringstream tokenStream(str);

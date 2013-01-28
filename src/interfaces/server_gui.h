@@ -33,6 +33,7 @@ public slots:
     void NetSendStartGame();
     void terminateServer();
     void NetAddPlayerServer(QVector<QString>);
+    void fin();
 
 private:
     Ui::server_gui *ui;

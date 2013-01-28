@@ -27,6 +27,7 @@ public:
     void senden(string nachrict);
     vector<vector<int> > getFelder();
     string StringSpielstand();
+    void DestroyMe();
 
     vector<vector<int> > fields;
 

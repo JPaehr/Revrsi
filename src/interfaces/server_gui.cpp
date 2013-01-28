@@ -8,7 +8,7 @@ server_gui::server_gui(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->startServer_button,SIGNAL(clicked()),this,SLOT(setupServer()));
     connect(ui->starGame_button,SIGNAL(clicked()),this,SLOT(NetSendStartGame()));
-    connect(ui->stopServer_button,SIGNAL(clicked()),this,SLOT(terminateServer()));
+    connect(ui->abbrechen,SIGNAL(clicked()),this,SLOT(fin()));
 }
 
 server_gui::~server_gui(){
@@ -129,12 +129,10 @@ void server_gui::setUIUnLocked(){
 }
 
 QVector<QString> server_gui::getAllNames(){
-    //cout << "ClientInterface\tgetAllNames()" << endl;
     return this->NetPlayerNames;
 }
 
 void server_gui::NetAddPlayerServer(QVector<QString> pl){
-    //cout << "ClientInterface\tNetAddPlayer()" << endl;
     for(int i = 0; i<pl.size(); i+=2){
         if(pl[i+1] == "1"){
             ui->player1->setText(pl[i]);
@@ -196,5 +194,10 @@ void server_gui::NetAddPlayerServer(QVector<QString> pl){
         ui->player4->setText("Leer");
         ui->ID4_label->setText("ID: ");
     }
+}
+
+void server_gui::fin(){
+    this->terminateServer();
+    this->close();
 }
 

@@ -136,40 +136,51 @@ void server_thread::NetJumpToConnection(int loop){
 
 void server_thread::NetStopServer(){
     this->serverInterface->setUIUnLocked();
-    cout << "ServerThread:\tstopping Server..." << endl;
+    //cout << "ServerThread:\tstopping Server..." << endl;
     if(this->meinServer->uServer1->isRunning()){
-        cout << "ServerThread:\tTerminate uServer1" << endl;
+        this->meinServer->uServer1->DestroyMe();
         this->meinServer->uServer1->disconnect();
         this->meinServer->uServer1->terminate();
+        this->meinServer->uServer1->DestroyMe();
+        this->meinServer->uServer1->thread()->disconnect();
         this->meinServer->uServer1->wait();
         this->meinServer->uServer1->~subServer();
     }
     if(this->meinServer->uServer2->isRunning()){
-        cout << "ServerThread:\tTerminate uServer2" << endl;
-        this->meinServer->uServer1->disconnect();
-        this->meinServer->uServer1->terminate();
-        this->meinServer->uServer1->wait();
-        this->meinServer->uServer1->~subServer();
+        this->meinServer->uServer2->DestroyMe();
+        this->meinServer->uServer2->disconnect();
+        this->meinServer->uServer2->terminate();
+        this->meinServer->uServer2->DestroyMe();
+        this->meinServer->uServer2->thread()->disconnect();
+        this->meinServer->uServer2->wait();
+        this->meinServer->uServer2->~subServer();
     }
     if(this->Spieler >= 3){
         if(this->meinServer->uServer3->isRunning()){
-            cout << "ServerThread:\tTerminate uServer3" << endl;
-            this->meinServer->uServer1->disconnect();
-            this->meinServer->uServer1->terminate();
-            this->meinServer->uServer1->wait();
-            this->meinServer->uServer1->~subServer();
+            this->meinServer->uServer3->DestroyMe();
+            this->meinServer->uServer3->disconnect();
+            this->meinServer->uServer3->terminate();
+            this->meinServer->uServer3->DestroyMe();
+            this->meinServer->uServer3->thread()->disconnect();
+            this->meinServer->uServer3->wait();
+            this->meinServer->uServer3->~subServer();
         }
     }
     if(this->Spieler >= 4){
         if(this->meinServer->uServer4->isRunning()){
-            cout << "ServerThread:\tTerminate uServer4" << endl;
-            this->meinServer->uServer1->disconnect();
-            this->meinServer->uServer1->terminate();
-            this->meinServer->uServer1->wait();
-            this->meinServer->uServer1->~subServer();
+            this->meinServer->uServer4->DestroyMe();
+            this->meinServer->uServer4->disconnect();
+            this->meinServer->uServer4->terminate();
+            this->meinServer->uServer4->DestroyMe();
+            this->meinServer->uServer4->thread()->disconnect();
+            this->meinServer->uServer4->wait();
+            this->meinServer->uServer4->~subServer();
         }
     }
-    cout << "ServerThread:\tTerminate MeSelf" << endl;
+    this->meinServer->disconnect();
+    this->meinServer->thread()->terminate();
+    this->meinServer->~Server();
+    this->disconnect();
     this->terminate();
     this->wait();
     this->~server_thread();

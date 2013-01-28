@@ -20,6 +20,7 @@ public:
     subServer *uServer4;
     bool uServer1Connected,uServer2Connected,uServer3Connected,uServer4Connected;
 	void SpielStandaktSenden();
+    ~Server();
 
 public slots:
     void setStoneControl(int, int, int);

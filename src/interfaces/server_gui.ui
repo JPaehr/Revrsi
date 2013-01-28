@@ -345,22 +345,6 @@
     <string>Abbrechen</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="stopServer_button">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>290</y>
-     <width>91</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Stop Server</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
@@ -481,7 +465,6 @@
   <tabstop>hoehe_spinbox</tabstop>
   <tabstop>breite_spinbox</tabstop>
   <tabstop>starGame_button</tabstop>
-  <tabstop>stopServer_button</tabstop>
   <tabstop>abbrechen</tabstop>
   <tabstop>p1_kill_button</tabstop>
   <tabstop>p2_kill_button</tabstop>
@@ -489,22 +472,5 @@
   <tabstop>p4_kill_button</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>abbrechen</sender>
-   <signal>clicked()</signal>
-   <receiver>server_gui</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>505</x>
-     <y>271</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>281</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
