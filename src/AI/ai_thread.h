@@ -23,6 +23,7 @@ signals:
 public slots:
     void setField(vector<vector<int> >);
     void setAktPlayer(int);
+    void setAnimationFinished();
 private:
     int height;
     bool *pause;
@@ -31,6 +32,7 @@ private:
     int KIversion;
     int player;
     AI_CODE *AI;
+    bool firstRun;
 };
 
 #endif // AI_THREAD_H
