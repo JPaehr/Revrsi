@@ -20,15 +20,11 @@ win_gui::~win_gui(){
 
 
 void win_gui::win_slot(QVector<int> in_vector, QVector<QString> in_names){
-    cout << "INVector" << endl;
-    for(int i = 0; i < in_vector.size(); i++){
-        cout << in_vector[i] << endl;
-    }
-    cout << "in names" << endl;
+
     std::string name = "";
     for(int i = 0; i < in_names.size(); i++){
         name = in_names[i].toStdString();
-        cout << name << endl;
+        //cout << name << endl;
     }
     win_vector = in_vector;
     player_names = in_names;
