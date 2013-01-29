@@ -499,10 +499,10 @@ vector<int> Logic::win(){
 
 	if(zuege == 0){
 		ende = 1;
-		cout << "Winende " << ende;
+        //cout << "Winende " << ende;
 	}
 	else{
-		cout << "anzMoeglicher Zuege: " << zuege << endl;
+        //cout << "anzMoeglicher Zuege: " << zuege << endl;
 	}
 
 
