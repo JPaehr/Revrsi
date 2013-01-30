@@ -43,7 +43,7 @@ void AI_Thread::run(){
         else{
             this->firstRun = false;
         }
-        //this->msleep(200);
+        this->msleep(800);
     }
 }
 
