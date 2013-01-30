@@ -61,7 +61,6 @@ void subServer::run(){
     String100 << ",";
     String100 << this->spieler_num;
     String100 << ",";
-    cout << String100.str() << endl;
 
     this->senden(String100.str());
 
