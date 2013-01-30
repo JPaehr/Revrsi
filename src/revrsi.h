@@ -11,6 +11,7 @@
 #include "interfaces/server_gui.h"
 #include "interfaces/client_gui.h"
 #include "interfaces/win_gui.h"
+#include "interfaces/ueber.h"
 #include "player.h"
 #include "net/server/server_thread.h"
 #include "net/client/client_thread.h"
@@ -46,10 +47,6 @@ public slots:
     void client_gui_slot();
 
     //Toolbar item slots
-    void step_left();
-    void step_right();
-    void step_top();
-    void step_down();
     void zoom_in();
     void zoom_out();
 
@@ -122,6 +119,7 @@ private:
     server_thread           *ServerThread;
     TokenItem               *TokenContainer;
     TokenItem               *BackTheme;
+    ueber                   *ueber_gui;
 
     vector<int>             aninnn;
     vector<vector<int> >    old_array;

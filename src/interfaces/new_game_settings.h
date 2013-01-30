@@ -2,7 +2,6 @@
 #define NEW_GAME_SETTINGS_H
 
 #include <QDialog>
-
 #include <QtGui>
 
 namespace Ui {

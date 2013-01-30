@@ -4,9 +4,7 @@ player::player(){
     this->is_active = false;
 }
 
-player::~player()
-{
-}
+player::~player(){}
 
 void player::set_parents(QGraphicsItem *item){
     this->setParentItem(item);
@@ -41,7 +39,6 @@ void player::setActive(bool act){
         this->tokens.setPos( qreal( 20 ), qreal( 37 ));
         this->tokens.setVisible(true);
     }
-
 }
 
 void player::setTokens(int tokens){

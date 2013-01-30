@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
-#include <QDebug>
 
 using namespace std;
 
@@ -22,7 +21,6 @@ Logic::Logic(int width, int height, int players) {
 	//aktPlayer wird zunaechst immer 1 sein
 	this->aktPlayer = 1;
 	//Felder mit inhalt 0 sollen nicht belegt sein
-	//this->fields[5][5] = {0};
 	this->fields.assign(height,vector<int>(width,0));
     this->oldFields = this->fields;
 }
@@ -114,13 +112,6 @@ void Logic::setInitStones(){
 	}
 
     this->oldFields = this->fields;
-	/*
-	// testfeld fuer den beweis, dass die farbe tauscht, wenn eine nicht setzen kann
-	this->fields[1][2] = 1;
-	this->fields[2][2] = 2;
-	this->fields[1][1] = 1;
-	this->fields[2][1] = 2;
-	 */
 }
 void Logic::turnStones(int x, int y, int richtung, int anzahl){
 	switch (richtung){
@@ -227,7 +218,6 @@ vector<int> Logic::sternSteine(int x, int y){
 					if(this->fields[y+i][x-j] == this->aktPlayer && this->fields[y+i][x-j] != 0){
 						richtungen[4] = j;
 					}
-					//richtungen[4] = j;
 				}
 			}
 			//nach unten
@@ -239,7 +229,6 @@ vector<int> Logic::sternSteine(int x, int y){
 					if(this->fields[y+i][x] == this->aktPlayer && this->fields[y+i][x] != 0){
 						richtungen[5] = i;
 					}
-					//richtungen[5] = i;
 				}
 			}
 			//nach untenrechts
@@ -251,7 +240,6 @@ vector<int> Logic::sternSteine(int x, int y){
 					if(this->fields[y+i][x+j] == this->aktPlayer && this->fields[y+i][x+j] != 0){
 						richtungen[6] = j;
 					}
-					//richtungen[6] = j;
 				}
 			}
 			//nach rechts
@@ -263,7 +251,6 @@ vector<int> Logic::sternSteine(int x, int y){
 					if(this->fields[y][x+j] == this->aktPlayer && this->fields[y][x+j] != 0){
 						richtungen[7] = j;
 					}
-					//richtungen[7] = j;
 				}
 			}
 		}
@@ -494,7 +481,7 @@ vector<int> Logic::win(){
 	int zuege = 0;
 	for(int i = 0; i < this->players; i++){
 		zuege = zuege + moeglicheZuege[i];
-		cout << moeglicheZuege[i] << " ";
+        //cout << moeglicheZuege[i] << " ";
 	}
 
 	if(zuege == 0){

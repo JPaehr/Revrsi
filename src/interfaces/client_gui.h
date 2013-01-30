@@ -27,7 +27,6 @@ public:
 signals:
     void send_startClient();
     void setLocked();
-    void NetTerminateClient();
     void test_signal();
     void disconnect();
     void disableNetMode();
@@ -49,6 +48,7 @@ private:
     int clientCounter;
 protected:
     void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *);
 };
 
 #endif // CLIENT_GUI_H

@@ -1,7 +1,6 @@
 #include "client_gui.h"
 #include "ui_client_gui.h"
 #include <QApplication>
-#include <QDebug>
 #include <iostream>
 
 client_gui::client_gui(QWidget *parent) :
@@ -22,41 +21,59 @@ client_gui::~client_gui(){
 }
 
 QVector<QString> client_gui::getAllNames(){
-    cout << "ClientInterface\tgetAllNames()" << endl;
+    //cout << "ClientInterface\tgetAllNames()" << endl;
     return this->NetPlayerNames;
 }
 
 QString client_gui::getPlayerName(){
-    cout << "ClientInterface\tgetPlayerName()" << endl;
+    //cout << "ClientInterface\tgetPlayerName()" << endl;
     this->ownName = ui->spielername_lineEdit->text();
     return this->ownName;
 }
 
 string client_gui::getIP(){
-    cout << "ClientInterface\tgetIP()" << endl;
+    //cout << "ClientInterface\tgetIP()" << endl;
     return ui->serverIP_lineEdit->text().toStdString();
 }
 
 void client_gui::setLockedSL(){
-    cout << "ClientInterface\tsetLockedSL()" << endl;
+    //cout << "ClientInterface\tsetLockedSL()" << endl;
     ui->serverIP_lineEdit->setDisabled(true);
     ui->spielername_lineEdit->setDisabled(true);
+    ui->connect_button->setDisabled(true);
 }
 
 void client_gui::fin(){
     emit disableNetMode();
+    emit disconnect();
+    this->setClientUnLocked();
     this->close();
 }
 
 void client_gui::setClientUnLocked(){
-    cout << "ClientInterface\tsetClientUnLocked()" << endl;
+    //cout << "ClientInterface\tsetClientUnLocked()" << endl;
     ui->serverIP_lineEdit->setDisabled(false);
     ui->spielername_lineEdit->setDisabled(false);
+    ui->connect_button->setDisabled(false);
+
+    ui->player1->setText("Leer");
+    ui->ID1_label->setText("ID: ");
+    ui->player2->setText("Leer");
+    ui->ID2_label->setText("ID: ");
+    ui->player3->setText("Leer");
+    ui->ID3_label->setText("ID: ");
+    ui->player4->setText("Leer");
+    ui->ID4_label->setText("ID: ");
+
 }
 
 void client_gui::closeEvent(QCloseEvent *event){
     this->finClientInterface = true;
     event->accept();
+}
+
+void client_gui::showEvent(QShowEvent *){
+    this->finClientInterface = false;
 }
 
 void client_gui::getPlayerNameOnChange(QString ownName){
@@ -84,7 +101,7 @@ void client_gui::startClient(){
 }
 
 void client_gui::NetAddPlayer(QVector<QString> pl){
-    cout << "ClientInterface\tNetAddPlayer()" << endl;
+    //cout << "ClientInterface\tNetAddPlayer()" << endl;
     for(int i = 0; i<pl.size(); i+=2){
         if(pl[i+1] == "1"){
             ui->player1->setText(pl[i]);

@@ -19,7 +19,7 @@ bool Socket::create() {
 		exit(1);
 	}
 	int y=1;
-// Mehr dazu siehe Hinweis am Ende
+    // Mehr dazu siehe Hinweis am Ende
 	setsockopt( m_sock, SOL_SOCKET, SO_REUSEADDR, &y, sizeof(int));
 	return true;
 }
@@ -33,46 +33,52 @@ bool Socket::UDP_create() {
 	}
 	return false;
 }
+
 // Erzeugt die Bindung an die Serveradresse
 // – genauer an einen bestimmten Port
 bool Socket::bind( const int port ) {
-if ( ! is_valid() ) {
-return false;
+    if ( ! is_valid() ) {
+        return false;
+    }
+    m_addr.sin_family = AF_INET;
+    m_addr.sin_addr.s_addr = INADDR_ANY;
+    m_addr.sin_port = htons ( port );
+
+    int bind_return = ::bind ( m_sock,
+        ( struct sockaddr * ) &m_addr, sizeof ( m_addr ) );
+
+    if ( bind_return == -1 ) {
+        return false;
+    }
+    return true;
 }
-m_addr.sin_family = AF_INET;
-m_addr.sin_addr.s_addr = INADDR_ANY;
-m_addr.sin_port = htons ( port );
-int bind_return = ::bind ( m_sock,
-( struct sockaddr * ) &m_addr, sizeof ( m_addr ) );
-if ( bind_return == -1 ) {
-return false;
-}
-return true;
-}
+
 // Teile dem Socket mit, dass Verbindungswünsche
 // von Clients entgegengenommen werden
 bool Socket::listen() const {
-if ( ! is_valid() ) {
-return false;
+    if ( ! is_valid() ) {
+       return false;
+    }
+    int listen_return = ::listen ( m_sock, MAXCONNECTIONS );
+
+    if ( listen_return == -1 ) {
+        return false;
+    }
+    return true;
 }
-int listen_return = ::listen ( m_sock, MAXCONNECTIONS );
-if ( listen_return == -1 ) {
-return false;
-}
-return true;
-}
+
 // Bearbeite die Verbindungswünsche von Clients
 // Der Aufruf von accept() blockiert so lange,
 // bis ein Client Verbindung aufnimmt
 
 bool Socket::accept ( Socket& new_socket ) const {
-int addr_length = sizeof ( m_addr );
-new_socket.m_sock = ::accept( m_sock,
-( sockaddr * ) &m_addr, ( socklen_t * ) &addr_length );
-if ( new_socket.m_sock <= 0 )
-return false;
-else
-return true;
+    int addr_length = sizeof ( m_addr );
+    new_socket.m_sock = ::accept( m_sock,
+    ( sockaddr * ) &m_addr, ( socklen_t * ) &addr_length );
+    if ( new_socket.m_sock <= 0 )
+    return false;
+    else
+    return true;
 }
 // Baut die Verbindung zum Server auf
 bool Socket::connect( const string host, const int port ) {

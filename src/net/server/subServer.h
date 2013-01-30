@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include "../../Logic.h"
-//#include <QObject>
 #include <QtGui>
 
 using namespace std;

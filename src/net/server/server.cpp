@@ -67,7 +67,6 @@ Server::Server(int breite, int hoehe, int Spieler){
 
 
 void Server::globalSend(string msg){
-    cout << "Server Message To Send\t\t" << msg << endl;
     if(uServer1Connected){
         this->uServer1->senden(msg);
     }
@@ -103,10 +102,8 @@ string Server::StringSpielstand(){
     string spielstand;
     stringstream anhang;
     stringstream sstr;
-    cout << "##################################################################" << endl;
     //vor dem Spielstand muss die animation geladen werden
     if(this->logic->getAniStones(-1).size() > 0){
-        cout << "Anistones Groesse " << this->logic->getAniStones(-1).size() << endl;
         spielstand = "909,";
         for(uint k = 0; k < this->logic->getAniStones(-1).size(); k++){
             anhang << this->logic->getAniStones(-1)[k];
@@ -133,16 +130,10 @@ string Server::StringSpielstand(){
     spielstand += sstr.str();
     spielstand += ",";
     sstr.str("");
-    cout << "Spielstand Senden: " << spielstand << endl;
+    //cout << "Spielstand Senden: " << spielstand << endl;
     return spielstand;
 }
 void Server::setStoneControl(int spalte, int hoehe, int id){
-
-    cout << "Server:\t\t" << "StoneControl ausgefuehrt" << endl;
-    cout << spalte << " " << hoehe << " " << id << endl;
-
-    cout << "-------------\n" << "empfangene id  "<<id<< "\nlid  "<< this->logic->getAktPlayer() <<"----------\n";
-
     if(this->logic->getAktPlayer() == id){
         if(!this->logic->setField(spalte, hoehe)){
             return;
@@ -153,7 +144,7 @@ void Server::setStoneControl(int spalte, int hoehe, int id){
     }
 
     SpielStandaktSenden();
-    cout << "Server:\t\t" << "Code 900 UpdateWinvector" << endl;
+    //cout << "Server:\t\t" << "Code 900 UpdateWinvector" << endl;
     vector<int> winVector = this->logic->win();
     string winVectorString = "900,";
     for(uint i = 0; i < winVector.size(); i++){
@@ -177,7 +168,7 @@ void Server::NetSendNewClient(QString Name, int ID){
     tmp.push_back(NewClient);
 
     AllClients.push_back(tmp);
-    cout << "Server:\t\tSenden Case " << NewClient;
+    //cout << "Server:\t\tSenden Case " << NewClient;
     clients += "200,";
 
     for(int i = 0; i < AllClients.size(); i++){
@@ -203,7 +194,7 @@ void Server::NetSendNewClient(QString Name, int ID){
 }
 
 void Server::NetSendAllClientsSL(int del){
-    cout << "Server:\t\t" << "Net Send All ClientsSL" << endl;
+    //cout << "Server:\t\t" << "Net Send All ClientsSL" << endl;
     stringstream blid;
     string id_string;
     blid << del;
@@ -218,12 +209,12 @@ void Server::NetSendAllClientsSL(int del){
 
     string string_to_send;
     string_to_send = "200,";
-    cout << "Server:\t\tCase 200:";
+    //cout << "Server:\t\tCase 200:";
     for(int i = 0; i < AllClients.size(); i++){
         string_to_send += AllClients[i][2];
-        cout << string_to_send;
+        //cout << string_to_send;
     }
-    cout << endl;
+    //cout << endl;
     string_to_send += "END__OF__LINE,";
 
     if(this->uServer1->connected){
@@ -278,6 +269,7 @@ int Server::NetDestroyServer(int uServerNumber){
     if(uServerNumber == 1){
         this->uServer1->disconnect();
         this->uServer1->terminate();
+        this->uServer1->exit();
         this->uServer1->wait();
         this->uServer1->~subServer();
         this->uServer1 = new subServer(this,"55313", this->width, this->heigth, this->players, 1);
@@ -296,6 +288,7 @@ int Server::NetDestroyServer(int uServerNumber){
     else if(uServerNumber == 2){
         this->uServer2->disconnect();
         this->uServer2->terminate();
+        this->uServer2->exit();
         this->uServer2->wait();
         this->uServer2->~subServer();
         this->uServer2 = new subServer(this,"55314", this->width, this->heigth, this->players, 2);
@@ -314,6 +307,7 @@ int Server::NetDestroyServer(int uServerNumber){
     else if(uServerNumber == 3){
         this->uServer3->disconnect();
         this->uServer3->terminate();
+        this->uServer3->exit();
         this->uServer3->wait();
         this->uServer3->~subServer();
         this->uServer3 = new subServer(this,"55315", this->width, this->heigth, this->players, 3);
@@ -332,6 +326,7 @@ int Server::NetDestroyServer(int uServerNumber){
     else if(uServerNumber == 4){
         this->uServer4->disconnect();
         this->uServer4->terminate();
+        this->uServer4->exit();
         this->uServer4->wait();
         this->uServer4->~subServer();
         this->uServer4 = new subServer(this,"55316", this->width, this->heigth, this->players, 4);

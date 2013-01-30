@@ -26,7 +26,7 @@ public:
     int runtime;
     bool disconnectSend;
     vector<int> VecAnimation;
-
+    void DestroyMe();
 
 private:
 

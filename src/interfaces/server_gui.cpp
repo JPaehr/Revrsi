@@ -6,6 +6,7 @@ server_gui::server_gui(QWidget *parent) :
     ui(new Ui::server_gui)
 {
     ui->setupUi(this);
+    ui->starGame_button->setDisabled(true);
     connect(ui->startServer_button,SIGNAL(clicked()),this,SLOT(setupServer()));
     connect(ui->starGame_button,SIGNAL(clicked()),this,SLOT(NetSendStartGame()));
     connect(ui->abbrechen,SIGNAL(clicked()),this,SLOT(fin()));
@@ -124,6 +125,15 @@ void server_gui::setUIUnLocked(){
     ui->four_player_btn->setDisabled(false);
     ui->startServer_button->setDisabled(false);
     ui->spielername_lineEdit->setDisabled(false);
+
+    ui->player1->setText("Leer");
+    ui->ID1_label->setText("ID: ");
+    ui->player2->setText("Leer");
+    ui->ID2_label->setText("ID: ");
+    ui->player3->setText("Leer");
+    ui->ID3_label->setText("ID: ");
+    ui->player4->setText("Leer");
+    ui->ID4_label->setText("ID: ");
 }
 
 QVector<QString> server_gui::getAllNames(){

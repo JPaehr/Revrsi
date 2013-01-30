@@ -17,6 +17,7 @@ Revrsi::Revrsi(QWidget *parent):
     this->serverInterface = new server_gui(this);
     this->clientInterface = new client_gui(this);
     this->winInterface    = new win_gui(this);
+    this->ueber_gui       = new ueber(this);
 
     // Init GraphicsScene
     this->frame_scene = new QGraphicsScene(this);
@@ -78,15 +79,11 @@ Revrsi::Revrsi(QWidget *parent):
     connect(ui->actionClient,           SIGNAL(triggered()), this,      SLOT(setNetModeEnabled()));
     connect(ui->actionKI_Einstellungen, SIGNAL(triggered()), this->ais, SLOT(show()));
     connect(ui->actionBeenden,          SIGNAL(triggered()), this,      SLOT(close()));
+    connect(ui->action_ber,             SIGNAL(triggered()), this->ueber_gui,      SLOT(exec()));
 
     connect(this->ngs,  SIGNAL(accepted()),     this,   SLOT(set_proceed_newGame_true()));
-    //connect(this->seqGroup)
 
     // Connect Toolbar Items
-    connect(ui->actionLeft,     SIGNAL(triggered()), this, SLOT(step_left()));
-    connect(ui->actionRight,    SIGNAL(triggered()), this, SLOT(step_right()));
-    connect(ui->actionTop,      SIGNAL(triggered()), this, SLOT(step_top()));
-    connect(ui->actionDown,     SIGNAL(triggered()), this, SLOT(step_down()));
     connect(ui->actionZoom,     SIGNAL(triggered()), this, SLOT(zoom_in()));
     connect(ui->actionShrink,   SIGNAL(triggered()), this, SLOT(zoom_out()));
 
@@ -337,11 +334,6 @@ void Revrsi::change_token_pixmap(TokenItem *token){
     token_pic = token_pic.scaled(this->scale-10, this->scale-10, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     token->setPixmap(token_pic);
-    //token_item->setOffset(this->fields[i]->x_real()+ 10 / 2, this->fields[i]->y_real()+ 10 / 2);
-    //token_item->set_coords(x, y);
-    //this->tokens.push_back(token_item);
-    //this->scene->addItem(token_item);
-    //token_item->setVisible(false);
 }
 
 void Revrsi::client_gui_slot(){
@@ -454,7 +446,7 @@ void Revrsi::field_clicked_slot(int x, int y){
             return;
         }
         QVector<int> vector_to_convert;
-        for(int i = 0, size = this->win_vector.size(); i < size; i++){ //###uint fix
+        for(int i = 0, size = this->win_vector.size(); i < size; i++){
             vector_to_convert.push_back(this->win_vector[i]);
         }
         this->winInterface->show();
@@ -623,13 +615,11 @@ void Revrsi::new_game(){
     this->runPlayerFieldAnimation();
     connect(this->anim, SIGNAL(finished()), this, SLOT(switchOpacityWay()));
 
-
     //Set First Run
     this->firstRun = false;
 }
 
 void Revrsi::new_game_slot(){
-    //cout << this->ngs->exec();
     this->ngs->exec();
     if(this->NewGame){
         this->NewGame = false;
@@ -664,20 +654,6 @@ void Revrsi::NetCreateConnectsSL(){
 void Revrsi::NetNewFieldSL(){
     this->old_array = this->new_array;
     this->new_array = this->ClientThread->getFields();
-
-    /*if(this->NetGameStart){
-        for(uint i = 0; i < this->new_array.size(); i++){
-            for(uint ii = 0; ii < this->new_array[i].size(); ii++){
-                if(this->new_array[i][ii] != 0 && this->old_array[i][ii] == 0){
-                    this->setupToken(ii, i, this->new_array[i][ii]);
-                }
-                else if(this->new_array[i][ii] != this->old_array[i][ii] && this->old_array[i][ii] != 0){
-                    this->change_token(ii, i, this->new_array[i][ii]);
-                }
-            }
-        }
-    }*/
-    //this->change_tokenII();
 }
 
 void Revrsi::NetNewAniVecSL(vector<int> AniVec){
@@ -711,8 +687,8 @@ void Revrsi::NetUpdatePlayer(int NetAktPlayer){
 
         for(int i = 1; i <= this->player_num; i++){
             if(i == NetAktPlayer){
-                this->p_fields[i-1]->setActive(true);
                 this->p_fields[i-1]->setTokensVisible(false);
+                this->p_fields[i-1]->setActive(true);
             }
             else{
                 this->p_fields[i-1]->setActive(false);
@@ -810,6 +786,7 @@ void Revrsi::setNetModeEnabled(){
 
 void Revrsi::setNetModeDisabled(){
     this->NetMode = false;
+    this->clientInit = false;
 }
 
 void Revrsi::set_proceed_newGame_true(){
@@ -895,12 +872,6 @@ void Revrsi::setupBackground(int x, int y){
             item->set_coords(i_x, i_y);
             item->set_realcoords(val_x, val_y, smaller_value/x, smaller_value/y);
 
-
-            //###fix
-            //item->set_realcoords(0,0,0,0);
-            //if(y>=x){
-
-            //}
             if(y>=x){
                 item->set_scale(smaller_value/y);
                 this->set_scale(smaller_value/y);
@@ -928,12 +899,6 @@ void Revrsi::setupBackground(int x, int y){
             an->setItem(item);
             an->setTimeLine(timer);
 
-            /*for(float i = 26; i >= 1; i--){
-                an->setPosAt((250-i*10.f) / 250.f, QPointF(val_x*(1/i), val_y*cos(2*M_PI*(0.01*i-1))));
-                //cout << "1/i: " << 1/i << endl;
-                //cout << "val x: "  << val_x << " val y: " << val_y << " x: " << val_x*(1/i)<< " y: " << val_y*cos(2*M_PI*(0.01*i-1)) << endl;
-            }*/
-
             an->setPosAt(0.f / 250.f, QPointF(val_x*0, 0.00001*val_y));
             an->setPosAt(249.f / 250.f, QPointF(val_x, val_y));
             an_group.push_back(an);
@@ -949,8 +914,6 @@ void Revrsi::setupBackgroundTheme(){
     }
     this->BackTheme = new TokenItem;
     back_pic_theme = back_pic_theme.scaled(1000, 800, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    //this->BackTheme->setPos(1000, 260);
-    //this->BackTheme->setPos((ui->graphicsView->width() - this->scene->width()) / 2 * -1, (ui->graphicsView->height() - this->scene->height()) / 2 * -1);
     this->BackTheme->setPixmap(back_pic_theme);
     this->scene->addItem(this->BackTheme);
 }
@@ -961,8 +924,6 @@ void Revrsi::setupFieldBack(){
     if(!field_back.load(":/Field/FieldBackgroundShadow.png")){
         qWarning("Failed to load image");
     }
-
-
 
     TokenItem *fback = new TokenItem;
     field_back = field_back.scaled(this->scale * this->width + 10, this->scale * this->height + 10);
@@ -1010,32 +971,13 @@ void Revrsi::setupToken(int x, int y, int player){
             break;
         }
     }
+
     token_item->setPixmap(token_pic);
     token_item->setOffset(this->fields[i]->x_real()+ 10 / 2, this->fields[i]->y_real()+ 10 / 2);
     token_item->set_coords(x, y);
     this->tokens.push_back(token_item);
     this->scene->addItem(token_item);
     token_item->setVisible(false);
-}
-
-void Revrsi::step_left(){
-    sceneOffset_x = sceneOffset_x + 10;
-    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
-}
-
-void Revrsi::step_right(){
-    sceneOffset_x = sceneOffset_x - 10;
-    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
-}
-
-void Revrsi::step_top(){
-    sceneOffset_y = sceneOffset_y + 10;
-    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
-}
-
-void Revrsi::step_down(){
-    sceneOffset_y = sceneOffset_y - 10;
-    scene->setSceneRect(sceneOffset_x, sceneOffset_y, scene->sceneRect().width(), scene->sceneRect().height());
 }
 
 void Revrsi::switchOpacityWay(){
@@ -1055,11 +997,9 @@ void Revrsi::warpStart(){
 }
 
 void Revrsi::zoom_in(){
-    //sceneOffset_scale = sceneOffset_scale + 0.1;
     ui->graphicsView->scale(sceneOffset_scale + 0.1,sceneOffset_scale + 0.1);
 }
 
 void Revrsi::zoom_out(){
-    //sceneOffset_scale = sceneOffset_scale - 0.1;
     ui->graphicsView->scale(sceneOffset_scale - 0.1,sceneOffset_scale - 0.1);
 }

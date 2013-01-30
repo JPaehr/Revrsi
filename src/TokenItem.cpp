@@ -12,5 +12,4 @@ QPoint TokenItem::get_coords(){
     return QPoint(this->x, this->y);
 }
 
-TokenItem::~TokenItem(){
-}
+TokenItem::~TokenItem(){}

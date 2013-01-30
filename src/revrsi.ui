@@ -58,10 +58,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionLeft"/>
-   <addaction name="actionRight"/>
-   <addaction name="actionTop"/>
-   <addaction name="actionDown"/>
    <addaction name="actionZoom"/>
    <addaction name="actionShrink"/>
   </widget>
@@ -92,7 +88,6 @@
     <property name="title">
      <string>Hilfe</string>
     </property>
-    <addaction name="actionHilfe"/>
     <addaction name="action_ber"/>
    </widget>
    <widget class="QMenu" name="menuEinstellungen">
@@ -148,54 +143,6 @@
    </property>
    <property name="shortcut">
     <string>F3</string>
-   </property>
-  </action>
-  <action name="actionLeft">
-   <property name="icon">
-    <iconset resource="res/resources.qrc">
-     <normaloff>:/Positioning/arrow_left.png</normaloff>:/Positioning/arrow_left.png</iconset>
-   </property>
-   <property name="text">
-    <string>Links</string>
-   </property>
-   <property name="toolTip">
-    <string>Spielfeld nach Links verschieben</string>
-   </property>
-  </action>
-  <action name="actionRight">
-   <property name="icon">
-    <iconset resource="res/resources.qrc">
-     <normaloff>:/Positioning/arrow_right.png</normaloff>:/Positioning/arrow_right.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rechts</string>
-   </property>
-   <property name="toolTip">
-    <string>Spielfeld nach rechts verschieben</string>
-   </property>
-  </action>
-  <action name="actionTop">
-   <property name="icon">
-    <iconset resource="res/resources.qrc">
-     <normaloff>:/Positioning/arrow_top.png</normaloff>:/Positioning/arrow_top.png</iconset>
-   </property>
-   <property name="text">
-    <string>Oben</string>
-   </property>
-   <property name="toolTip">
-    <string>Spielfeld nach oben verschieben</string>
-   </property>
-  </action>
-  <action name="actionDown">
-   <property name="icon">
-    <iconset resource="res/resources.qrc">
-     <normaloff>:/Positioning/arrow_down.png</normaloff>:/Positioning/arrow_down.png</iconset>
-   </property>
-   <property name="text">
-    <string>Unten</string>
-   </property>
-   <property name="toolTip">
-    <string>Spielfeld nach unten verschieben</string>
    </property>
   </action>
   <action name="actionZoom">

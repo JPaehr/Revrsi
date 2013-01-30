@@ -31,7 +31,6 @@ void AI_Thread::run(){
 
             this->AI->CODE(this->field, &x, &y, player);
             if(x == -1 && y == -1){
-                qDebug() << "Terminate AI" << endl;
                 this->terminate();
                 this->wait();
                 this->~AI_Thread();

@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     AI/ai_thread.cpp \
     interfaces/ai_settings.cpp \
     AI/ai_code.cpp \
-    AI/ki_logic.cpp
+    AI/ki_logic.cpp \
+    interfaces/ueber.cpp
 
 HEADERS  += revrsi.h \
     FieldItem.h \
@@ -53,14 +54,16 @@ HEADERS  += revrsi.h \
     AI/ai_thread.h \
     interfaces/ai_settings.h \
     AI/ai_code.h \
-    AI/ki_logic.h
+    AI/ki_logic.h \
+    interfaces/ueber.h
 
 FORMS    += revrsi.ui \
     interfaces/win_gui.ui \
     interfaces/server_gui.ui \
     interfaces/new_game_settings.ui \
     interfaces/client_gui.ui \
-    interfaces/ai_settings.ui
+    interfaces/ai_settings.ui \
+    interfaces/ueber.ui
 
 RESOURCES += \
     res/resources.qrc \

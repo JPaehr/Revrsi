@@ -1,5 +1,4 @@
 #include "server_thread.h"
-#define out qDebug()
 
 server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QThread(parent){
     this->serverInterface = serverInterface;
@@ -10,19 +9,11 @@ server_thread::server_thread(QObject *parent, server_gui *serverInterface) : QTh
 }
 
 void server_thread::run(){
-
-    out << "serverthread";
-
-    //Server *meinServer = new Server("55313", this->serverInterface->getGameValues()[0], this->serverInterface->getGameValues()[1], this->serverInterface->getGameValues()[2]);
-
     this->breite = this->serverInterface->getWidth();
     this->hoehe  = this->serverInterface->getHeight();
     this->Spieler= this->serverInterface->getPNum();
 
     QString PlayerName = this->serverInterface->getName();
-
-
-    //int breite = 8, hoehe = 8, Spieler = 2;
 
     this->meinServer = new Server(breite, hoehe, Spieler);
     connect(this->meinServer,SIGNAL(NetNewServer(int)),this,SLOT(NetJumpToConnection(int)));
@@ -141,6 +132,7 @@ void server_thread::NetStopServer(){
         this->meinServer->uServer1->DestroyMe();
         this->meinServer->uServer1->disconnect();
         this->meinServer->uServer1->terminate();
+        this->meinServer->uServer1->exit();
         this->meinServer->uServer1->DestroyMe();
         this->meinServer->uServer1->thread()->disconnect();
         this->meinServer->uServer1->wait();
@@ -150,6 +142,7 @@ void server_thread::NetStopServer(){
         this->meinServer->uServer2->DestroyMe();
         this->meinServer->uServer2->disconnect();
         this->meinServer->uServer2->terminate();
+        this->meinServer->uServer2->exit();
         this->meinServer->uServer2->DestroyMe();
         this->meinServer->uServer2->thread()->disconnect();
         this->meinServer->uServer2->wait();
@@ -160,6 +153,7 @@ void server_thread::NetStopServer(){
             this->meinServer->uServer3->DestroyMe();
             this->meinServer->uServer3->disconnect();
             this->meinServer->uServer3->terminate();
+            this->meinServer->uServer3->exit();
             this->meinServer->uServer3->DestroyMe();
             this->meinServer->uServer3->thread()->disconnect();
             this->meinServer->uServer3->wait();
@@ -171,6 +165,7 @@ void server_thread::NetStopServer(){
             this->meinServer->uServer4->DestroyMe();
             this->meinServer->uServer4->disconnect();
             this->meinServer->uServer4->terminate();
+            this->meinServer->uServer4->exit();
             this->meinServer->uServer4->DestroyMe();
             this->meinServer->uServer4->thread()->disconnect();
             this->meinServer->uServer4->wait();
@@ -179,9 +174,11 @@ void server_thread::NetStopServer(){
     }
     this->meinServer->disconnect();
     this->meinServer->thread()->terminate();
+    this->meinServer->thread()->exit();
     this->meinServer->~Server();
     this->disconnect();
     this->terminate();
+    this->exit();
     this->wait();
     this->~server_thread();
 }

@@ -14,8 +14,7 @@ client_thread::client_thread(QObject *parent, server_gui *ServerInterface, strin
     this->ServerInterface = ServerInterface;
 }
 
-client_thread::~client_thread(){
-}
+client_thread::~client_thread(){}
 
 vector<vector<int> > client_thread::getFields(){
     return this->fields;
@@ -49,13 +48,6 @@ void client_thread::run(){
 
     sleep(1);
 
-    //senden
-    //while(this->message == "NONE"){
-
-    //}
-    //while(1){
-        //this->myClient->senden("");
-    //}
     while(1){
         if(!serverMode){
             if(this->ClientInterface->finClientInterface){
@@ -64,7 +56,6 @@ void client_thread::run(){
         }
         QApplication::processEvents();
     }
-    //this->exec();
 }
 
 void client_thread::setCreateConnectsState(bool value){
@@ -87,7 +78,7 @@ void client_thread::NetFieldChange(vector<vector<int> > in_field_vector){
 }
 
 void client_thread::NetGameStart(){
-    cout << "ClientThread SLOT:" << "NetGameStart" << endl;
+    //cout << "ClientThread SLOT:" << "NetGameStart" << endl;
     if(!serverMode){
         this->playerNames = this->ClientInterface->getAllNames();
         emit NetCloseClientInterface();
@@ -100,22 +91,22 @@ void client_thread::NetGameStart(){
 }
 
 void client_thread::NetFieldClicked(int x, int y){
-    cout << "ClientThread SLOT:\t" << "NetFieldClicked" << endl;
+    //cout << "ClientThread SLOT:\t" << "NetFieldClicked" << endl;
     this->myClient->setStoneClient(x,y);
 }
 
 void client_thread::NetSendName(QString ownName){
-    cout << "ClientThread SLOT:\t" << "Case 222 NetSendName" << endl;
+    //cout << "ClientThread SLOT:\t" << "Case 222 NetSendName" << endl;
     this->myClient->sendNameClient(ownName);
 }
 
 void client_thread::NetGetID(int id){
     this->ID = id;
-    cout << "ClientThread:\t" << "ID bekommen: " << this->ID << endl;
+    //cout << "ClientThread:\t" << "ID bekommen: " << this->ID << endl;
 }
 
 void client_thread::NetGetNewField(){
-    cout << "ClientThread SLOT:\t" << "NetGetNewField" << endl;
+    //cout << "ClientThread SLOT:\t" << "NetGetNewField" << endl;
     if(!this->firstfielddrawn){
         this->fields = this->myClient->getFields();
         this->firstfielddrawn = true;
@@ -129,13 +120,17 @@ void client_thread::NetGetNewField(){
 void client_thread::NetPlayerDisconnect(){
     stringstream sstrID;
     sstrID << this->ID;
-    cout << "ClientThread\t Case 201 senden" << endl;
+    //cout << "ClientThread\t Case 201 senden" << endl;
     this->myClient->senden("201," + sstrID.str() + ",");
+    this->myClient->DestroyMe();
     this->myClient->disconnect();
     this->myClient->terminate();
+    this->myClient->exit();
     this->myClient->wait();
     this->myClient->~Client();
+    this->disconnect();
     this->terminate();
+    this->exit();
     this->wait();
     this->~client_thread();
 }

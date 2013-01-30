@@ -1,6 +1,4 @@
 #include "client.h"
-//#include "socket.h"
-//#include "../QServer/socket.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -58,14 +56,10 @@ void Client::run(){
     //QVector<string> str;
     while(1){
         this->client.recv(s);
-        //if(debug_mode){cout << "Client:\t\t" << "Received: " << s << endl;}
-            //cout << s << endl;
-            //vector<string> empfangen;
             if(s.length() > 0){
                 max = count(s.begin(), s.end(), ',');
                 if(max > 1){max--;}
                 while(abschnitt < max){
-
 
                     switch(atoi(explode(s, ',')[abschnitt].c_str())){
                     //breite, hoehe, anzSpieler
@@ -143,8 +137,6 @@ void Client::run(){
                                 }
                                 cout << endl;
                             }
-                            /*cout << "Eigene id" << this->id << endl;
-                            */
                         }						
                         index = 1;
                         this->runtime++;
@@ -219,7 +211,6 @@ void Client::run(){
                             dazu++;
                         }
                         abschnitt+= dazu;
-                        cout << "Abschnitt: " << dazu << endl;
 
                     default:
                         break;
@@ -286,6 +277,11 @@ vector<vector<int> > Client::getFields(){
     return this->fields;
 }
 
+void Client::DestroyMe(){
+    this->client.close();
+    this->client.~Socket();
+}
+
 void Client::senden(string mes){
     if(this->debug_mode){
     string mes;
@@ -295,13 +291,6 @@ void Client::senden(string mes){
         stringstream sstr;
         stringstream sstrY;
         do {
-            /*for(int i = 0; i < this->height; i++){
-                for(int j = 0; j < this->width; j++){
-                    cout << this->fields[i][j] << " ";
-                }
-                cout << endl;
-            }*/
-
             cout << "X: ";
             cin >> x;
             cout << "Y: ";
