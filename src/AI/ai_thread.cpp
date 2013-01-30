@@ -24,6 +24,7 @@ void AI_Thread::run(){
         while(!this->animation_finished){
             QApplication::processEvents();
         }
+        this->msleep(800);
         while(this->stop){QApplication::processEvents();}
         QApplication::processEvents();
         if(this->aktPlayer == player){
@@ -43,7 +44,6 @@ void AI_Thread::run(){
         else{
             this->firstRun = false;
         }
-        this->msleep(800);
     }
 }
 
